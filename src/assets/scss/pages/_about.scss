@@ -1,0 +1,10 @@
+.about-hero-img {
+  @include banner (454px);
+}
+
+.employee-img {
+  @include mask;
+  &:hover::after {
+    display: none;
+  }
+}

@@ -1,0 +1,12 @@
+.blog-body,
+.about-body,
+.faq-body,
+.warranty-body,
+.return-body {
+  div.accordion-body,
+  p,
+  li {
+    font-size: $h5-font-size;
+    font-weight: normal;
+  } 
+}

@@ -1,0 +1,48 @@
+
+header {
+  .search-container {
+    position: relative;
+    .icon-search {
+      position: absolute;
+      top: 50%;
+      right: 8px;
+      transform: translateY(-50%);
+    }
+  }
+  @include nav-hover;
+  // .nav-link {
+  //   position: relative;
+  //   &::after {
+  //     content: "";
+  //     position: absolute;
+  //     width: 0;
+  //     left: 50%;
+  //     transition: all 0.5s;
+  //   }
+  //   &:hover::after {
+  //       width: 100%;
+  //       height: 2px;
+  //       bottom: 0;
+  //       left: 0;
+  //       background-color: $black;
+  //   }
+  // }
+
+  .navbar-nav .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* Optional: Adjust this for better alignment */
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  .cart-dropdown {
+    .dropdown-menu {
+      width: 500px;
+      &[data-bs-popper] {
+        left: calc(100% - 500px);
+      }
+    }
+  }
+}

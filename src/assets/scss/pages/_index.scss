@@ -1,0 +1,92 @@
+.container {
+  max-width: 1336px;
+  padding-inline: 20px
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 1360px;
+    padding-inline: 32px;
+  } 
+}
+
+// sticky footer
+html, body {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+//
+
+body, button {
+  font-family: "Roboto Condensed", sans-serif;
+  letter-spacing: 1.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+}
+
+.home {
+  section {
+    padding-block: 80px;
+  }
+}
+
+
+.section-hero {
+  @include banner;
+  
+  @include mask(#000000, 0.4);
+
+  .section-body {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.section-feature {
+  .container {
+    padding-inline: 16%;
+  }
+}
+
+.section-recycle {
+  @include banner;
+  background-size: 120%;
+}
+
+.section-award {
+  .container {
+    padding-inline: 7%;
+  }
+  // margin-inline: -111px;
+  .awards {
+    &>div {
+      width: 100px;
+      // margin-inline: 111px;
+    }
+  }
+}
+
+.section-contact {
+  height: 550px;
+  background-position: center center;
+  background-size: cover;
+  
+  @include mask(#000000, 0.4);
+
+  .section-body {
+    position: relative;
+    z-index: 2;
+  }
+}
