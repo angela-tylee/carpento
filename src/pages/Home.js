@@ -7,7 +7,7 @@ const Home = () => {
     <div className="home">
       <Header />
       <main>
-        <section className="section-hero" style={{ backgroundImage: 'url(../assets/images/banner-6.jpeg)' }}>
+        <section className="section-hero" style={{ backgroundImage: 'url(/images/banner-6.jpeg)' }}>
           <div className="container section-body section-hero-body">
             <div className="text-white mt-7">
               <h1 className="display-4">Welcome to Carpento</h1>
@@ -25,7 +25,7 @@ const Home = () => {
                 <div className="col-3" key={index}>
                   <div className="card w-100 border-0" style={{ width: '18rem' }}>
                     <img
-                      src={`../assets/images/products/living-room/product-${index + 1}.jpeg`}
+                      src={`/images/products/living-room/product-${index + 1}.jpeg`}
                       className="card-img-top"
                       alt="..."
                     />
@@ -57,7 +57,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-recycle" style={{ backgroundImage: 'url(../assets/images/banner-11.jpeg)' }}>
+        <section className="section-recycle" style={{ backgroundImage: 'url(/images/banner-11.jpeg)' }}>
           {/* Additional content can be added here */}
         </section>
 
@@ -70,7 +70,7 @@ const Home = () => {
                   <div className="col-4" key={index}>
                     <div className="card w-100 border-0" style={{ width: '18rem' }}>
                       <img
-                        src={`../assets/images/products/living-room/best-seller-${index + 1}.jpeg`}
+                        src={`/images/products/living-room/best-seller-${index + 1}.jpeg`}
                         className="card-img-top"
                         alt="..."
                       />
@@ -93,7 +93,7 @@ const Home = () => {
             <div className="d-flex awards justify-content-between align-items-center flex-wrap">
               {['if-award-2020', 'innovation-by-design-2021', 'reddot-2019', 'idea-award', 'good-design-2023', 'greenguard-logo', 'forest-Stewardship-Council', 'amazon-5star', 'adesign-award'].map((award, index) => (
                 <div key={index}>
-                  <img src={`../assets/images/awards/${award}.png`} alt={award} width={index === 2 ? '120px' : '100px'} />
+                  <img src={`/images/awards/${award}.png`} alt={award} width={index === 2 ? '120px' : '100px'} />
                 </div>
               ))}
             </div>
@@ -108,7 +108,7 @@ const Home = () => {
                 <div className="col-3" key={index}>
                   <div className="card w-100 border-0" style={{ width: '18rem' }}>
                     <img
-                      src={`../assets/images/products/dining/new-arrival-${index + 1}.jpeg`}
+                      src={`/images/products/dining/new-arrival-${index + 1}.jpeg`}
                       className="card-img-top"
                       alt="..."
                     />
@@ -141,7 +141,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-contact" style={{ backgroundImage: 'url(../assets/images/contact-xl.jpeg)' }}>
+        <section className="section-contact" style={{ backgroundImage: 'url(/images/contact-xl.jpeg)' }}>
           <div className="container section-body section-hero-body">
             <div className="text-white mt-7">
               <h1 className="fs-1">Contact Us</h1>

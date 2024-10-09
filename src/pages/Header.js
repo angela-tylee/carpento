@@ -8,7 +8,7 @@ const Header = () => {
       <nav className="navbar navbar-expand-lg p-0 fw-semibold">
         <div className="container-fluid p-0">
           <a className="navbar-brand" href="index.html">
-            <img src="../assets/images/logo.png" alt="logo" width="154px" />
+            <img src="/images/logo.png" alt="logo" width="154px" />
           </a>
           <button
             className="navbar-toggler"
@@ -61,7 +61,7 @@ const Header = () => {
         <div className="language-dropdown nav-item dropdown me-2">
           <a
             className="nav-link dropdown-toggle"
-            href="cart.html"
+            href="#"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -87,11 +87,10 @@ const Header = () => {
           <div className="dropdown-menu">
             <h5 className="px-2 my-2">Cart (<span>3</span> items)</h5>
             <div><hr className="dropdown-divider" /></div>
-
             <div className="dropdown-item px-2 py-1">
               <div className="row">
                 <div className="col-3">
-                  <img src="../assets/images/products/dining/mug-1.jpeg" alt="mug" width="100px" />
+                  <img src="/images/products/dining/mug-1.jpeg" alt="mug" width="100px" />
                 </div>
                 <div className="col-6 py-1">
                   <h6>Card Title</h6>
@@ -107,7 +106,7 @@ const Header = () => {
             <div className="dropdown-item px-2 py-1">
               <div className="row">
                 <div className="col-3">
-                  <img src="../assets/images/products/living-room/cushion-3.jpeg" alt="cushion" width="100px" />
+                  <img src="/images/products/living-room/cushion-3.jpeg" alt="cushion" width="100px" />
                 </div>
                 <div className="col-6 py-1">
                   <h6>Card Title</h6>
@@ -123,7 +122,7 @@ const Header = () => {
             <div className="dropdown-item px-2 py-1">
               <div className="row">
                 <div className="col-3">
-                  <img src="../assets/images/products/workspace/desk-lamp-3.jpeg" alt="desk lamp" width="100px" />
+                  <img src="/images/products/workspace/desk-lamp-3.jpeg" alt="desk lamp" width="100px" />
                 </div>
                 <div className="col-6 py-1">
                   <h6>Card Title</h6>
