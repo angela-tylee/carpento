@@ -1,17 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import Header from './pages/Header';
-import Footer from './pages/Footer';
-import Home from './pages/Home';
-import Products from './pages/Products';
-import Product from './pages/Product';
-import Blogs from './pages/Blogs';
-import Blog from './pages/Blog';
-import About from './pages/About';
-import FAQ from './pages/Faq';
-import Warranty from './pages/Warranty';
-import Return from './pages/Return';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
+import FrontRoutes from './routes/FrontRoutes';
+import AdminRoutes from './routes/AdminRoutes';
 // import Dashboard from './pages/Dashboard';
 // import Login from './pages/Login';
 // import Modals from './pages/Modals';
@@ -23,21 +12,13 @@ import Checkout from './pages/Checkout';
 function App() {
   return (
     <div className='App'>
-      <Header />
       <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/products" element={<Products />}></Route>
-        <Route path="/product" element={<Product />}></Route>
-        <Route path="/blogs" element={<Blogs />}></Route>
-        <Route path="/blog" element={<Blog />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/faq" element={<FAQ />}></Route>
-        <Route path="/warranty" element={<Warranty />}></Route>
-        <Route path="/return" element={<Return />}></Route>
-        <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/checkout" element={<Checkout />}></Route>
+        {/* Front Pages Routes */}
+        <Route path="/*" element={<FrontRoutes />} />
+        
+        {/* Admin Pages Routes */}
+        <Route path="/admin/*" element={<AdminRoutes />} />
       </Routes>
-      <Footer />
       {
       /* <Link to='/login'>登入</Link> |<Link to='/dashboard'>Dashboard</Link> |
       <Link to='/modal/product'>Product Modal</Link> |
