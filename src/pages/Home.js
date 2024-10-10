@@ -1,4 +1,6 @@
 // import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
   return (
@@ -9,7 +11,7 @@ const Home = () => {
             <div className="text-white mt-7">
               <h1 className="display-4">Welcome to Carpento</h1>
               <p className="fs-2">Special Sales is coming soon!</p>
-              <a className="btn btn-outline-light mt-4" href="./products.html">Shop Now</a>
+              <Link to="/products" className="btn btn-outline-light mt-4">Shop Now</Link>
             </div>
           </div>
         </section>

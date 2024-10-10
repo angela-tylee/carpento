@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Checkout = () => {
   return (
     <main className="container mb-7">
@@ -124,9 +126,7 @@ const Checkout = () => {
             <div className="bg-secondary p-3">
               <div className="d-flex justify-content-between pb-1 mb-2 border-bottom border-1 border-gray">
                 <h5>Order Summary</h5>
-                <a href="/cart" className="text-decoration-underline">
-                  Edit
-                </a>
+                <Link to="/cart" className="text-decoration-underline">Edit</Link>
               </div>
 
               <div>

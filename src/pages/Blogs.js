@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Blogs = () => {
   return (
@@ -6,7 +6,7 @@ const Blogs = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <a href="#">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             Blog
@@ -28,11 +28,9 @@ const Blogs = () => {
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit quod alias minima dolorem aspernatur. Non officiis repellendus facilis odio, et blanditiis voluptas corporis ex doloribus, voluptatibus eligendi incidunt maiores labore possimus libero exercitationem! Expedita doloremque esse, quam distinctio iusto quis delectus quo reprehenderit repellendus placeat. Dicta nesciunt eaque omnis voluptas?
                   </p>
                 </div>
-                <a href="./blog.html" className="text-end text-decoration-underline">
-                  <Link to='blog'>
-                    Read More
-                  </Link>
-                </a>
+                <Link to='blog' className="text-end text-decoration-underline">
+                  Read More
+                </Link>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import React from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -8,10 +8,8 @@ const Header = () => {
     <header className="container py-3">
       <nav className="navbar navbar-expand-lg p-0 fw-semibold">
         <div className="container-fluid p-0">
-          <Link to='/'>
-            <a className="navbar-brand" href="index.html">
-              <img src="/images/logo.png" alt="logo" width="154px" />
-            </a>
+          <Link to='/' className="navbar-brand" >
+            <img src="/images/logo.png" alt="logo" width="154px" />
           </Link>
           <button
             className="navbar-toggler"
@@ -37,7 +35,7 @@ const Header = () => {
                   Products
                 </a>
                 <ul className="dropdown-menu">
-                  <li><Link to='/products' class="w-100"><a className="dropdown-item" href="./products.html">Living Room</a></Link></li>
+                  <li><Link to='/products' class="w-100" className="dropdown-item">Living Room</Link></li>
                   <li><a className="dropdown-item" href="#">Bedroom</a></li>
                   <li><a className="dropdown-item" href="#">Dining</a></li>
                   <li><a className="dropdown-item" href="#">Workspace</a></li>
@@ -47,10 +45,10 @@ const Header = () => {
                 </ul>
               </li>
               <li className="nav-item">
-                <Link to="/blogs"><a className="nav-link" href="blogs.html">Blog</a></Link>
+                <Link to="/blogs" className="nav-link">Blog</Link>
               </li>
               <li className="nav-item">
-                <Link to="/about"><a className="nav-link" href="about.html">About</a></Link>
+                <Link to="/about" className="nav-link">About</Link>
               </li>
             </ul>
           </div>
@@ -78,15 +76,15 @@ const Header = () => {
         </div>
 
         <div className="cart-dropdown nav-item dropdown position-static">
-          <a
+          <Link
+            to="/cart"
             className="nav-link dropdown-toggle"
-            href="cart.html"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             <i className="bi bi-bag"></i>
-          </a>
+          </Link>
           <div className="dropdown-menu">
             <h5 className="px-2 my-2">Cart (<span>3</span> items)</h5>
             <div><hr className="dropdown-divider" /></div>
@@ -144,10 +142,10 @@ const Header = () => {
             <div className="px-2 py-1">
               <div className="row">
                 <div className="col-6 pe-1">
-                  <a href="./cart.html" className="btn btn-outline-dark w-100">Go to Cart</a>
+                  <Link to="/cart" className="btn btn-outline-dark w-100">Go to Cart</Link>
                 </div>
                 <div className="col-6 ps-1">
-                  <a href="./checkout.html" className="btn btn-dark w-100">Proceed to Checkout</a>
+                  <Link to="/checkout" className="btn btn-dark w-100">Proceed to Checkout</Link>
                 </div>
               </div>
             </div>

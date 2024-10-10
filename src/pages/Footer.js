@@ -1,5 +1,5 @@
 // import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -7,18 +7,18 @@ const Footer = () => {
       <div className="container">
         <nav className="navbar navbar-expand-lg p-0">
           <div className="container-fluid p-0">
-            <a className="navbar-brand" href="#">
+            <Link to="/" className="navbar-brand">
               <img src="/images/logo-white.png" alt="logo-white" width="154px" />
-            </a>
+            </Link>
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to="/faq"><a className="nav-link text-white" href="faq.html">FAQ</a></Link>
+                <Link to="/faq" className="nav-link text-white">FAQ</Link>
               </li>
               <li className="nav-item">
-                <Link to="/warranty"><a className="nav-link text-white" href="warranty.html">Warranty</a></Link>
+                <Link to="/warranty" className="nav-link text-white">Warranty</Link>
               </li>
               <li className="nav-item">
-                <Link to='/return'><a className="nav-link text-white" href="return.html">Return</a></Link>
+                <Link to="/return" className="nav-link text-white">Return</Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link text-white" href="mailto:support@carpento.com">Contact Us</a>

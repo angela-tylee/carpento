@@ -1,10 +1,12 @@
+import { Link } from 'react-router-dom';
+
 const Product = () => {
   return (
     <main className="container mb-6">
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item"><a href="#">Home</a></li>
-          <li className="breadcrumb-item"><a href="#">Living Room</a></li>
+          <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+          <li className="breadcrumb-item">Living Room</li>
           <li className="breadcrumb-item active" aria-current="page">Product</li>
         </ol>
       </nav>

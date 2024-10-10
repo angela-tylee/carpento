@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
   return (
@@ -108,7 +108,7 @@ const Cart = () => {
                 </div>
                 <div className="row mt-3">
                   <div className="col-12">
-                    <Link to="/checkout"><a href="./checkout.html" className="btn btn-dark text-white text-uppercase w-100">Proceed to Checkout</a></Link>
+                    <Link to="/checkout" className="btn btn-dark text-white text-uppercase w-100">Proceed to Checkout</Link>
                   </div>
                 </div>
               </div>
