@@ -6,16 +6,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import {
-  HashRouter,
+  BrowserRouter,
 } from 'react-router-dom';
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

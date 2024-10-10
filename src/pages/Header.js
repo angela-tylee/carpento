@@ -8,7 +8,7 @@ const Header = () => {
     <header className="container py-3">
       <nav className="navbar navbar-expand-lg p-0 fw-semibold">
         <div className="container-fluid p-0">
-          <Link to='/home'>
+          <Link to='/'>
             <a className="navbar-brand" href="index.html">
               <img src="/images/logo.png" alt="logo" width="154px" />
             </a>
