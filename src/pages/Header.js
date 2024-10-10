@@ -1,3 +1,4 @@
+import { Routes, Route, Link } from 'react-router-dom';
 // import React from 'react';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -7,9 +8,11 @@ const Header = () => {
     <header className="container py-3">
       <nav className="navbar navbar-expand-lg p-0 fw-semibold">
         <div className="container-fluid p-0">
-          <a className="navbar-brand" href="index.html">
-            <img src="/images/logo.png" alt="logo" width="154px" />
-          </a>
+          <Link to='/home'>
+            <a className="navbar-brand" href="index.html">
+              <img src="/images/logo.png" alt="logo" width="154px" />
+            </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -34,7 +37,7 @@ const Header = () => {
                   Products
                 </a>
                 <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="./products.html">Living Room</a></li>
+                  <li><Link to='/products' class="w-100"><a className="dropdown-item" href="./products.html">Living Room</a></Link></li>
                   <li><a className="dropdown-item" href="#">Bedroom</a></li>
                   <li><a className="dropdown-item" href="#">Dining</a></li>
                   <li><a className="dropdown-item" href="#">Workspace</a></li>
@@ -44,10 +47,10 @@ const Header = () => {
                 </ul>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="blogs.html">Blog</a>
+                <Link to="/blogs"><a className="nav-link" href="blogs.html">Blog</a></Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="about.html">About</a>
+                <Link to="/about"><a className="nav-link" href="about.html">About</a></Link>
               </li>
             </ul>
           </div>

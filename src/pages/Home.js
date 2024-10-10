@@ -1,11 +1,8 @@
 // import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 
 const Home = () => {
   return (
     <div className="home">
-      <Header />
       <main>
         <section className="section-hero" style={{ backgroundImage: 'url(/images/banner-6.jpeg)' }}>
           <div className="container section-body section-hero-body">
@@ -151,7 +148,6 @@ const Home = () => {
           </div>
         </section>
       </main>
-      <Footer />
       {/* <script type="module" src="../main.js"></script> */}
     </div>
   );

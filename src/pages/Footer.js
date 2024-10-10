@@ -1,4 +1,5 @@
 // import React from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -11,13 +12,13 @@ const Footer = () => {
             </a>
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link text-white" href="faq.html">FAQ</a>
+                <Link to="/faq"><a className="nav-link text-white" href="faq.html">FAQ</a></Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-white" href="warranty.html">Warranty</a>
+                <Link to="/warranty"><a className="nav-link text-white" href="warranty.html">Warranty</a></Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-white" href="return.html">Return</a>
+                <Link to='/return'><a className="nav-link text-white" href="return.html">Return</a></Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link text-white" href="mailto:support@carpento.com">Contact Us</a>

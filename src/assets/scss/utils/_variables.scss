@@ -304,9 +304,9 @@ $cyans: (
 // $success:       $green !default;
 // $info:          $cyan !default;
 // $danger:        $red !default;
-$primary:       #000000; // !custom
+$primary:       #A88041; // !custom
 $secondary:     #F0F0EB; // !custom
-$accent:        #A88041; // !custom
+// $accent:        #A88041; // !custom
 $success:       #6DAF7E; // !custom
 $info:          #2196F3; // !custom
 $danger:        #CA5242; // !custom
@@ -320,7 +320,7 @@ $dark:          $gray-900 !default;
 $theme-colors: (
   "primary":    $primary,
   "secondary":  $secondary,
-  "accent":     $accent,
+  // "accent":     $accent,
   "success":    $success,
   "info":       $info,
   "warning":    $warning,
