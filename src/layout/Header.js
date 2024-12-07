@@ -35,7 +35,7 @@ const Header = () => {
                   Products
                 </Link>
                 <ul className="dropdown-menu">
-                  <li><Link to='/products' className="w-100" className="dropdown-item">Living Room</Link></li>
+                  <li><Link to='/products' className="w-100 dropdown-item">Living Room</Link></li>
                   <li><a className="dropdown-item" href="#">Bedroom</a></li>
                   <li><a className="dropdown-item" href="#">Dining</a></li>
                   <li><a className="dropdown-item" href="#">Workspace</a></li>

@@ -8,7 +8,8 @@ import axios from 'axios';
 import {
   BrowserRouter,
 } from 'react-router-dom';
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL; // 預設 axios base URL，之後就不用重複寫
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
