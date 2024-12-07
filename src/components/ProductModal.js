@@ -1,10 +1,36 @@
-function ProductModal() {
+import { useState } from 'react';
+function ProductModal({ closeProductModal }) {
+  const [tempData, setTempData] = useState({
+    "title": "[賣]動物園造型衣服3",
+    "category": "衣服2",
+    "origin_price": 100,
+    "price": 300,
+    "unit": "個",
+    "description": "Sit down please 名設計師設計",
+    "content": "這是內容",
+    "is_enabled": 1,
+    "imageUrl": "主圖網址",
+    "imagesUrl": [
+      "圖片網址一",
+      "圖片網址二",
+      "圖片網址三",
+      "圖片網址四",
+      "圖片網址五"
+    ]
+  })
+
+  function handleChange(e) {
+    console.log(e);
+    const { value, name } = e.target;
+  }
+
   return (
     <div
       className='modal fade'
+      id='productModal'
       tabIndex='-1'
       aria-labelledby='exampleModalLabel'
-      aria-hidden='true'
+      // aria-hidden='true'
     >
       <div className='modal-dialog modal-lg'>
         <div className='modal-content'>
@@ -16,6 +42,8 @@ function ProductModal() {
               type='button'
               className='btn-close'
               aria-label='Close'
+              onClick={closeProductModal}
+              // bs-data-dismiss='modal'
             />
           </div>
           <div className='modal-body'>
@@ -55,6 +83,7 @@ function ProductModal() {
                       name='title'
                       placeholder='請輸入標題'
                       className='form-control'
+                      onClick={handleChange}
                     />
                   </label>
                 </div>
@@ -156,7 +185,9 @@ function ProductModal() {
             </div>
           </div>
           <div className='modal-footer'>
-            <button type='button' className='btn btn-secondary'>
+            <button type='button' className='btn btn-secondary' data-bs-dismiss="modal" 
+            onClick={closeProductModal}
+            >
               關閉
             </button>
             <button type='button' className='btn btn-primary'>
