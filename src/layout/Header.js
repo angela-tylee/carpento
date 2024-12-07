@@ -25,17 +25,17 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
-                <a
+                <Link
+                  to="/products"
                   className="nav-link dropdown-toggle"
-                  href="./products.html"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   Products
-                </a>
+                </Link>
                 <ul className="dropdown-menu">
-                  <li><Link to='/products' class="w-100" className="dropdown-item">Living Room</Link></li>
+                  <li><Link to='/products' className="w-100" className="dropdown-item">Living Room</Link></li>
                   <li><a className="dropdown-item" href="#">Bedroom</a></li>
                   <li><a className="dropdown-item" href="#">Dining</a></li>
                   <li><a className="dropdown-item" href="#">Workspace</a></li>

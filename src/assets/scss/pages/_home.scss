@@ -15,8 +15,8 @@ html, body {
   height: 100%;
 }
 
-body {
-  min-height: 100%;
+.front-layout {
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }

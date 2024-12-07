@@ -1,6 +1,9 @@
+import ProductModal from "../../components/ProductModal";
+
 const Products = () => {
   return (
     <main>
+      <ProductModal />
       <h1 className="fs-5 mt-1">產品列表</h1>
       <hr />
       <div className="text-start mt-4">

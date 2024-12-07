@@ -15,21 +15,23 @@ import Checkout from '../pages/front/Checkout';
 
 const FrontRoutes = () => {
   return (
-    <div>
+    <div className="front-layout">
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/products" element={<Products />}></Route>
-        <Route path="/product" element={<Product />}></Route>
-        <Route path="/blogs" element={<Blogs />}></Route>
-        <Route path="/blog" element={<Blog />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/faq" element={<FAQ />}></Route>
-        <Route path="/warranty" element={<Warranty />}></Route>
-        <Route path="/return" element={<Return />}></Route>
-        <Route path="/cart" element={<Cart />}></Route>
-        <Route path="/checkout" element={<Checkout />}></Route>
-      </Routes>
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/products" element={<Products />}></Route>
+          <Route path="/product" element={<Product />}></Route>
+          <Route path="/blogs" element={<Blogs />}></Route>
+          <Route path="/blog" element={<Blog />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route path="/faq" element={<FAQ />}></Route>
+          <Route path="/warranty" element={<Warranty />}></Route>
+          <Route path="/return" element={<Return />}></Route>
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/checkout" element={<Checkout />}></Route>
+        </Routes>
+      </div>
       <Footer />
     </div>
   );
