@@ -1,4 +1,4 @@
-const Order = ({ orders, selectedOrder }) => {
+const AdminOrder = ({ orders, selectedOrder }) => {
   return (
     <div className="row w-100">
       <div className="col-9">
@@ -95,4 +95,4 @@ const Order = ({ orders, selectedOrder }) => {
   );
 };
 
-export default Order;
+export default AdminOrder;

@@ -117,7 +117,7 @@ const Checkout = () => {
               <input type="text" className="form-control" id="cardholderName" />
             </div>
 
-            <button type="submit" className="mt-5 btn btn-primary text-uppercase fs-5 fw-normal w-100">
+            <button type="submit" className="mt-5 btn btn-primary text-white text-uppercase fs-5 fw-normal w-100">
               Place Order
             </button>
           </form>

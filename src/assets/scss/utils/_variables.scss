@@ -299,17 +299,12 @@ $cyans: (
 // fusv-enable
 
 // scss-docs-start theme-color-variables
-// $primary:       $blue !default;
-// $secondary:     $gray-600 !default;
-// $success:       $green !default;
-// $info:          $cyan !default;
-// $danger:        $red !default;
-$primary:       #A88041; // !custom
-$secondary:     #F0F0EB; // !custom
+$primary:       #A88041; // !custom $blue !default;
+$secondary:     #F0F0EB; // !custom $gray-600 !default;
 // $accent:        #A88041; // !custom
-$success:       #6DAF7E; // !custom
-$info:          #2196F3; // !custom
-$danger:        #CA5242; // !custom
+$success:       #6DAF7E; // !custom $green !default;
+$info:          #2196F3; // !custom $cyan !default;
+$danger:        #CA5242; // !custom $red !default;
 $warning:       $yellow !default;
 // $light:         $gray-100 !default;
 $light:         $white; // !custom

@@ -1,6 +1,21 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Products = () => {
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState([]);
+
+  useEffect(() => {
+    console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
+    (async () => {
+      const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
+      console.log(res);
+      setProducts(res.data.products);
+      setPagination(res.data.pagination);
+    })()
+  })
+
   return (
     <main className="container mb-6">
       <nav aria-label="breadcrumb">
@@ -44,7 +59,25 @@ const Products = () => {
               </div>
             </div>
             <div className="row">
-              {Array.from({ length: 4 }).map((_, idx) => (
+              {products.map((product) => (
+                <div key={product.id} className="col-3">
+                  <div className="card w-100 border-0">
+                    <img src="" className="card-img-top" alt="..." />
+                    <div className="card-body p-0 mt-2">
+                      <h5 className="card-title fs-6 fw-bold">{product.title}</h5>
+                      <div className="card-text">
+                        <span className="text-primary">${product.price}</span>
+                        <del>${product.origin_price}</del>
+                      </div>
+                      <div className="d-flex w-100 mt-2">
+                        <input type="number" className="form-control w-25 text-center" />
+                        <button type="button" className="btn btn-primary text-white ms-1 w-75">Add to Cart</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* {Array.from({ length: 4 }).map((_, idx) => (
                 <div key={idx} className="col-3">
                   <div className="card w-100 border-0">
                     <img src="../assets/images/products/living-room/cabinet-3.jpeg" className="card-img-top" alt="..." />
@@ -61,7 +94,7 @@ const Products = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))} */}
             </div>
             <nav aria-label="..." className="mt-4">
               <ul className="pagination fw-bold justify-content-end">
