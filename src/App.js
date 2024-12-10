@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import FrontRoutes from './routes/FrontRoutes';
 import AdminRoutes from './routes/AdminRoutes';
+import Login from './pages/Login';
 import Home from './pages/front/Home';
 import Products from './pages/front/Products';
 import Product from './pages/front/Product';
@@ -33,6 +34,7 @@ function App() {
   return (
     <div className='App'>
       <Routes>
+        <Route path="/login" element={<Login />}></Route>
         {/* Front Pages Routes */}
         <Route path="/" element={<FrontRoutes />}>
           <Route path="" element={<Home />}></Route>

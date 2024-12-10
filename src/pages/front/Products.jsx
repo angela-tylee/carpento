@@ -14,7 +14,7 @@ const Products = () => {
       setProducts(res.data.products);
       setPagination(res.data.pagination);
     })()
-  })
+  },[])
 
   return (
     <main className="container mb-6">
