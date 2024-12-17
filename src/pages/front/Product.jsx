@@ -1,8 +1,25 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Product = () => {
+  const [product, setProduct] = useState({});
+  const { id } = useParams();
+
+  const getProduct = async (id) => {
+    const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`);
+    console.log(res);
+    setProduct(res.data.product);
+  }
+  
+  useEffect(() => {
+    // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
+    getProduct(id);
+  },[id])
+  
   return (
     <main className="container mb-6">
+      {/* TODO: Separate breadcrumb component */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item"><Link to="/">Home</Link></li>
@@ -30,7 +47,7 @@ const Product = () => {
                 </div>
                 <div className="col-10">
                   <img
-                    src="../assets/images/products/decoration/fake-plant-3.jpeg"
+                    src={product.imageUrl}
                     className="w-100"
                     alt="Fake Plant 3"
                   />
@@ -40,10 +57,10 @@ const Product = () => {
           </div>
 
           <div className="col-6">
-            <h1 className="fs-2">Product Title</h1>
-            <p className="fs-5 mt-1">$1,500</p>
+            <h1 className="fs-2">{product.title}</h1>
+            <p className="fs-5 mt-1"><span className="text-primary">${product.price} </span><del> ${product.origin_price}</del></p>
             <p className="mt-2">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab minima, dolor a placeat aliquam facilis exercitationem tenetur, accusantium reiciendis, laudantium unde! Saepe dicta maxime sapiente repellendus, fugit adipisci assumenda officiis.
+              {product.content}
             </p>
 
             <div className="mt-3 w-100 d-flex align-items-center">
@@ -62,7 +79,7 @@ const Product = () => {
         <div className="col-9">
           <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">Info</h2>
           <p className="mt-5">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse, recusandae autem mollitia numquam molestiae repellat? Ipsum nulla, veniam necessitatibus unde molestias sed officiis enim tempore veritatis praesentium? Voluptatibus atque dolores alias asperiores facere voluptates nemo, totam sequi voluptatem iure impedit?
+            {product.content}
           </p>
         </div>
       </section>

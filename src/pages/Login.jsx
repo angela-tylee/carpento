@@ -67,6 +67,7 @@ function Login() {
           <div className="px-5 d-flex h-100 flex-column justify-content-center">
             <h2 className="mb-4 text-center">Dashboard | Sign in</h2>
             <div className={`alert alert-danger ${loginState.message ? 'd-block' : 'd-none'}`} role="alert">
+              {/* TODO: Custom Error Message: 請輸入帳號密碼 / 帳號或密碼錯誤 */}
               {loginState.message}
             </div>
             <div className="mb-2">

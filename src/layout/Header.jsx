@@ -55,7 +55,7 @@ const Header = () => {
         </div>
 
         <div className="search-container w-25 border border-1 border-dark rounded-pill overflow-hidden py-1 px-2 me-3">
-          <input className="border-0 flex-1" type="text" placeholder="search..." />
+          <input className="border-0 flex-1 focus-ring" type="text" placeholder="search..." />
           <i className="icon-search bi bi-search px-1"></i>
         </div>
 

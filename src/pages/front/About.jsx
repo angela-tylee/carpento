@@ -43,7 +43,7 @@ const About = () => {
                 <p className="mt-4">
                   Today, Carpento is known for its dedication to excellence and sustainability. Our furniture reflects our commitment to quality and the desire to enhance living spaces with products that are both beautiful and environmentally conscious.
                 </p>
-
+                {/* TODO: Remove employees add store photos. */}
                 <div className="row mt-6">
                   {[
                     'employee-1', 'employee-3', 'employee-4', 'employee-6',

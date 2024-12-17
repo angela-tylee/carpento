@@ -23,13 +23,13 @@ import axios from 'axios';
 
 function App() {
 
-  useEffect(() => {
-    // console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
-    (async () => {
-      const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
-      console.log(res);
-    })()
-  })
+  // useEffect(() => {
+  //   // console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
+  //   (async () => {
+  //     const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
+  //     console.log(res);
+  //   })()
+  // })
 
   return (
     <div className='App'>
@@ -39,7 +39,7 @@ function App() {
         <Route path="/" element={<FrontRoutes />}>
           <Route path="" element={<Home />}></Route>
           <Route path="products" element={<Products />}></Route>
-          <Route path="product" element={<Product />}></Route>
+          <Route path="product/:id" element={<Product />}></Route>
           <Route path="blogs" element={<Blogs />}></Route>
           <Route path="blog" element={<Blog />}></Route>
           <Route path="about" element={<About />}></Route>

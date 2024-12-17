@@ -21,8 +21,6 @@ const AdminRoutes = () => {
   .find((row) => row.startsWith('carpento='))
   ?.split('=')[1];
 
-  console.log(token);
-
   // QUESTION: how to do this with fetchAPI? 2024-12-10
   axios.defaults.headers.common['Authorization'] = token;
 
@@ -35,6 +33,7 @@ const AdminRoutes = () => {
     (async () => {
       try {
         await axios.post('/v2/api/user/check');
+       // FIXME: 有時 post failed 403 會被踢出來 最終挑戰：路由保護 https://courses.hexschool.com/courses/react-video-course/lectures/45741598 08:00 2024-12-15
       } catch (error) {
         if(!error.response.data.success) {
           navigate('/login');

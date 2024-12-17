@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-function ProductModal({ closeProductModal, getProducts }) {
+
+function ProductModal({ closeProductModal, getProducts, type, tempProduct, openDeleteModal }) {
+  // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
+  const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     "title": "",
     "category": "",
@@ -20,8 +23,34 @@ function ProductModal({ closeProductModal, getProducts }) {
     ]
   })
 
+  useEffect(() => {
+    console.log(type, tempProduct);
+    if(type === 'create') {
+      setTempData({
+        "title": "",
+        "category": "",
+        "origin_price": 100,
+        "price": 300,
+        "unit": "",
+        "description": "",
+        "content": "",
+        "is_enabled": 1,
+        "imageUrl": "",
+        "imagesUrl": [
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      })
+    } else if (type === 'edit') {
+      setTempData(tempProduct)
+    }
+  },[type, tempProduct])
+
   function handleChange(e) {
-    const { name, value, checked } = e.target;
+    const { name, value, checked, files } = e.target;
     console.log(e.target);
     if (['price', 'origin_price'].includes(name)) {
       setTempData({
@@ -34,6 +63,12 @@ function ProductModal({ closeProductModal, getProducts }) {
         // [name]: +e.target.is_enabled
         [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       })
+    } else if (name === 'imageUpload') {
+      uploadImage(files[0]);
+      setTempData({
+        ...tempData,
+        "imageUrl": uploadImageUrl
+      })
     } else {
       setTempData({
         ...tempData,
@@ -42,9 +77,44 @@ function ProductModal({ closeProductModal, getProducts }) {
     }
   }
 
+  async function uploadImage(file) {
+    console.log(file);
+    if(!file) return;
+
+    // QUESTION: How does `FormData()` work? 2024-12-15
+    const formData = new FormData();
+    formData.append('file-to-upload', file);
+
+    try {
+      const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`, formData);
+      // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16
+
+      setUploadImageUrl(res.data.imageUrl);
+      // setTempData({
+      //   ...tempData,
+      //   "imageUrl": res.data.imageUrl
+      // })
+
+      // setTempData(prevData => ({
+      //   ...prevData,
+      //   imageUrl: res.data.imageUrl
+      // }));
+
+      console.log(tempData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function submit() {
     try {
-      const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`, {
+      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`
+      let method = 'post';
+      if (type === 'edit') {
+        method = 'put'
+        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`
+      }
+      const res = await axios[method](api, {
         data: tempData,
       });
       console.log(res);
@@ -67,7 +137,8 @@ function ProductModal({ closeProductModal, getProducts }) {
         <div className='modal-content px-2 py-1'>
           <div className='modal-header'>
             <h1 className='modal-title fs-5' id='exampleModalLabel'>
-              建立新商品
+              {/* TODO: 動態調整標題 https://courses.hexschool.com/courses/react-video-course/lectures/45741610 */}
+              { type === 'create' ? '建立新商品' : `編輯：${tempData.title}` }
             </h1>
             <button
               type='button'
@@ -95,6 +166,35 @@ function ProductModal({ closeProductModal, getProducts }) {
                     />
                   </label>
                 </div>
+                <div className='form-group mb-2'>
+                  <label className='w-100' htmlFor='description'>
+                    產品描述
+                    <textarea
+                      type='text'
+                      id='description'
+                      name='description'
+                      placeholder='請輸入產品描述'
+                      className='form-control'
+                      onChange={handleChange}
+                      value={tempData.description}
+                    />
+                  </label>
+                </div>
+                <div className='form-group mb-2'>
+                  <label className='w-100' htmlFor='content'>
+                    說明內容
+                    <textarea
+                      type='text'
+                      id='content'
+                      name='content'
+                      placeholder='請輸入產品說明內容'
+                      className='form-control'
+                      onChange={handleChange}
+                      value={tempData.content}
+                    />
+                  </label>
+                </div>
+                <hr />
                 <div className='row'>
                   <div className='form-group mb-2 col-md-6'>
                     <label className='w-100' htmlFor='category'>
@@ -155,55 +255,38 @@ function ProductModal({ closeProductModal, getProducts }) {
                     </label>
                   </div>
                 </div>
-                <hr />
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='description'>
-                    產品描述
-                    <textarea
-                      type='text'
-                      id='description'
-                      name='description'
-                      placeholder='請輸入產品描述'
-                      className='form-control'
-                      onChange={handleChange}
-                      value={tempData.description}
-                    />
-                  </label>
-                </div>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='content'>
-                    說明內容
-                    <textarea
-                      type='text'
-                      id='content'
-                      name='content'
-                      placeholder='請輸入產品說明內容'
-                      className='form-control'
-                      onChange={handleChange}
-                      value={tempData.content}
-                    />
-                  </label>
-                </div>
-                <div className='form-group mb-2'>
-                  <div className='form-check'>
-                    <label
-                      className='w-100 form-check-label'
-                      htmlFor='is_enabled'
-                    >
-                      {/* QUESTION: 預設值為 is_enabled: 1，即使畫面上沒有勾？ 2024-12-09 https://courses.hexschool.com/courses/react-video-course/lectures/45741586 */}
-                      是否啟用
-                      <input
-                        type='checkbox'
-                        id='is_enabled'
-                        name='is_enabled'
-                        placeholder='請輸入產品說明內容'
-                        className='form-check-input'
-                        onChange={handleChange}
-                        checked={tempData.is_enabled}
-                        // value={tempData.is_enabled}
-                      />
-                    </label>
+                <div className="row">
+                  <div className='form-group mb-2 col-md-6'>
+                    <div className='form-check'>
+                      <label
+                        className='w-100 form-check-label'
+                        htmlFor='is_enabled'
+                      >
+                        {/* QUESTION: 預設值為 is_enabled: 1，即使畫面上沒有勾？ 2024-12-09 https://courses.hexschool.com/courses/react-video-course/lectures/45741586 Ans: https://courses.hexschool.com/courses/react-video-course/lectures/45741610*/}
+                        是否啟用
+                        <input
+                          type='checkbox'
+                          id='is_enabled'
+                          name='is_enabled'
+                          placeholder='請輸入產品說明內容'
+                          className='form-check-input'
+                          onChange={handleChange}
+                          checked={tempData.is_enabled}
+                          // value={tempData.is_enabled}
+                        />
+                      </label>
+                    </div>
                   </div>
+                  {type === 'edit' && <div className="mb-2 col-md-6 text-end">
+                    <button
+                      type="button"
+                      className="btn border-0 text-danger btn-md p-0"
+                      // FIXME: openDeleteModal is not a function
+                      onClick={() => openDeleteModal(tempProduct)}
+                    >
+                      <i className="bi bi-trash3"></i> 刪除商品
+                    </button>
+                  </div>}
                 </div>
               </div>
               <div className='col-sm-4'>
@@ -216,6 +299,8 @@ function ProductModal({ closeProductModal, getProducts }) {
                       id='image'
                       placeholder='請輸入圖片連結'
                       className='form-control'
+                      onChange={handleChange}
+                      value={tempData.imageUrl}
                     />
                   </label>
                 </div>
@@ -224,12 +309,19 @@ function ProductModal({ closeProductModal, getProducts }) {
                     或 上傳圖片
                     <input
                       type='file'
+                      name='imageUpload'
                       id='customFile'
                       className='form-control'
+                      // TODO: Upload storage.imageURL to temp.imageUrl 2024-12-15
+                      // onChange={(e) => uploadImage(e.target.files[0])}
+                      onChange={handleChange}
                     />
                   </label>
                 </div>
-                <img src="" alt='' className='img-fluid' />
+                  {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
+                  {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
+                  {tempData.imageUrl ? <img src={tempData.imageUrl} alt="preview" className="img-fluid"/> : "Add image to preview" }
+                  {/* <img src={uploadImageUrl} alt="preview" className="img-fluid"/> */}
               </div>
             </div>
           </div>

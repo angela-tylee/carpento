@@ -1,15 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import ProductModal from '../../components/ProductModal';
+import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({});
   const [type, setType] = useState('create');
-  const [tempProducts, setTempProducts] = useState({})
+  const [tempProduct, setTempProduct] = useState({});
 
+  // QUESTION: useRef()? 2024-12-16
   const productModal = useRef(null);
+  const deleteModal = useRef(null);
 
   useEffect(() => {
     // const token = document.cookie // 取出 token
@@ -21,32 +24,38 @@ const AdminProducts = () => {
 
     // axios.defaults.headers.common['Authorization'] = token;
 
-    (async () => {
-      const productRes = await axios.get(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
-      );
-      console.log(productRes);
-    })();
+    // QUESTION: 為什麼 React 立即函式特別多？ 2024-12-11
+    // (async () => {
+    //   const productRes = await axios.get(
+    //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
+    //   );
+    //   console.log(productRes);
+    // })();
 
     productModal.current = new Modal('#productModal', {
       backdrop: 'static',
+      keyboard: true,
+    });
+    deleteModal.current = new Modal('#deleteModal', {
       keyboard: true,
     });
 
     getProducts();
   }, []);
 
-  // TODO: Need to re-login after refreshing page. 2024-12-10
+  // FIXED: Need to re-login after refreshing page. 2024-12-10 -> Add to AdminRoutes page 2024-12-11? 
   async function getProducts() {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=2`
     );
     console.log(res.data);
     setProducts(res.data.products);
     // setPagination(res.data.pagination);
   }
 
-  function openProductModal() {
+  function openProductModal(type, product) {
+    setType(type);
+    setTempProduct(product);
     productModal.current.show();
   }
 
@@ -55,20 +64,37 @@ const AdminProducts = () => {
     console.log('hide');
   }
 
+  function openDeleteModal(product) {
+    setTempProduct(product);
+    deleteModal.current.show();
+  }
+
+  function closeDeleteModal() {
+    deleteModal.current.hide();
+  }
+
   return (
     <main>
       <ProductModal
         closeProductModal={closeProductModal}
         getProducts={getProducts}
+        type={type}
+        tempProduct={tempProduct}
+        closeDeleteModal={closeDeleteModal} 
+      />
+      <DeleteModal 
+        tempProduct={tempProduct}
+        openDeleteModal={openDeleteModal}
       />
       <header className="d-flex align-items-center">
         <h1 className="fs-5">產品列表</h1>
         <button
           type="button"
           className="btn btn-outline-primary btn-sm ms-2"
-          onClick={openProductModal}
+          // QUESTION: Why an arrow function wrapper needed to pass that parameter? (It is the same logic in Vanilla JS, but not in Vue.)
+          onClick={() => openProductModal('create', {})}
         >
-          <i class="bi bi-plus-lg"></i> 新增產品
+          <i className="bi bi-plus-lg"></i> 新增產品
         </button>
       </header>
       <hr />
@@ -76,19 +102,19 @@ const AdminProducts = () => {
       <table className="table my-3">
         <thead>
           <tr>
-            <th scope="col" width="15%">
+            <th scope="col" width="10%">
               圖片
             </th>
-            <th scope="col" width="45%">
+            <th scope="col" width="40%">
               名稱
             </th>
             <th scope="col" width="10%">
               分類
             </th>
-            <th scope="col" width="5%" className="text-end">
+            <th scope="col" width="10%" className="text-end">
               售價
             </th>
-            <th scope="col" width="5%" className="text-end">
+            <th scope="col" width="10%" className="text-end">
               原價
             </th>
             <th scope="col" width="10%" className="text-center">
@@ -103,7 +129,7 @@ const AdminProducts = () => {
           {products.map((product) => {
             return (
               <tr key={product.id}>
-                <td>product.image</td>
+                <td><img src={product.imageUrl} alt={product.title} width="100%"/></td>
                 <td>{product.title}</td>
                 <td>
                   <span className="badge rounded-pill px-1 bg-primary-subtle text-dark">
@@ -116,13 +142,15 @@ const AdminProducts = () => {
                   {product.is_enabled ? '已啟用' : '未啟用'}
                 </td>
                 <td className="text-center">
-                  <button type="button" className="btn btn-primary btn-sm">
+                  <button type="button" className="btn btn-primary btn-sm"
+                  onClick={() => openProductModal('edit', product)}>
                     編輯
                   </button>
-                  {/* TODO: move 刪除 to ProductModal */}
+                  {/* TODO: move 刪除 button to ProductModal */}
                   <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"
+                    onClick={() => openDeleteModal(product)}
                   >
                     刪除
                   </button>

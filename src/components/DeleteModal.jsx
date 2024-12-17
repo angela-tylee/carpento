@@ -1,8 +1,9 @@
-function DeleteModal() {
+function DeleteModal({ tempProduct, closeDeleteModal }) {
   return (
     <div
       className='modal fade'
       tabIndex='-1'
+      id='deleteModal'
       aria-labelledby='exampleModalLabel'
       aria-hidden='true'
     >
