@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import BlogEditor from '../../components/BlogEditor';
 
 const Blog = () => {
   const [article, setArticle] = useState({});
@@ -36,7 +37,7 @@ const Blog = () => {
       <section className="section-blog">
         <div
           className="blog-hero-img mb-7"
-          style={{ backgroundImage: "url(/images/banner-4.jpeg)" }}
+          style={{ backgroundImage: `url(${article.image})` }}
         ></div>
         <div className="row justify-content-center">
           <div className="col-8">
@@ -59,11 +60,11 @@ const Blog = () => {
                     return date.toLocaleString('en-US', options);
                   })()}</time>
               <div className="blog-text">
-                <p className="mt-4">
-                  {article.description}
+                <p className="mt-4" dangerouslySetInnerHTML={{ __html: article.description }}>
+                  {/* {article.description} */}
                 </p>
-                <p className="mt-4">
-                  {article.content}
+                <p className="mt-4" dangerouslySetInnerHTML={{ __html: article.content }}>
+                  {/* {article.content} */}
                 </p>
                 <h2 className="fs-5 mt-5 ps-1 border-start border-5 border-dark">Types of Wood</h2>
                 <p className="mt-4">

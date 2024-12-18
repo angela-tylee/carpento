@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import BlogEditor from './BlogEditor';
 
 function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openDeleteModal }) {
   const [uploadImageUrl, setUploadImageUrl] = useState(null);
@@ -36,8 +37,8 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
     }
   },[type, tempArticle])
 
-  function handleChange(e) {
-    const { name, value, checked, files } = e.target;
+  function handleChange(e, editorData) {
+    const { name, value, checked, files } = e?.target || {};
     // console.log(e.target);
     if (name === 'isPublic') {
       setTempData({
@@ -51,10 +52,15 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
         ...tempData,
         "image": uploadImageUrl
       })
-    } else if (name === 'create_at') {
+    // } else if (name === 'create_at') {
+    //   setTempData({
+    //     ...tempData,
+    //     [name]: tempData.create_at,
+    //   })
+    } else if (['description', 'content'].includes(name)) {
       setTempData({
         ...tempData,
-        [name]: tempData.create_at,
+        [name]: editorData,
       })
     } else {
       setTempData({
@@ -63,6 +69,13 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
       })
     }
   }
+
+  // const handleEditorChange = (data) => {
+  //   setTempData({
+  //     ...tempData,
+  //     description: data, // Update the content field with CKEditor data
+  //   });
+  // };
 
   async function uploadImage(file) {
     console.log(file);
@@ -87,15 +100,15 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`
       let method = 'post';
-      // if (type === 'edit') {
-      //   method = 'put'
-      //   api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempArticle.id}`
-      // }
+      if (type === 'edit') {
+        method = 'put'
+        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempArticle.id}`
+      }
       const res = await axios[method](api, {
         data: tempData,
       });
       console.log(res);
-      console.log('submit', tempData)
+      console.log('submit', tempData, tempArticle);
       closeArticleModal();
       getArticles();
     } catch (error) {
@@ -128,182 +141,191 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
           <div className='modal-body'>
           <pre className='py-3'> { JSON.stringify(tempData) }</pre>
             <div className='row'>
-              <div className='col-sm-8'>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='title'>
-                    文章標題
+              <div className='form-group mb-2'>
+                <label className='w-100' htmlFor='title'>
+                  文章標題
+                  <input
+                    type='text'
+                    id='title'
+                    name='title'
+                    placeholder='請輸入標題'
+                    className='form-control'
+                    onChange={handleChange}
+                    value={tempData.title}
+                  />
+                </label>
+              </div>
+              <div className='row'>
+                <div className='form-group mb-2 col-md-6'>
+                  <label className='w-100' htmlFor='author'>
+                    作者
                     <input
                       type='text'
-                      id='title'
-                      name='title'
-                      placeholder='請輸入標題'
+                      id='author'
+                      name='author'
+                      placeholder='請輸入作者'
                       className='form-control'
                       onChange={handleChange}
-                      value={tempData.title}
+                      value={tempData.author}
                     />
                   </label>
                 </div>
-                <div className='row'>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='author'>
-                      作者
-                      <input
-                        type='text'
-                        id='author'
-                        name='author'
-                        placeholder='請輸入作者'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.author}
-                      />
-                    </label>
-                  </div>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='create_at'>
-                      {/* FIXME: input type="date" doesn't match API Date.now() data type */}
-                      建立日期
-                      <input
-                        type='text'
-                        id='create_at'
-                        name='create_at'
-                        // placeholder='請輸入日期'
-                        className='form-control border-0'
-                        onChange={handleChange}
-                        // value={tempData.create_at}
-                        value={(() => {
-                          const date = new Date(tempData.create_at);
+                <div className='form-group mb-2 col-md-6'>
+                  <label className='w-100' htmlFor='create_at'>
+                    {/* FIXME: input type="date" doesn't match API Date.now() data type */}
+                    建立日期
+                    <input
+                      type='text'
+                      id='create_at'
+                      name='create_at'
+                      // placeholder='請輸入日期'
+                      className='form-control border-0'
+                      onChange={handleChange}
+                      // value={tempData.create_at}
+                      value={(() => {
+                        const date = new Date(tempData.create_at);
                       
-                          const options = {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit'
-                          };
+                        const options = {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit'
+                        };
                       
-                          return date.toLocaleString('en-US', options);
-                        })()}
-                        tabIndex='-1'
-                        readOnly
-                      />
+                        return date.toLocaleString('en-US', options);
+                      })()}
+                      tabIndex='-1'
+                      readOnly
+                    />
                         
-                    </label>
-                  </div>
-                </div>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='description'>
-                    文章描述
-                    <textarea
-                      type='text'
-                      id='description'
-                      name='description'
-                      placeholder='請輸入文章描述'
-                      className='form-control'
-                      onChange={handleChange}
-                      value={tempData.description}
-                    />
                   </label>
-                </div>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='content'>
-                    文章內容
-                    <textarea
-                      type='text'
-                      id='content'
-                      name='content'
-                      placeholder='請輸入文章內容'
-                      className='form-control'
-                      onChange={handleChange}
-                      value={tempData.content}
-                    />
-                  </label>
-                </div>
-                <div className='row'>
-                  <div className='form-group mb-2 col-md-12'>
-                    <label className='w-100' htmlFor='tag'>
-                      {/* FIXME: 無法輸入超過 2 個字？？？ */}
-                      標籤
-                      <input
-                        type='text'
-                        id='tag'
-                        name='tag'
-                        placeholder='請輸入標籤'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.tag[0]}
-                      />
-                    </label>
-                  </div>
-                </div>
-                <hr />
-                <div className="row">
-                  <div className='form-group mb-2 col-md-6'>
-                    <div className='form-check'>
-                      <label
-                        className='w-100 form-check-label'
-                        htmlFor='isPublic'
-                      >
-                        {/* FIXME: checkbox 無法正常運作 */}
-                        是否發布
-                        <input
-                          type='checkbox'
-                          id='isPublic'
-                          name='isPublic'
-                          className='form-check-input'
-                          onChange={handleChange}
-                          checked={tempData.isPublic}
-                          // value={tempData.is_enabled}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                  {type === 'edit' && <div className="mb-2 col-md-6 text-end">
-                    <button
-                      type="button"
-                      className="btn border-0 text-danger btn-md p-0"
-                      // FIXME: openDeleteModal is not a function
-                      onClick={() => openDeleteModal(tempArticle)}
-                    >
-                      <i className="bi bi-trash3"></i> 刪除商品
-                    </button>
-                  </div>}
                 </div>
               </div>
-              <div className='col-sm-4'>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='image'>
-                    輸入圖片網址
-                    <input
-                      type='text'
-                      name='image'
-                      id='image'
-                      placeholder='請輸入圖片連結'
-                      className='form-control'
-                      onChange={handleChange}
-                      value={tempData.image}
-                    />
-                  </label>
+              <div className='form-group mb-2'>
+                <label className='w-100' htmlFor='description'>
+                  文章描述
+                  {/* <textarea
+                    type='text'
+                    id='description'
+                    name='description'
+                    placeholder='請輸入文章描述'
+                    className='form-control'
+                    // onChange={handleChange}
+                    // value={tempData.description}
+                  /> */}
+                </label>
+              <BlogEditor editorData={tempData.description} handleEditorChange={data => handleChange({ target: { name: 'description' } }, data)} />
+
+              </div>
+              <div className='form-group mb-2'>
+                <label className='w-100' htmlFor='content'>
+                  文章內容
+                  {/* <textarea
+                    type='text'
+                    id='content'
+                    name='content'
+                    placeholder='請輸入文章內容'
+                    className='form-control'
+                    // onChange={handleChange}
+                    // value={tempData.content}
+                  /> */}
+                </label>
+              <BlogEditor editorData={tempData.content} handleEditorChange={data => handleChange({ target: { name: 'content' } }, data)} />
+
+              </div>
+              <div className="row">
+                <div className="col-6">
+                  <div className='form-group mb-2'>
+                    <label className='w-100' htmlFor='image'>
+                      輸入圖片網址
+                      <input
+                        type='text'
+                        name='image'
+                        id='image'
+                        placeholder='請輸入圖片連結'
+                        className='form-control'
+                        onChange={handleChange}
+                        value={tempData.image}
+                      />
+                    </label>
+                  </div>
                 </div>
-                <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='customFile'>
-                    或 上傳圖片
-                    <input
-                      type='file'
-                      name='imageUpload'
-                      id='customFile'
-                      className='form-control'
-                      // TODO: Upload storage.imageURL to temp.imageUrl 2024-12-15
-                      // onChange={(e) => uploadImage(e.target.files[0])}
-                      onChange={handleChange}
-                    />
-                  </label>
+                <div className="col-6">
+                  <div className='form-group mb-2'>
+                    <label className='w-100' htmlFor='customFile'>
+                      或 上傳圖片
+                      <input
+                        type='file'
+                        name='imageUpload'
+                        id='customFile'
+                        className='form-control'
+                        // TODO: Upload storage.imageURL to temp.imageUrl 2024-12-15
+                        // onChange={(e) => uploadImage(e.target.files[0])}
+                        onChange={handleChange}
+                      />
+                    </label>
+                  </div>
                 </div>
+              </div>
+                <div className="col-md-12 mb-2">
                   {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
                   {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                   {tempData.image ? <img src={tempData.image} alt="preview" className="img-fluid"/> : "Add image to preview" }
                   {/* <img src={uploadImageUrl} alt="preview" className="img-fluid"/> */}
+                </div>
+              <div className='row'>
+                <div className='form-group mb-2 col-md-12'>
+                  <label className='w-100' htmlFor='tag'>
+                    {/* FIXME: 無法輸入超過 2 個字？？？ */}
+                    標籤
+                    <input
+                      type='text'
+                      id='tag'
+                      name='tag'
+                      placeholder='請輸入標籤'
+                      className='form-control'
+                      onChange={handleChange}
+                      value={tempData.tag[0]}
+                    />
+                  </label>
+                </div>
               </div>
+              <hr />
+              <div className="row">
+                <div className='form-group mb-2 col-md-6'>
+                  <div className='form-check'>
+                    <label
+                      className='w-100 form-check-label'
+                      htmlFor='isPublic'
+                    >
+                      {/* FIXME: checkbox 無法正常運作 */}
+                      是否發布
+                      <input
+                        type='checkbox'
+                        id='isPublic'
+                        name='isPublic'
+                        className='form-check-input'
+                        onChange={handleChange}
+                        checked={tempData.isPublic}
+                        // value={tempData.is_enabled}
+                      />
+                    </label>
+                  </div>
+                </div>
+                {type === 'edit' && <div className="mb-2 col-md-6 text-end">
+                  <button
+                    type="button"
+                    className="btn border-0 text-danger btn-md p-0"
+                    // FIXME: openDeleteModal is not a function
+                    onClick={() => openDeleteModal(tempArticle)}
+                  >
+                    <i className="bi bi-trash3"></i> 刪除商品
+                  </button>
+                </div>}
+              </div>
+              
             </div>
           </div>
           <div className='modal-footer flex-nowrap'>

@@ -175,7 +175,7 @@ const AdminProducts = () => {
       </table>
       <p className="ps-1">
         {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
-        {/* 目前有 <span>{articles.length}</span> 篇文章 */}
+        目前有 <span>{articles.length}</span> 篇文章
       </p>
       <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-end">
