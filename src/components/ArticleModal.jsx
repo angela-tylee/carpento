@@ -1,73 +1,60 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ProductModal({ closeProductModal, getProducts, type, tempProduct, openDeleteModal }) {
-  // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
+function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openDeleteModal }) {
   const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     "title": "",
-    "category": "",
-    "origin_price": 100,
-    "price": 300,
-    "unit": "",
     "description": "",
-    "content": "",
-    "is_enabled": 1,
-    "imageUrl": "",
-    "imagesUrl": [
-      "",
-      "",
-      "",
-      "",
+    "image": "",
+    "tag": [
       ""
-    ]
+    ],
+    "create_at":"",
+    "author": "",
+    "isPublic": false,
+    "content": ""
   })
 
   useEffect(() => {
-    console.log(type, tempProduct);
+    console.log(type, tempArticle);
     if(type === 'create') {
       setTempData({
         "title": "",
-        "category": "",
-        "origin_price": 100,
-        "price": 300,
-        "unit": "",
         "description": "",
-        "content": "",
-        "is_enabled": 1,
-        "imageUrl": "",
-        "imagesUrl": [
-          "",
-          "",
-          "",
-          "",
+        "image": "",
+        "tag": [
           ""
-        ]
+        ],
+        "create_at": Date.now(),
+        "author": "",
+        "isPublic": false,
+        "content": ""
       })
     } else if (type === 'edit') {
-      setTempData(tempProduct)
+      setTempData(tempArticle)
     }
-  },[type, tempProduct])
+  },[type, tempArticle])
 
   function handleChange(e) {
     const { name, value, checked, files } = e.target;
     // console.log(e.target);
-    if (['price', 'origin_price'].includes(name)) {
+    if (name === 'isPublic') {
       setTempData({
         ...tempData,
-        [name]: Number(value),  // Ensure prices are number not string types.
-      })
-    } else if (name === 'is_enabled') {
-      setTempData({
-        ...tempData,
-        // [name]: +e.target.is_enabled
-        [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
+        [name]: checked
+        // [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       })
     } else if (name === 'imageUpload') {
       uploadImage(files[0]);
       setTempData({
         ...tempData,
-        "imageUrl": uploadImageUrl
+        "image": uploadImageUrl
+      })
+    } else if (name === 'create_at') {
+      setTempData({
+        ...tempData,
+        [name]: tempData.create_at,
       })
     } else {
       setTempData({
@@ -81,7 +68,6 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
     console.log(file);
     if(!file) return;
 
-    // QUESTION: How does `FormData()` work? 2024-12-15
     const formData = new FormData();
     formData.append('file-to-upload', file);
 
@@ -90,15 +76,6 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
       // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16
 
       setUploadImageUrl(res.data.imageUrl);
-      // setTempData({
-      //   ...tempData,
-      //   "imageUrl": res.data.imageUrl
-      // })
-
-      // setTempData(prevData => ({
-      //   ...prevData,
-      //   imageUrl: res.data.imageUrl
-      // }));
 
       console.log(tempData);
     } catch (error) {
@@ -108,18 +85,19 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
 
   async function submit() {
     try {
-      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`
+      let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`
       let method = 'post';
-      if (type === 'edit') {
-        method = 'put'
-        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempProduct.id}`
-      }
+      // if (type === 'edit') {
+      //   method = 'put'
+      //   api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempArticle.id}`
+      // }
       const res = await axios[method](api, {
         data: tempData,
       });
       console.log(res);
-      closeProductModal();
-      getProducts();
+      console.log('submit', tempData)
+      closeArticleModal();
+      getArticles();
     } catch (error) {
       console.log(error)
     }
@@ -128,7 +106,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
   return (
     <div
       className='modal fade'
-      id='productModal'
+      id='articleModal'
       tabIndex='-1'
       aria-labelledby='exampleModalLabel'
       // aria-hidden='true'
@@ -137,23 +115,23 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
         <div className='modal-content px-2 py-1'>
           <div className='modal-header'>
             <h1 className='modal-title fs-5' id='exampleModalLabel'>
-              { type === 'create' ? '建立新商品' : `編輯：${tempData.title}` }
+              { type === 'create' ? '建立新文章' : `編輯：${tempData.title}` }
             </h1>
             <button
               type='button'
               className='btn-close'
               aria-label='Close'
-              onClick={closeProductModal}
+              onClick={closeArticleModal}
               // bs-data-dismiss='modal'
             />
           </div>
           <div className='modal-body'>
+          <pre className='py-3'> { JSON.stringify(tempData) }</pre>
             <div className='row'>
               <div className='col-sm-8'>
-                {/* <pre className='py-3'> { JSON.stringify(tempData) }</pre> */}
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='title'>
-                    標題
+                    文章標題
                     <input
                       type='text'
                       id='title'
@@ -165,14 +143,62 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                     />
                   </label>
                 </div>
+                <div className='row'>
+                  <div className='form-group mb-2 col-md-6'>
+                    <label className='w-100' htmlFor='author'>
+                      作者
+                      <input
+                        type='text'
+                        id='author'
+                        name='author'
+                        placeholder='請輸入作者'
+                        className='form-control'
+                        onChange={handleChange}
+                        value={tempData.author}
+                      />
+                    </label>
+                  </div>
+                  <div className='form-group mb-2 col-md-6'>
+                    <label className='w-100' htmlFor='create_at'>
+                      {/* FIXME: input type="date" doesn't match API Date.now() data type */}
+                      建立日期
+                      <input
+                        type='text'
+                        id='create_at'
+                        name='create_at'
+                        // placeholder='請輸入日期'
+                        className='form-control border-0'
+                        onChange={handleChange}
+                        // value={tempData.create_at}
+                        value={(() => {
+                          const date = new Date(tempData.create_at);
+                      
+                          const options = {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                          };
+                      
+                          return date.toLocaleString('en-US', options);
+                        })()}
+                        tabIndex='-1'
+                        readOnly
+                      />
+                        
+                    </label>
+                  </div>
+                </div>
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='description'>
-                    產品描述
+                    文章描述
                     <textarea
                       type='text'
                       id='description'
                       name='description'
-                      placeholder='請輸入產品描述'
+                      placeholder='請輸入文章描述'
                       className='form-control'
                       onChange={handleChange}
                       value={tempData.description}
@@ -181,96 +207,52 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                 </div>
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='content'>
-                    說明內容
+                    文章內容
                     <textarea
                       type='text'
                       id='content'
                       name='content'
-                      placeholder='請輸入產品說明內容'
+                      placeholder='請輸入文章內容'
                       className='form-control'
                       onChange={handleChange}
                       value={tempData.content}
                     />
                   </label>
                 </div>
-                <hr />
                 <div className='row'>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='category'>
-                      分類
+                  <div className='form-group mb-2 col-md-12'>
+                    <label className='w-100' htmlFor='tag'>
+                      {/* FIXME: 無法輸入超過 2 個字？？？ */}
+                      標籤
                       <input
                         type='text'
-                        id='category'
-                        name='category'
-                        placeholder='請輸入分類'
+                        id='tag'
+                        name='tag'
+                        placeholder='請輸入標籤'
                         className='form-control'
                         onChange={handleChange}
-                        value={tempData.category}
-                      />
-                    </label>
-                  </div>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='unit'>
-                      單位
-                      <input
-                        type='unit'
-                        id='unit'
-                        name='unit'
-                        placeholder='請輸入單位'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.unit}
+                        value={tempData.tag[0]}
                       />
                     </label>
                   </div>
                 </div>
-                <div className='row'>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='origin_price'>
-                      原價
-                      <input
-                        type='number'
-                        id='origin_price'
-                        name='origin_price'
-                        placeholder='請輸入原價'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.origin_price}
-                      />
-                    </label>
-                  </div>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='price'>
-                      售價
-                      <input
-                        type='number'
-                        id='price'
-                        name='price'
-                        placeholder='請輸入售價'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.price}
-                      />
-                    </label>
-                  </div>
-                </div>
+                <hr />
                 <div className="row">
                   <div className='form-group mb-2 col-md-6'>
                     <div className='form-check'>
                       <label
                         className='w-100 form-check-label'
-                        htmlFor='is_enabled'
+                        htmlFor='isPublic'
                       >
-                        {/* QUESTION: 預設值為 is_enabled: 1，即使畫面上沒有勾？ 2024-12-09 https://courses.hexschool.com/courses/react-video-course/lectures/45741586 Ans: https://courses.hexschool.com/courses/react-video-course/lectures/45741610*/}
-                        是否啟用
+                        {/* FIXME: checkbox 無法正常運作 */}
+                        是否發布
                         <input
                           type='checkbox'
-                          id='is_enabled'
-                          name='is_enabled'
-                          placeholder='請輸入產品說明內容'
+                          id='isPublic'
+                          name='isPublic'
                           className='form-check-input'
                           onChange={handleChange}
-                          checked={tempData.is_enabled}
+                          checked={tempData.isPublic}
                           // value={tempData.is_enabled}
                         />
                       </label>
@@ -281,7 +263,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                       type="button"
                       className="btn border-0 text-danger btn-md p-0"
                       // FIXME: openDeleteModal is not a function
-                      onClick={() => openDeleteModal(tempProduct)}
+                      onClick={() => openDeleteModal(tempArticle)}
                     >
                       <i className="bi bi-trash3"></i> 刪除商品
                     </button>
@@ -294,12 +276,12 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                     輸入圖片網址
                     <input
                       type='text'
-                      name='imageUrl'
+                      name='image'
                       id='image'
                       placeholder='請輸入圖片連結'
                       className='form-control'
                       onChange={handleChange}
-                      value={tempData.imageUrl}
+                      value={tempData.image}
                     />
                   </label>
                 </div>
@@ -319,14 +301,14 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                 </div>
                   {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
                   {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
-                  {tempData.imageUrl ? <img src={tempData.imageUrl} alt="preview" className="img-fluid"/> : "Add image to preview" }
+                  {tempData.image ? <img src={tempData.image} alt="preview" className="img-fluid"/> : "Add image to preview" }
                   {/* <img src={uploadImageUrl} alt="preview" className="img-fluid"/> */}
               </div>
             </div>
           </div>
           <div className='modal-footer flex-nowrap'>
             <button type='button' className='btn btn-outline-primary w-50' data-bs-dismiss="modal" 
-            onClick={closeProductModal}
+            onClick={closeArticleModal}
             >
               取消
             </button>
@@ -340,4 +322,4 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
   );
 }
 
-export default ProductModal;
+export default ArticleModal;

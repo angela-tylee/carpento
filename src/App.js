@@ -15,7 +15,7 @@ import Cart from './pages/front/Cart';
 import Checkout from './pages/front/Checkout';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
-// import Blogs from './pages/admin/Blogs';
+import AdminBlogs from './pages/admin/AdminBlogs';
 // import Coupons from './pages/admin/Coupons';
 
 import { useEffect } from 'react';
@@ -41,7 +41,7 @@ function App() {
           <Route path="products" element={<Products />}></Route>
           <Route path="product/:id" element={<Product />}></Route>
           <Route path="blogs" element={<Blogs />}></Route>
-          <Route path="blog" element={<Blog />}></Route>
+          <Route path="blog/:id" element={<Blog />}></Route>
           <Route path="about" element={<About />}></Route>
           <Route path="faq" element={<FAQ />}></Route>
           <Route path="warranty" element={<Warranty />}></Route>
@@ -54,7 +54,7 @@ function App() {
         <Route path="/admin" element={<AdminRoutes />}>
           <Route path="products" element={<AdminProducts />}></Route>
           <Route path="orders" element={<AdminOrders />}></Route>
-          {/* <Route path="blogs" element={<Blogs />}></Route> */}
+          <Route path="blogs" element={<AdminBlogs />}></Route>
           {/* <Route path="coupons" element={<Coupons />}></Route> */}
         </Route>
       </Routes>

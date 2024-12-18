@@ -1,38 +1,28 @@
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import ProductModal from '../../components/ProductModal';
+// import ProductModal from '../../components/ProductModal';
+import ArticleModal from '../../components/ArticleModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 
 const AdminProducts = () => {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
+  const [articles, setArticles] = useState([]);
   const [pagination, setPagination] = useState({});
   const [type, setType] = useState('create');
-  const [tempProduct, setTempProduct] = useState({});
+  // const [tempProduct, setTempProduct] = useState({});
+  const [tempArticle, setTempArticle] = useState({});
 
-  // QUESTION: useRef()? 2024-12-16
   const productModal = useRef(null);
+  const articleModal = useRef(null);
   const deleteModal = useRef(null);
 
   useEffect(() => {
-    // const token = document.cookie // 取出 token
-    //   .split('; ')
-    //   .find((row) => row.startsWith('carpento='))
-    //   ?.split('=')[1];
-
-    // console.log(token);
-
-    // axios.defaults.headers.common['Authorization'] = token;
-
-    // QUESTION: 為什麼 React 立即函式特別多？ 2024-12-11
-    // (async () => {
-    //   const productRes = await axios.get(
-    //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
-    //   );
-    //   console.log(productRes);
-    // })();
-
-    productModal.current = new Modal('#productModal', {
+    // productModal.current = new Modal('#productModal', {
+    //   backdrop: 'static',
+    //   keyboard: true,
+    // });
+    articleModal.current = new Modal('#articleModal', {
       backdrop: 'static',
       keyboard: true,
     });
@@ -40,32 +30,42 @@ const AdminProducts = () => {
       keyboard: true,
     });
 
-    getProducts();
+    // getProducts();
+
+    getArticles();
   }, []);
 
-  // FIXED: Need to re-login after refreshing page. 2024-12-10 -> Add to AdminRoutes page 2024-12-11? 
-  async function getProducts() {
+  async function getArticles() {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=2`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/articles`
     );
     console.log(res.data);
-    setProducts(res.data.products);
+    setArticles(res.data.articles);
     // setPagination(res.data.pagination);
   }
 
-  function openProductModal(type, product) {
+  // async function getProducts() {
+  //   const res = await axios.get(
+  //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`
+  //   );
+  //   console.log(res.data);
+  //   setProducts(res.data.products);
+  //   // setPagination(res.data.pagination);
+  // }
+
+  function openArticleModal(type, article) {
     setType(type);
-    setTempProduct(product);
-    productModal.current.show();
+    setTempArticle(article);
+    articleModal.current.show();
   }
 
-  function closeProductModal() {
-    productModal.current.hide();
+  function closeArticleModal() {
+    articleModal.current.hide();
     console.log('hide');
   }
 
-  function openDeleteModal(product) {
-    setTempProduct(product);
+  function openDeleteModal(article) {
+    setTempArticle(article);
     deleteModal.current.show();
   }
 
@@ -75,26 +75,28 @@ const AdminProducts = () => {
 
   return (
     <main>
-      <ProductModal
-        closeProductModal={closeProductModal}
-        getProducts={getProducts}
+      <ArticleModal
+        closeArticleModal={closeArticleModal}
+        // getProducts={getProducts}
+        getArticles={getArticles}
         type={type}
-        tempProduct={tempProduct}
-        closeDeleteModal={closeDeleteModal} 
+        // tempProduct={tempProduct}
+        tempArticle={tempArticle}
+        closeDeleteModal={closeDeleteModal}
       />
-      <DeleteModal 
-        tempProduct={tempProduct}
+      <DeleteModal
+        // tempProduct={tempProduct}
+        tempArticle={tempArticle}
         openDeleteModal={openDeleteModal}
       />
       <header className="d-flex align-items-center">
-        <h1 className="fs-5">產品列表</h1>
+        <h1 className="fs-5">文章列表</h1>
         <button
           type="button"
           className="btn btn-outline-primary btn-sm ms-2"
-          // QUESTION: Why an arrow function wrapper needed to pass that parameter? (It is the same logic in Vanilla JS, but not in Vue.)
-          onClick={() => openProductModal('create', {})}
+          onClick={() => openArticleModal('create', {})}
         >
-          <i className="bi bi-plus-lg"></i> 新增產品
+          <i className="bi bi-plus-lg"></i> 新增文章
         </button>
       </header>
       <hr />
@@ -103,55 +105,65 @@ const AdminProducts = () => {
         <thead>
           <tr>
             {/* TODO: Add link to go to front page */}
-            <th scope="col" width="10%">
-              圖片
-            </th>
             <th scope="col" width="40%">
-              產品名稱
+              文章標題
+            </th>
+            <th scope="col" width="15%">
+              建立日期
             </th>
             <th scope="col" width="10%">
-              分類
+              作者
             </th>
-            <th scope="col" width="10%" className="text-end">
-              售價
-            </th>
-            <th scope="col" width="10%" className="text-end">
-              原價
+            <th scope="col" width="15%">
+              標籤
             </th>
             <th scope="col" width="10%" className="text-center">
-              啟用狀態
+              發布狀態
             </th>
-            <th scope="col" width="15%" className="text-center">
+            <th scope="col" width="10%" className="text-center">
               編輯
             </th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => {
+          {articles.map((article) => {
             return (
-              <tr key={product.id}>
-                <td><img src={product.imageUrl} alt={product.title} width="100%"/></td>
-                <td>{product.title}</td>
+              <tr key={article.id}>
+                <td>{article.title}</td>
+                <td className="text-start">
+                  {(() => {
+                    const date = new Date(article.create_at);
+
+                    const options = {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    };
+
+                    return date.toLocaleString('en-US', options);
+                  })()}
+                </td>
+                <td>{article.author}</td>
                 <td>
                   <span className="badge rounded-pill px-1 bg-primary-subtle text-dark">
-                    {product.category}
+                    {article.tag[0]}
                   </span>
                 </td>
-                <td className="text-end">{product.price}</td>
-                <td className="text-end">{product.origin_price}</td>
                 <td className="text-center">
-                  {product.is_enabled ? '已啟用' : '未啟用'}
+                  {article.isPublic ? '已發布' : '未發布'}
                 </td>
                 <td className="text-center">
-                  <button type="button" className="btn btn-primary btn-sm"
-                  onClick={() => openProductModal('edit', product)}>
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    onClick={() => openArticleModal('edit', article)}
+                  >
                     編輯
                   </button>
-                  {/* TODO: move 刪除 button to ProductModal */}
                   <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"
-                    onClick={() => openDeleteModal(product)}
+                    onClick={() => openDeleteModal(article)}
                   >
                     刪除
                   </button>
@@ -163,7 +175,7 @@ const AdminProducts = () => {
       </table>
       <p className="ps-1">
         {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
-        目前有 <span>{products.length}</span> 項產品
+        {/* 目前有 <span>{articles.length}</span> 篇文章 */}
       </p>
       <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-end">
