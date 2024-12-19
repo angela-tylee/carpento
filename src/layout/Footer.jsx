@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white pt-5 pb-2">
+    <footer className="bg-black text-light pt-5 pb-2">
       <div className="container">
         <nav className="navbar navbar-expand-lg p-0">
           <div className="container-fluid p-0">
@@ -12,16 +12,16 @@ const Footer = () => {
             </Link>
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to="/faq" className="nav-link text-white">FAQ</Link>
+                <Link to="/faq" className="nav-link text-light">FAQ</Link>
               </li>
               <li className="nav-item">
-                <Link to="/warranty" className="nav-link text-white">Warranty</Link>
+                <Link to="/warranty" className="nav-link text-light">Warranty</Link>
               </li>
               <li className="nav-item">
-                <Link to="/return" className="nav-link text-white">Return</Link>
+                <Link to="/return" className="nav-link text-light">Return</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-white" href="mailto:support@carpento.com">Contact Us</a>
+                <a className="nav-link text-light" href="mailto:support@carpento.com">Contact Us</a>
               </li>
             </ul>
           </div>

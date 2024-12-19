@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
+    // TODO: Show dropdown on hover.
     <header className="container py-3">
       <nav className="navbar navbar-expand-lg p-0 fw-semibold">
         <div className="container-fluid p-0">
@@ -55,6 +56,7 @@ const Header = () => {
         </div>
 
         <div className="search-container w-25 border border-1 border-dark rounded-pill overflow-hidden py-1 px-2 me-3">
+          {/* TODO: Add search layout: 提示字 Bold highlight keywords, show category as subhead. */}
           <input className="border-0 flex-1 focus-ring" type="text" placeholder="search..." />
           <i className="icon-search bi bi-search px-1"></i>
         </div>

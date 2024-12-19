@@ -5,15 +5,17 @@ import axios from 'axios';
 const Blogs = () => {
   const [articles, setArticles] = useState([]);
 
-  (async () => {
+  const getArticles = async () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/articles`
     );
     console.log(res);
     setArticles(res.data.articles);
-  })();
+  }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getArticles();
+  }, []);
 
   return (
     <main className="container mb-7">

@@ -104,7 +104,7 @@ function Login() {
             </div>
             <button
               type="button"
-              className="btn btn-primary w-100 text-uppercase text-white"
+              className="btn btn-primary w-100 text-uppercase text-light"
               onClick={submit}
             >
               Sign in

@@ -6,15 +6,15 @@ const Checkout = () => {
       <div className="row justify-content-center">
         <div className="col-8">
           <nav className="stepper mt-6 mb-5 d-flex justify-content-between">
-            <div className="d-flex align-items-center bg-white px-2">
+            <div className="d-flex align-items-center bg-light px-2">
               <div className="step-number bg-secondary text-dark text-center pt-1">1</div>
               <p className="ms-1 text-uppercase">Order Detail</p>
             </div>
-            <div className="d-flex align-items-center bg-white px-2">
-              <div className="step-number bg-black text-secondary text-center pt-1">2</div>
+            <div className="d-flex align-items-center bg-light px-2">
+              <div className="step-number bg-dark text-secondary text-center pt-1">2</div>
               <p className="ms-1 text-uppercase">Shipping & Payment</p>
             </div>
-            <div className="d-flex align-items-center bg-white px-2">
+            <div className="d-flex align-items-center bg-light px-2">
               <div className="step-number bg-secondary text-dark text-center pt-1">3</div>
               <p className="ms-1 text-uppercase">Order Confirm</p>
             </div>
@@ -117,7 +117,7 @@ const Checkout = () => {
               <input type="text" className="form-control" id="cardholderName" />
             </div>
 
-            <button type="submit" className="mt-5 btn btn-primary text-white text-uppercase fs-5 fw-normal w-100">
+            <button type="submit" className="mt-5 btn btn-primary text-uppercase fs-5 fw-normal w-100">
               Place Order
             </button>
           </form>

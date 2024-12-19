@@ -115,6 +115,7 @@ const Products = () => {
               </div>
             </div>
             <div className="row">
+              {/* TODO: make products multiple of 4 to fill the page (12, 16, 20) */}
               {products.map((product) => (
                 <div key={product.id} className="col-3 mt-4">
                   <Link to={`/product/${product.id}`}>
@@ -139,7 +140,7 @@ const Products = () => {
                           />
                           <button
                             type="button"
-                            className="btn btn-primary text-white ms-1 w-75"
+                            className="btn btn-primary ms-1 w-75"
                           >
                             Add to Cart
                           </button>
@@ -161,7 +162,7 @@ const Products = () => {
                       </div>
                       <div className="d-flex w-100 mt-2">
                         <input type="number" className="form-control w-25 text-center" />
-                        <button type="button" className="btn btn-primary text-white ms-1 w-75">Add to Cart</button>
+                        <button type="button" className="btn btn-primary ms-1 w-75">Add to Cart</button>
                       </div>
                     </div>
                   </div>

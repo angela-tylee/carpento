@@ -8,7 +8,7 @@ const Home = () => {
       <main>
         <section className="section-hero" style={{ backgroundImage: 'url(/images/banner-6.jpeg)' }}>
           <div className="container section-body section-hero-body">
-            <div className="text-white mt-7">
+            <div className="text-light mt-7">
               <h1 className="display-4">Welcome to Carpento</h1>
               <p className="fs-2">Special Sales is coming soon!</p>
               <Link to="/products" className="btn btn-outline-light mt-4">Shop Now</Link>
@@ -142,7 +142,7 @@ const Home = () => {
 
         <section className="section-contact" style={{ backgroundImage: 'url(/images/contact-xl.jpeg)' }}>
           <div className="container section-body section-hero-body">
-            <div className="text-white mt-7">
+            <div className="text-light mt-7">
               <h1 className="fs-1">Contact Us</h1>
               <p className="fs-4 fw-light">Need interior design advice or customize furniture arrangement? Contact us.</p>
               <a className="btn btn-outline-light mt-4" href="mailto:support@carpento.com">Contact</a>

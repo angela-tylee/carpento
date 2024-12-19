@@ -10,7 +10,7 @@ function DeleteModal({ tempProduct, closeDeleteModal }) {
       <div className='modal-dialog'>
         <div className='modal-content'>
           <div className='modal-header bg-danger'>
-            <h1 className='modal-title text-white fs-5' id='exampleModalLabel'>
+            <h1 className='modal-title text-light fs-5' id='exampleModalLabel'>
               刪除確認
             </h1>
             <button
