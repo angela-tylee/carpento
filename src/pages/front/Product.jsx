@@ -89,8 +89,8 @@ const Product = () => {
           <div className="col-6">
             <h1 className="fs-2">{product.title}</h1>
             <p className="fs-5 mt-1">
-              <span className="text-primary me-1">${product.price.toLocaleString()} </span>
-              <del> ${product.origin_price.toLocaleString()}</del>
+              <span className="text-primary me-1">${product.price?.toLocaleString()} </span>
+              <del> ${product.origin_price?.toLocaleString()}</del>
             </p>
             <p className="mt-2">{product.content}</p>
 

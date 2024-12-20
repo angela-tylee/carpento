@@ -5,9 +5,6 @@ import axios from 'axios';
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  // const [cartQuantity, setCartQuantity] = useState({ cart: []});
-
-  // console.log(cartQuantity);
 
   const getCart = async () => {
     const res = await axios.get(

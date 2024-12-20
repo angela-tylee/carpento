@@ -3,12 +3,12 @@ import axios from 'axios';
 
 function ProductModal({ closeProductModal, getProducts, type, tempProduct, openDeleteModal }) {
   // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
-  const [uploadImageUrl, setUploadImageUrl] = useState(null);
+  // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     "title": "",
     "category": "",
-    "origin_price": 100,
-    "price": 300,
+    "origin_price": 0,
+    "price": 0,
     "unit": "",
     "description": "",
     "content": "",
@@ -23,15 +23,24 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
     ]
   })
 
+  const categories = [
+    'Living Room',
+    'Bedroom',
+    'Dining',
+    'Workspace',
+    'Decoration',
+    'Others',
+  ];
+
   useEffect(() => {
     console.log(type, tempProduct);
     if(type === 'create') {
       setTempData({
         "title": "",
         "category": "",
-        "origin_price": 100,
-        "price": 300,
-        "unit": "",
+        "origin_price": 0,
+        "price": 0,
+        "unit": "unit",
         "description": "",
         "content": "",
         "is_enabled": 1,
@@ -49,7 +58,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
     }
   },[type, tempProduct])
 
-  function handleChange(e) {
+  async function handleChange(e) {
     const { name, value, checked, files } = e.target;
     // console.log(e.target);
     if (['price', 'origin_price'].includes(name)) {
@@ -63,12 +72,12 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
         // [name]: +e.target.is_enabled
         [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       })
-    } else if (name === 'imageUpload') {
-      uploadImage(files[0]);
-      setTempData({
-        ...tempData,
-        "imageUrl": uploadImageUrl
-      })
+    } else if (name === 'imageUpload' && files[0]) {
+      await uploadImage(files[0]);
+      // setTempData({
+      //   ...tempData,
+      //   "imageUrl": uploadImageUrl
+      // })
     } else {
       setTempData({
         ...tempData,
@@ -89,11 +98,11 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
       const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`, formData);
       // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16
 
-      setUploadImageUrl(res.data.imageUrl);
-      // setTempData({
-      //   ...tempData,
-      //   "imageUrl": res.data.imageUrl
-      // })
+      // setUploadImageUrl(res.data.imageUrl);
+      setTempData({
+        ...tempData,
+        "imageUrl": res.data.imageUrl
+      })
 
       // setTempData(prevData => ({
       //   ...prevData,
@@ -121,7 +130,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
       closeProductModal();
       getProducts();
     } catch (error) {
-      console.log(error)
+      console.log(error.response.message)
     }
   }
 
@@ -198,15 +207,18 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                   <div className='form-group mb-2 col-md-6'>
                     <label className='w-100' htmlFor='category'>
                       分類
-                      <input
-                        type='text'
+                      <select
                         id='category'
                         name='category'
-                        placeholder='請輸入分類'
                         className='form-control'
                         onChange={handleChange}
                         value={tempData.category}
-                      />
+                      >
+                        <option value=''>請選擇分類</option>
+                      {categories.map((category) => (
+                        <option key={category} value={category.toLowerCase()}>{category}</option>
+                      ))}
+                      </select>
                     </label>
                   </div>
                   <div className='form-group mb-2 col-md-6'>
@@ -225,6 +237,20 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                   </div>
                 </div>
                 <div className='row'>
+                <div className='form-group mb-2 col-md-6'>
+                    <label className='w-100' htmlFor='price'>
+                      售價
+                      <input
+                        type='number'
+                        id='price'
+                        name='price'
+                        placeholder='請輸入售價'
+                        className='form-control'
+                        onChange={handleChange}
+                        value={tempData.price}
+                      />
+                    </label>
+                  </div>
                   <div className='form-group mb-2 col-md-6'>
                     <label className='w-100' htmlFor='origin_price'>
                       原價
@@ -236,20 +262,6 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                         className='form-control'
                         onChange={handleChange}
                         value={tempData.origin_price}
-                      />
-                    </label>
-                  </div>
-                  <div className='form-group mb-2 col-md-6'>
-                    <label className='w-100' htmlFor='price'>
-                      售價
-                      <input
-                        type='number'
-                        id='price'
-                        name='price'
-                        placeholder='請輸入售價'
-                        className='form-control'
-                        onChange={handleChange}
-                        value={tempData.price}
                       />
                     </label>
                   </div>

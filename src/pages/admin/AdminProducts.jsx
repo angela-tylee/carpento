@@ -46,7 +46,7 @@ const AdminProducts = () => {
   // FIXED: Need to re-login after refreshing page. 2024-12-10 -> Add to AdminRoutes page 2024-12-11? 
   async function getProducts() {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=2`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=5`
     );
     console.log(res.data);
     setProducts(res.data.products);

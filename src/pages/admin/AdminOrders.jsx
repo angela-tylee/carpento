@@ -3,6 +3,7 @@ const AdminOrder = ({ orders, selectedOrder }) => {
     <div className="row w-100">
       <div className="col-9">
         <h1 className="fs-5 mt-1">訂單列表</h1>
+        {/* TODO: Add sort data function */}
         <hr className="mb-4" />
         <div className="text-start">
           <button type="button" className="btn btn-primary btn-sm">

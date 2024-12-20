@@ -10,7 +10,6 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const categories = [
-    'All',
     'Living Room',
     'Bedroom',
     'Dining',
@@ -46,8 +45,8 @@ const Products = () => {
       // console.log(data);
       const res = await axios.post(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
-        data,
-      )
+        data
+      );
       console.log(res);
       setIsLoading(false);
     } catch (error) {
@@ -70,7 +69,20 @@ const Products = () => {
       </nav>
       <div className="row">
         <div className="col-3">
-          <div className="list-group pe-3">
+          <div
+            className="list-group pe-3 position-sticky"
+            style={{ top: '128px' }}
+          >
+            <a
+              href="#"
+              className={`list-group-item list-group-item-action ${
+                selectedCategory === '' ? 'active' : ''
+              }`}
+              aria-current={selectedCategory === '' ? 'true' : 'false'}
+              onClick={() => setSelectedCategory('')}
+            >
+              All
+            </a>
             {categories.map((category) => (
               <a
                 key={category}
@@ -94,7 +106,7 @@ const Products = () => {
           </div>
         </div>
         <div className="col-9">
-          <h1 className="fs-2 mb-3">{selectedCategory}</h1>
+          <h1 className="fs-2 mb-3">{selectedCategory ? selectedCategory : 'All'}</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
             vitae voluptatum consequuntur expedita in minima.
@@ -156,7 +168,9 @@ const Products = () => {
                           {product.title}
                         </h5>
                         <div className="card-text">
-                          <span className="text-primary me-1">${product.price.toLocaleString()}</span>
+                          <span className="text-primary me-1">
+                            ${product.price.toLocaleString()}
+                          </span>
                           <del>${product.origin_price.toLocaleString()}</del>
                         </div>
                       </div>
