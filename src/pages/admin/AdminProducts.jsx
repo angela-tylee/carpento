@@ -137,8 +137,8 @@ const AdminProducts = () => {
                     {product.category}
                   </span>
                 </td>
-                <td className="text-end">{product.price}</td>
-                <td className="text-end">{product.origin_price}</td>
+                <td className="text-end">{product.price.toLocaleString()}</td>
+                <td className="text-end">{product.origin_price.toLocaleString()}</td>
                 <td className="text-center">
                   {product.is_enabled ? '已啟用' : '未啟用'}
                 </td>

@@ -6,6 +6,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const categories = [
     'All',
@@ -17,18 +19,42 @@ const Products = () => {
     'Others',
   ];
 
+  useEffect(() => {
+    getProducts(selectedCategory);
+  }, [selectedCategory]);
+
   const getProducts = async () => {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/products?category=${encodeURIComponent(selectedCategory.toLowerCase())}`
+      `/v2/api/${
+        process.env.REACT_APP_API_PATH
+      }/products?category=${encodeURIComponent(selectedCategory.toLowerCase())}`
     );
     console.log(selectedCategory, res);
     setProducts(res.data.products);
     setPagination(res.data.pagination);
   };
 
-  useEffect(() => {
-    getProducts(selectedCategory);
-  }, [selectedCategory]);
+  const addToCart = async (id) => {
+    const data = {
+      data: {
+        product_id: id,
+        qty: cartQuantity,
+      },
+    };
+    setIsLoading(true);
+    try {
+      // console.log(data);
+      const res = await axios.post(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
+        data,
+      )
+      console.log(res);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <main className="container mb-6">
@@ -118,8 +144,8 @@ const Products = () => {
               {/* TODO: make products multiple of 4 to fill the page (12, 16, 20) */}
               {products.map((product) => (
                 <div key={product.id} className="col-3 mt-4">
-                  <Link to={`/product/${product.id}`}>
-                    <div className="card w-100 border-0">
+                  <div className="card w-100 border-0">
+                    <Link to={`/product/${product.id}`}>
                       <img
                         src={product.imageUrl}
                         className="card-img-top"
@@ -130,24 +156,27 @@ const Products = () => {
                           {product.title}
                         </h5>
                         <div className="card-text">
-                          <span className="text-primary">${product.price}</span>
-                          <del>${product.origin_price}</del>
-                        </div>
-                        <div className="d-flex w-100 mt-2">
-                          <input
-                            type="number"
-                            className="form-control w-25 text-center"
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-primary ms-1 w-75"
-                          >
-                            Add to Cart
-                          </button>
+                          <span className="text-primary me-1">${product.price.toLocaleString()}</span>
+                          <del>${product.origin_price.toLocaleString()}</del>
                         </div>
                       </div>
+                    </Link>
+                    <div className="card-footer d-flex w-100 mt-2">
+                      <input
+                        type="text"
+                        className="form-control w-25 text-center"
+                        value="1"
+                        readOnly
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-primary ms-1 w-75"
+                        onClick={() => addToCart(product.id)}
+                      >
+                        Add to Cart
+                      </button>
                     </div>
-                  </Link>
+                  </div>
                 </div>
               ))}
               {/* {Array.from({ length: 4 }).map((_, idx) => (

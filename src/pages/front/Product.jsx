@@ -89,12 +89,13 @@ const Product = () => {
           <div className="col-6">
             <h1 className="fs-2">{product.title}</h1>
             <p className="fs-5 mt-1">
-              <span className="text-primary">${product.price} </span>
-              <del> ${product.origin_price}</del>
+              <span className="text-primary me-1">${product.price.toLocaleString()} </span>
+              <del> ${product.origin_price.toLocaleString()}</del>
             </p>
             <p className="mt-2">{product.content}</p>
 
             <div className="mt-3 w-100 d-flex align-items-center">
+              {/* TODO: 元件化？ Separate quantity component -> Cart.jsx*/}
               <div className="input-group w-25">
                 <button
                   className="btn btn-outline-secondary text-dark"
