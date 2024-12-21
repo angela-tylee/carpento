@@ -3,7 +3,7 @@ import axios from 'axios';
 import BlogEditor from './BlogEditor';
 
 function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openDeleteModal }) {
-  const [uploadImageUrl, setUploadImageUrl] = useState(null);
+  // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     "title": "",
     "description": "",
@@ -37,7 +37,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
     }
   },[type, tempArticle])
 
-  function handleChange(e, editorData) {
+  async function handleChange(e, editorData) {
     const { name, value, checked, files } = e?.target || {};
     // console.log(e.target);
     if (name === 'isPublic') {
@@ -47,11 +47,11 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
         // [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       })
     } else if (name === 'imageUpload') {
-      uploadImage(files[0]);
-      setTempData({
-        ...tempData,
-        "image": uploadImageUrl
-      })
+      await uploadImage(files[0]);
+      // setTempData({
+      //   ...tempData,
+      //   "image": uploadImageUrl
+      // })
     // } else if (name === 'create_at') {
     //   setTempData({
     //     ...tempData,
@@ -86,9 +86,13 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
 
     try {
       const res = await axios.post(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`, formData);
-      // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16
+      // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
 
-      setUploadImageUrl(res.data.imageUrl);
+      // setUploadImageUrl(res.data.imageUrl);
+      setTempData({
+        ...tempData,
+        "image": res.data.imageUrl
+      })
 
       console.log(tempData);
     } catch (error) {
