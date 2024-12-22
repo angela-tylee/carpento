@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# Carpento - Furniture E-commerce Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+### Screenshot
+  
+### Links
 
-In the project directory, you can run:
+- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
-### `npm start`
+## My Process
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Built with
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- [React](https://reactjs.org/)
+  - CRA
+  - React Hook Form
+  - React i18n
+- Bootstrap
+  - Bootstrap Icon
+- CKEditor
 
-### `npm test`
+### What I learned
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- React
+  - How to scaffold a React project
+  - How to build React component and travel through pages via React Router
+  - How to handle form in React
+  - How to handle event in React
+  - How to manage state and lifecycle via React Hook
+  - How to send props through parent / child components
+  - How to write JSX to import image, add inline style, comment, write loop and conditional JS inside.
+- CKEditor
+- React Hook Form
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Continued development
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Blog
+  - Bootstrap Scrollspy
+- Front Page Customer Log in
+	- 顯示 / 隱藏密碼
+	- 忘記密碼
+- Account Center
+	- Tabs
+	- 我的帳號
+		- 使用者名稱
+		- 更改 email
+		- 更改密碼
+	- 我的收藏
+	- 我的訂單
+	- 出貨進度
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Useful resources
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [React Get Started]() - This is my first major React project. The official document help me a lot through the basic concepts and syntax.
+- [Bootstrap]() - Always a handy resource to grab bootstrap components.
+- [CKEditor]() - Clear instruction to build my personal customized editing tool so that I can enhance the blog dashboard with rich text editing.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- mdn - Always a reliable source for understanding basic syntax, usage, and compatibility.
+- Claude.ai. - Most reliable AI tool and partner when discussing technical problems.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- 《React 思維進化》
 
-## Learn More
+- 六角學院 - powerful step-by-step tutorial about how React works through demonstrating the development process of an E-commerce website.
+- The Modern React Bootcamp - course released in 2019 by Colt Steele, can know a bit about how class component works.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.  
 
-### Code Splitting
+### Useful Tools
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- VS Code TODO Highlights
+- Codeium & Github Copilot
+- Google DevTool (AI)
 
-### Analyzing the Bundle Size
+## Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Acknowledgments

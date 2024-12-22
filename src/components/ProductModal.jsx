@@ -214,7 +214,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                         onChange={handleChange}
                         value={tempData.category}
                       >
-                        <option value=''>請選擇分類</option>
+                        <option value='' disabled>請選擇分類</option>
                       {categories.map((category) => (
                         <option key={category} value={category.toLowerCase()}>{category}</option>
                       ))}

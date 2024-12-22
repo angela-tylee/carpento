@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+
 const Checkout = () => {
   return (
     <main className="container mb-7">
