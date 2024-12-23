@@ -75,7 +75,7 @@ const Products = () => {
           >
             <a
               href="#"
-              className={`list-group-item list-group-item-action ${
+              className={`list-group-item list-group-item-action fw-bold ${
                 selectedCategory === '' ? 'active' : ''
               }`}
               aria-current={selectedCategory === '' ? 'true' : 'false'}
@@ -87,7 +87,7 @@ const Products = () => {
               <a
                 key={category}
                 href="#"
-                className={`list-group-item list-group-item-action ${
+                className={`list-group-item list-group-item-action fw-bold ${
                   selectedCategory === category ? 'active' : ''
                 }`}
                 aria-current={selectedCategory === category ? 'true' : 'false'}

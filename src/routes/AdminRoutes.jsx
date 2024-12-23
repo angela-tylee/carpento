@@ -80,7 +80,7 @@ const AdminRoutes = () => {
             <div className="container-fluid flex-column align-items-start h-100 ps-6">
               <div id="navbarNav">
                 <ul className="navbar-nav flex-column">
-                  <li className="nav-item mt-3 pe-2">
+                  <li className="nav-item mt-3 pe-2 fw-bold">
                     <Link
                       to="/admin/products"
                       className="nav-link active"
@@ -89,22 +89,22 @@ const AdminRoutes = () => {
                       產品列表
                     </Link>
                   </li>
-                  <li className="nav-item mt-3 pe-2">
+                  <li className="nav-item mt-3 pe-2 fw-bold">
                     <Link to="/admin/orders" className="nav-link">
                       訂單列表
                     </Link>
                   </li>
-                  <li className="nav-item mt-3 pe-2">
+                  <li className="nav-item mt-3 pe-2 fw-bold">
                     <Link to="/admin/blogs" className="nav-link">
                       文章列表
                     </Link>
                   </li>
-                  <li className="nav-item mt-3 pe-2">
+                  <li className="nav-item mt-3 pe-2 fw-bold">
                     <Link to="/admin/coupons" className="nav-link">
                       折扣碼列表
                     </Link>
                   </li>
-                  <li className="nav-item mt-3 pe-2">
+                  <li className="nav-item mt-3 pe-2 fw-bold">
                     <Link to="/" className="nav-link">
                       回到前台
                     </Link>

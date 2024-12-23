@@ -12,8 +12,6 @@ const Cart = () => {
     );
     console.log(res.data.data);
     setCart(res.data.data);
-    // FIXME: cart.carts is sometimes undefined.
-    console.log(cart, cart.carts);
   };
 
   const updateQty = async (cartItem, newQty) => {
@@ -80,7 +78,7 @@ const Cart = () => {
                       <div className="col-2">
                         <img
                           src={cartItem.product.imageUrl}
-                          alt="..."
+                          alt={cartItem.product.title}
                           style={{ width: '100%' }}
                         />
                       </div>
