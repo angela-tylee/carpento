@@ -4,6 +4,7 @@ import axios from 'axios';
 import ArticleModal from '../../components/ArticleModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
+import Pagination from '../../components/Pagination';
 
 const AdminProducts = () => {
   // const [products, setProducts] = useState([]);
@@ -35,13 +36,13 @@ const AdminProducts = () => {
     getArticles();
   }, []);
 
-  async function getArticles() {
+  async function getArticles( page = 1) {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/articles`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/articles?page=${page}`
     );
     console.log(res.data);
     setArticles(res.data.articles);
-    // setPagination(res.data.pagination);
+    setPagination(res.data.pagination);
   }
 
   // async function getProducts() {
@@ -177,45 +178,7 @@ const AdminProducts = () => {
         {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
         {/* 目前有 <span>{articles.length}</span> 篇文章 */}
       </p>
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-end">
-          <li className="page-item">
-            <a className="page-link disabled" href="/" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link active" href="/">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="/">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="/">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="/">
-              4
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="/">
-              5
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="/" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Pagination pagination={pagination} changePage={getArticles}/>
     </main>
   );
 };

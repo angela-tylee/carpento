@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Pagination from '../../components/Pagination';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -22,11 +23,11 @@ const Products = () => {
     getProducts(selectedCategory);
   }, [selectedCategory]);
 
-  const getProducts = async () => {
+  const getProducts = async (page = 1) => {
     const res = await axios.get(
       `/v2/api/${
         process.env.REACT_APP_API_PATH
-      }/products?category=${encodeURIComponent(selectedCategory.toLowerCase())}`
+      }/products?category=${encodeURIComponent(selectedCategory.toLowerCase())}&page=${page}`
     );
     console.log(selectedCategory, res);
     setProducts(res.data.products);
@@ -193,6 +194,7 @@ const Products = () => {
                   </div>
                 </div>
               ))}
+              {/* QUESTION: Array.from? */}
               {/* {Array.from({ length: 4 }).map((_, idx) => (
                 <div key={idx} className="col-3">
                   <div className="card w-100 border-0">
@@ -212,33 +214,27 @@ const Products = () => {
                 </div>
               ))} */}
             </div>
-            <nav aria-label="..." className="mt-4">
+            <Pagination pagination={pagination} changePage={getProducts}/>
+            {/* <nav aria-label="..." className="mt-4">
               <ul className="pagination fw-bold justify-content-end">
-                <li className="page-item disabled">
-                  <a className="page-link">&lt;</a>
+                <li className={`page-item disabled=${!pagination.has_pre}`}>
+                  <a className="page-link" href="/" onClick={(e) => {e.preventDefault(); getProducts(pagination.current_page - 1);}}>&lt;</a>
                 </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    1
-                  </a>
-                </li>
-                <li className="page-item active" aria-current="page">
-                  <a className="page-link" href="#">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="#">
-                    &gt;
-                  </a>
+                {[...Array(pagination.total_pages)].map((_, index) => (
+                    <li key={index}
+                    className={`page-item ${pagination.current_page === index + 1 ? 'active' : ''}`} 
+                    aria-current={pagination.current_page === index + 1 ? 'page': undefined}>
+                    <a className="page-link" href="/"
+                    onClick={(e) => {e.preventDefault(); getProducts(index + 1);}}>
+                      {index + 1}
+                    </a>
+                  </li>
+                  ))}
+                <li className={`page-item disabled=${!pagination.has_next}`}>
+                  <a className="page-link" href="/" onClick={(e) => {e.preventDefault(); getProducts(pagination.current_page + 1);}}>&gt;</a>
                 </li>
               </ul>
-            </nav>
+            </nav> */}
           </div>
         </div>
       </div>

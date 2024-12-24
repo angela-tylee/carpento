@@ -3,9 +3,11 @@ import axios from 'axios';
 import OrderModal from '../../components/OrderModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
+import Pagination from '../../components/Pagination';
 
 const AdminOrder = () => {
   const [orders, setOrders] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
   // const [type, setType] = useState('edit');
   // const [tempProduct, setTempProduct] = useState({});
@@ -13,12 +15,13 @@ const AdminOrder = () => {
   const orderModal = useRef(null);
   const deleteModal = useRef(null);
 
-  const getOrders = async () => {
+  const getOrders = async ( page = 1 ) => {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
     );
     console.log(res);
     setOrders(res.data.orders);
+    setPagination(res.data.pagination);
   };
 
   useEffect(() => {
@@ -53,7 +56,7 @@ const AdminOrder = () => {
   }
 
   return (
-    <div className="row w-100">
+    <main className="row w-100">
       <OrderModal
         closeOrderModal={closeOrderModal}
         getOrders={getOrders}
@@ -169,28 +172,7 @@ const AdminOrder = () => {
         <p className="ps-1">
           目前有 <span>{orders.length}</span> 筆訂單
         </p>
-        <nav aria-label="Page navigation example">
-          <ul className="pagination justify-content-end">
-            <li className="page-item">
-              <a className="page-link disabled" href="/" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            {/* Pagination items can be dynamically generated based on total pages */}
-            {[1, 2, 3, 4, 5].map((page) => (
-              <li className="page-item" key={page}>
-                <a className="page-link" href="/">
-                  {page}
-                </a>
-              </li>
-            ))}
-            <li className="page-item">
-              <a className="page-link" href="/" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <Pagination pagination={pagination} changePage={getOrders} />
       </div>
       <div className="col-3">
         <h2 className="fs-5 mt-1">訂單細節</h2>
@@ -199,6 +181,7 @@ const AdminOrder = () => {
           <div className="card mb-3">
             <div className="card-body">
               <h5 className="card-title fs-6">訂單編號：{selectedOrder.id}</h5>
+              {/* TODO: Update date format */}
               <p>訂單日期：{selectedOrder.create_at}</p>
               <div className="mt-2">
                 {Object.entries(selectedOrder.products).map(([key, product]) => (
@@ -246,7 +229,7 @@ const AdminOrder = () => {
           <p className="text-gray">請選擇一個訂單查看</p>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 

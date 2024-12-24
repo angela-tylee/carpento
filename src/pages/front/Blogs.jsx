@@ -1,16 +1,19 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Pagination from '../../components/Pagination';
 
 const Blogs = () => {
   const [articles, setArticles] = useState([]);
+  const [pagination, setPagination] = useState([]);
 
-  const getArticles = async () => {
+  const getArticles = async (page = 1) => {
     const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/articles`
+      `/v2/api/${process.env.REACT_APP_API_PATH}/articles?page=${page}`
     );
     console.log(res);
     setArticles(res.data.articles);
+    setPagination(res.data.pagination);
   }
 
   useEffect(() => {
@@ -52,6 +55,7 @@ const Blogs = () => {
           </Link>
         ))}
       </section>
+      <Pagination pagination={pagination} changePage={getArticles}/>
     </main>
   );
 };
