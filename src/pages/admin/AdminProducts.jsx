@@ -45,7 +45,7 @@ const AdminProducts = () => {
   }, []);
 
   // FIXED: Need to re-login after refreshing page. 2024-12-10 -> Add to AdminRoutes page 2024-12-11? 
-  async function getProducts( page = 1 ) {
+  async function getProducts(page) {
     // TODO: Remove pagination?
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=${page}`
@@ -53,6 +53,17 @@ const AdminProducts = () => {
     console.log(res.data);
     setProducts(res.data.products);
     setPagination(res.data.pagination);
+  }
+
+  async function deleteProduct(id) {
+    const res = await axios.delete(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
+    );
+    console.log(res);
+    alert(res.data.message);
+    // console.log('delete', id);
+    closeDeleteModal();
+    getProducts(pagination.current_page);
   }
 
   function openProductModal(type, product) {
@@ -82,11 +93,14 @@ const AdminProducts = () => {
         getProducts={getProducts}
         type={type}
         tempProduct={tempProduct}
-        closeDeleteModal={closeDeleteModal} 
+        // FIXME: put API 後 getProduct() 刷新又回到第一頁
+        currentPate={pagination.current_page}
       />
       <DeleteModal 
-        tempProduct={tempProduct}
-        openDeleteModal={openDeleteModal}
+        closeDeleteModal={closeDeleteModal}
+        text={tempProduct.title}
+        id={tempProduct.id}
+        handleDelete={deleteProduct}
       />
       <header className="d-flex align-items-center">
         <h1 className="fs-5">產品列表</h1>
@@ -150,24 +164,26 @@ const AdminProducts = () => {
                     編輯
                   </button>
                   {/* TODO: move 刪除 button to ProductModal */}
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"
                     onClick={() => openDeleteModal(product)}
                   >
                     刪除
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <p className="ps-1">
-        {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
-        目前有 <span>{products.length}</span> 項產品
-      </p>
-      <Pagination pagination={pagination} changePage={getProducts}/>
+      <footer className="d-flex justify-content-between align-items-end">
+        <p className="ps-1">
+          {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
+          目前有 <span>{products.length}</span> 項產品
+        </p>
+        <Pagination pagination={pagination} changePage={getProducts}/>
+      </footer>
     </main>
   );
 };

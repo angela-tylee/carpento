@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import PRODUCTS_CATEGORIES from '../constants/categories';
 
-function ProductModal({ closeProductModal, getProducts, type, tempProduct, openDeleteModal }) {
+function ProductModal({ closeProductModal, getProducts, type, tempProduct, currentPage}) {
   // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
@@ -23,16 +24,17 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
     ]
   })
 
-  const categories = [
-    'Living Room',
-    'Bedroom',
-    'Dining',
-    'Workspace',
-    'Decoration',
-    'Others',
-  ];
+  // const categories = [
+  //   'Living Room',
+  //   'Bedroom',
+  //   'Dining',
+  //   'Workspace',
+  //   'Decoration',
+  //   'Others',
+  // ];
 
   useEffect(() => {
+    console.log(PRODUCTS_CATEGORIES);
     console.log(type, tempProduct);
     if(type === 'create') {
       setTempData({
@@ -128,13 +130,13 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
       });
       console.log(res);
       closeProductModal();
-      getProducts();
+      getProducts(currentPage);
     } catch (error) {
       console.log(error.response.message)
     }
   }
 
-  return (
+  return ( 
     <div
       className='modal fade'
       id='productModal'
@@ -142,7 +144,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
       aria-labelledby='exampleModalLabel'
       // aria-hidden='true'
     >
-      <div className='modal-dialog modal-xl'>
+      <div className='modal-dialog modal-dialog-centered modal-xl'>
         <div className='modal-content px-2 py-1'>
           <div className='modal-header'>
             <h1 className='modal-title fs-5' id='exampleModalLabel'>
@@ -215,7 +217,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                         value={tempData.category}
                       >
                         <option value='' disabled>請選擇分類</option>
-                      {categories.map((category) => (
+                      {PRODUCTS_CATEGORIES.map((category) => (
                         <option key={category} value={category.toLowerCase()}>{category}</option>
                       ))}
                       </select>
@@ -292,8 +294,8 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, openD
                     <button
                       type="button"
                       className="btn border-0 text-danger btn-md p-0"
-                      // FIXME: openDeleteModal is not a function
-                      onClick={() => openDeleteModal(tempProduct)}
+                      // onClick={openDeleteModal}
+                      data-bs-target="#deleteModal" data-bs-toggle="modal"
                     >
                       <i className="bi bi-trash3"></i> 刪除商品
                     </button>

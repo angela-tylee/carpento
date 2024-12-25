@@ -27,8 +27,8 @@ header {
   //       background-color: $black;
   //   }
   // }
-
-  .navbar-nav .dropdown:hover .dropdown-menu {
+  // FIXME: hover 和 click 的 dropdown 顯示位置不一樣
+  .nav-item.dropdown:hover .dropdown-menu {
     display: block;
     margin-top: 0; /* Optional: Adjust this for better alignment */
   }

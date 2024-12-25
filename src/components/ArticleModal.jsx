@@ -262,10 +262,10 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                     <button
                       type="button"
                       className="btn border-0 text-danger btn-md p-0"
-                      // FIXME: openDeleteModal is not a function
-                      onClick={() => openDeleteModal(tempArticle)}
+                      // onClick={() => openDeleteModal(tempArticle)}
+                      data-bs-target="#deleteModal" data-bs-toggle="modal"
                     >
-                      <i className="bi bi-trash3"></i> 刪除商品
+                      <i className="bi bi-trash3"></i> 刪除文章
                     </button>
                   </div>}
                 </div>

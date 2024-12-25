@@ -169,10 +169,12 @@ const AdminOrder = () => {
             ))}
           </tbody>
         </table>
-        <p className="ps-1">
-          目前有 <span>{orders.length}</span> 筆訂單
-        </p>
-        <Pagination pagination={pagination} changePage={getOrders} />
+        <footer className="d-flex justify-content-between align-items-end">
+          <p className="ps-1">
+            目前有 <span>{orders.length}</span> 筆訂單
+          </p>
+          <Pagination pagination={pagination} changePage={getOrders} />
+        </footer>
       </div>
       <div className="col-3">
         <h2 className="fs-5 mt-1">訂單細節</h2>

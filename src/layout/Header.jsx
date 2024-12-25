@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import PRODUCTS_CATEGORIES from '../constants/categories';
 
 const Header = () => {
+  // const [searchParams] = useSearchParams();
+  // const category = searchParams.get('category') || '';
+
   const [cart, setCart] = useState([]);
 
   const getCart = async () => {
@@ -51,10 +55,17 @@ const Header = () => {
                     Products
                   </Link>
                   <ul className="dropdown-menu">
-                    <li>
-                      <Link to="/products" className="w-100 dropdown-item">
-                        Living Room
+                    {PRODUCTS_CATEGORIES.map((tempCategory) => (
+                      <li key={tempCategory}>
+                      <Link to={`/products?category=${encodeURIComponent(tempCategory)}`} className="w-100 dropdown-item">
+                        {tempCategory}
                       </Link>
+                    </li>
+                    ))}
+                    {/* <li>
+                      <NavLink to="/products" className="w-100 dropdown-item">
+                        Living Room
+                      </NavLink>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">
@@ -83,7 +94,7 @@ const Header = () => {
                       <a className="dropdown-item" href="#">
                         Others
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
                 <li className="nav-item">

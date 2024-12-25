@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, Link, Outlet, useNavigate } from 'react-router-dom';
+import { Routes, Route, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 // import AdminHeader from '../layout/AdminHeader';
 // import AdminSidebar from '../layout/AdminSidebar';
@@ -10,7 +10,9 @@ import axios from 'axios';
 
 const AdminRoutes = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
+  console.log(params);
   function logout() {
     document.cookie = "carpento=;";
     navigate('/login');
@@ -65,9 +67,9 @@ const AdminRoutes = () => {
       <header className="py-3 px-6 bg-secondary">
         <nav className="navbar navbar-expand-lg p-0 fw-normal d-flex justify-content-between">
           <div className="p-0">
-            <Link to="/" className="navbar-brand" title="Back to homepage">
+            <NavLink to="/" className="navbar-brand" title="Back to homepage">
               <img src="../images/logo.png" alt="logo" width="154" />
-            </Link>
+            </NavLink>
             <p>| Dashboard</p>
           </div>
           <button className="btn p-1 nav-link" onClick={logout}>登出</button>
@@ -81,33 +83,33 @@ const AdminRoutes = () => {
               <div id="navbarNav">
                 <ul className="navbar-nav flex-column">
                   <li className="nav-item mt-3 pe-2 fw-bold">
-                    <Link
+                    <NavLink
                       to="/admin/products"
-                      className="nav-link active"
+                      className="nav-link"
                       aria-current="page"
                     >
                       產品列表
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
-                    <Link to="/admin/orders" className="nav-link">
+                    <NavLink to="/admin/orders" className="nav-link">
                       訂單列表
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
-                    <Link to="/admin/blogs" className="nav-link">
+                    <NavLink to="/admin/blogs" className="nav-link">
                       文章列表
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
-                    <Link to="/admin/coupons" className="nav-link">
+                    <NavLink to="/admin/coupons" className="nav-link">
                       折扣碼列表
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
-                    <Link to="/" className="nav-link">
+                    <NavLink to="/" className="nav-link">
                       回到前台
-                    </Link>
+                    </NavLink>
                   </li>
                 </ul>
               </div>

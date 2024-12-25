@@ -45,14 +45,15 @@ const AdminProducts = () => {
     setPagination(res.data.pagination);
   }
 
-  // async function getProducts() {
-  //   const res = await axios.get(
-  //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`
-  //   );
-  //   console.log(res.data);
-  //   setProducts(res.data.products);
-  //   // setPagination(res.data.pagination);
-  // }
+  async function deleteArticle(id) {
+    const res = await axios.delete(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
+    );
+    console.log(res);
+    alert(res.data.message);
+    closeDeleteModal();
+    getArticles(pagination.current_page);
+  }
 
   function openArticleModal(type, article) {
     setType(type);
@@ -83,12 +84,13 @@ const AdminProducts = () => {
         type={type}
         // tempProduct={tempProduct}
         tempArticle={tempArticle}
-        closeDeleteModal={closeDeleteModal}
       />
       <DeleteModal
+        closeDeleteModal={closeDeleteModal}
         // tempProduct={tempProduct}
-        tempArticle={tempArticle}
-        openDeleteModal={openDeleteModal}
+        text={tempArticle.title}
+        id={tempArticle.id}
+        handleDelete={deleteArticle}
       />
       <header className="d-flex align-items-center">
         <h1 className="fs-5">文章列表</h1>
@@ -161,24 +163,26 @@ const AdminProducts = () => {
                   >
                     編輯
                   </button>
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"
                     onClick={() => openDeleteModal(article)}
                   >
                     刪除
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      <p className="ps-1">
-        {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
-        {/* 目前有 <span>{articles.length}</span> 篇文章 */}
-      </p>
-      <Pagination pagination={pagination} changePage={getArticles}/>
+      <footer className="d-flex justify-content-between align-items-end">
+        <p className="ps-1">
+          {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
+          目前有 <span>{articles.length}</span> 篇文章
+        </p>
+        <Pagination pagination={pagination} changePage={getArticles}/>
+      </footer>
     </main>
   );
 };

@@ -1,37 +1,70 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
+import PRODUCTS_CATEGORIES from '../../constants/categories';
 
 const Products = () => {
+  // const { category } = useParams();
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category') || '';
+
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [cartQuantity, setCartQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
-  const categories = [
-    'Living Room',
-    'Bedroom',
-    'Dining',
-    'Workspace',
-    'Decoration',
-    'Others',
-  ];
+  // const categories = [
+  //   'Living Room',
+  //   'Bedroom',
+  //   'Dining',
+  //   'Workspace',
+  //   'Decoration',
+  //   'Others',
+  // ];
 
   useEffect(() => {
-    getProducts(selectedCategory);
-  }, [selectedCategory]);
+    setProducts([]);
+    getProducts();
+  }, [category]);
 
-  const getProducts = async (page = 1) => {
-    const res = await axios.get(
-      `/v2/api/${
-        process.env.REACT_APP_API_PATH
-      }/products?category=${encodeURIComponent(selectedCategory.toLowerCase())}&page=${page}`
-    );
-    console.log(selectedCategory, res);
-    setProducts(res.data.products);
-    setPagination(res.data.pagination);
+  // const getProducts = async (page = 1) => {
+  //   const res = await axios.get(
+  //     `/v2/api/${
+  //       process.env.REACT_APP_API_PATH
+  //     }/products?category=${encodeURIComponent(
+  //       category.toLowerCase()
+  //     )}&page=${page}`
+  //   );
+
+  //   console.log(res);
+  //   setProducts(res.data.products);
+  //   setPagination(res.data.pagination);
+  // };
+
+  const getProducts = async ( page = 1 ) => {
+    setProducts([]);
+
+    const page1 = page * 2 - 1;  // First page in the pair (1, 3, 5, etc.)
+    const page2 = page * 2;      // Second page in the pair (2, 4, 6, etc.)
+
+    const [res1, res2] = await Promise.all([
+      axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products?category=${encodeURIComponent(category.toLowerCase())}&page=${page1}`),
+      axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products?category=${encodeURIComponent(category.toLowerCase())}&page=${page2}`)
+    ]);
+
+    console.log(res1, res2);
+    const products = res1.data.products.length < 10 ? 
+    res1.data.products :
+    [...res1.data.products, ...res2.data.products];
+    
+    setProducts(products);
+
+    setPagination({
+      ...res1.data.pagination,
+      total_pages: Math.ceil(res1.data.pagination.total_pages / 2)
+    });
   };
 
   const addToCart = async (id) => {
@@ -61,7 +94,7 @@ const Products = () => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             Products
@@ -74,28 +107,48 @@ const Products = () => {
             className="list-group pe-3 position-sticky"
             style={{ top: '128px' }}
           >
-            <a
-              href="#"
+            {/* <a
+              href="/"
               className={`list-group-item list-group-item-action fw-bold ${
                 selectedCategory === '' ? 'active' : ''
               }`}
               aria-current={selectedCategory === '' ? 'true' : 'false'}
-              onClick={() => setSelectedCategory('')}
+              onClick={(e) => {e.preventDefault();setSelectedCategory('')}}
             >
               All
-            </a>
-            {categories.map((category) => (
+            </a> */}
+            <Link
+              to={`/products`}
+              className={`list-group-item list-group-item-action fw-bold ${
+                category === '' ? 'active' : ''
+              }`}
+            >
+              All
+            </Link>
+            {/* {PRODUCTS_CATEGORIES.map((category) => (
               <a
                 key={category}
-                href="#"
+                href="/"
                 className={`list-group-item list-group-item-action fw-bold ${
                   selectedCategory === category ? 'active' : ''
                 }`}
                 aria-current={selectedCategory === category ? 'true' : 'false'}
-                onClick={() => setSelectedCategory(category)}
+                onClick={(e) => {e.preventDefault(); setSelectedCategory(category)}}
               >
                 {category}
               </a>
+            ))} */}
+            {PRODUCTS_CATEGORIES.map((tempCategory) => (
+              <Link
+                // to={`/products/${tempCategory.toLowerCase()}`}
+                to={`/products?category=${encodeURIComponent(tempCategory)}`}
+                key={tempCategory}
+                className={`list-group-item list-group-item-action fw-bold ${
+                  category === tempCategory ? 'active' : ''
+                }`}
+              >
+                {tempCategory}
+              </Link>
             ))}
             {/* <a href="#" className="list-group-item list-group-item-action active" aria-current="true">All</a>
             <a href="#" className="list-group-item list-group-item-action">Living Room</a>
@@ -107,7 +160,7 @@ const Products = () => {
           </div>
         </div>
         <div className="col-9">
-          <h1 className="fs-2 mb-3">{selectedCategory ? selectedCategory : 'All'}</h1>
+          <h1 className="fs-2 mb-3">{category || 'All'}</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
             vitae voluptatum consequuntur expedita in minima.
@@ -115,7 +168,7 @@ const Products = () => {
           <div>
             <div className="mt-4 mb-2 d-flex justify-content-between align-items-center">
               <p>
-                <span>41</span> items
+                <span>{products.length}</span> items
               </p>
               <div className="d-flex align-items-center">
                 <p className="me-1">Sort by:</p>
@@ -130,22 +183,22 @@ const Products = () => {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/">
                         Name (A-Z)
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/">
                         Name (Z-A)
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/">
                         Price (high-low)
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a className="dropdown-item" href="/">
                         Price (low-high)
                       </a>
                     </li>
@@ -158,7 +211,7 @@ const Products = () => {
               {products.map((product) => (
                 <div key={product.id} className="col-3 mt-4">
                   <div className="card w-100 border-0">
-                    <Link to={`/product/${product.id}`}>
+                    <NavLink to={`/product/${product.id}`}>
                       <img
                         src={product.imageUrl}
                         className="card-img-top"
@@ -175,7 +228,7 @@ const Products = () => {
                           <del>${product.origin_price.toLocaleString()}</del>
                         </div>
                       </div>
-                    </Link>
+                    </NavLink>
                     <div className="card-footer d-flex w-100 mt-2">
                       <input
                         type="text"
@@ -214,7 +267,7 @@ const Products = () => {
                 </div>
               ))} */}
             </div>
-            <Pagination pagination={pagination} changePage={getProducts}/>
+            <Pagination pagination={pagination} changePage={getProducts} />
             {/* <nav aria-label="..." className="mt-4">
               <ul className="pagination fw-bold justify-content-end">
                 <li className={`page-item disabled=${!pagination.has_pre}`}>
