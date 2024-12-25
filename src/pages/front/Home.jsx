@@ -124,6 +124,7 @@ const Home = () => {
         </section>
 
         <section className="section-recommendation container">
+          {/* TODO: Make it scrollable. */}
           <h2 className="fs-4 text-center mb-6">Recommended by 1000+ Customers</h2>
           <div className="row">
             {Array.from({ length: 4 }, (_, index) => (

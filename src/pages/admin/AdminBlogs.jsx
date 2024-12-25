@@ -143,7 +143,7 @@ const AdminProducts = () => {
                       day: 'numeric',
                     };
 
-                    return date.toLocaleString('en-US', options);
+                    return date.toLocaleString('zh-TW', options);
                   })()}
                 </td>
                 <td>{article.author}</td>

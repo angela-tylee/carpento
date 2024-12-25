@@ -5,6 +5,10 @@ import axios from 'axios';
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [coupon, setCoupon] = useState({
+    code: '',
+    success: null,
+  });
 
   const getCart = async () => {
     const res = await axios.get(
@@ -17,12 +21,15 @@ const Cart = () => {
   const updateQty = async (cartItem, newQty) => {
     setIsLoading(true);
     try {
-      await axios.put(`/v2/api/${process.env.REACT_APP_API_PATH}/cart/${cartItem.id}`, {
-        data: {
-          product_id: cartItem.product_id,
-          qty: newQty
+      await axios.put(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${cartItem.id}`,
+        {
+          data: {
+            product_id: cartItem.product_id,
+            qty: newQty,
+          },
         }
-      });
+      );
       setIsLoading(false);
       getCart();
     } catch (error) {
@@ -33,7 +40,34 @@ const Cart = () => {
 
   useEffect(() => {
     getCart();
-  }, []);
+  }, [coupon.success]);
+
+  // const handleChange = (e) => {
+  //   setCoupon(e.target.value);
+  // }
+
+  const applyCoupon = async () => {
+    // setIsLoading(true);
+    try {
+      const res = await axios.post(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/coupon`,
+        {
+          data: {
+            code: coupon.code,
+          },
+        }
+      );
+      console.log(res);
+      coupon.success = res.data.success;
+
+      // setIsLoading(false);
+      getCart();
+    } catch (error) {
+      console.log(error);
+      coupon.success = false;
+      // setIsLoading(false);
+    }
+  };
 
   return (
     <main className="container mb-7">
@@ -89,7 +123,9 @@ const Cart = () => {
                             className="btn btn-outline-secondary text-dark"
                             type="button"
                             id="button-addon1"
-                            onClick={() => updateQty(cartItem, cartItem.qty - 1)}
+                            onClick={() =>
+                              updateQty(cartItem, cartItem.qty - 1)
+                            }
                             disabled={isLoading || cartItem.qty === 1}
                           >
                             <i className="bi bi-dash"></i>
@@ -106,7 +142,9 @@ const Cart = () => {
                             className="btn btn-outline-secondary text-dark"
                             type="button"
                             id="button-addon1"
-                            onClick={() => updateQty(cartItem, cartItem.qty + 1)}
+                            onClick={() =>
+                              updateQty(cartItem, cartItem.qty + 1)
+                            }
                             disabled={isLoading}
                           >
                             <i className="bi bi-plus"></i>
@@ -124,32 +162,58 @@ const Cart = () => {
 
             <div className="col-4">
               <div className="bg-secondary p-3">
-                <h5 className="mb-2">Order Summary</h5>
-                <div className="row py-1 border-top border-1 border-gray">
+                <h5 className="pb-1 mb-1 border-bottom border-1 border-gray">Order Summary</h5>
+                <div className="row py-1">
                   <h6 className="col-6">Subtotal</h6>
-                  <p className="col-6 text-end">${cart.total?.toLocaleString()}</p>
+                  <p className="col-6 text-end">
+                    ${cart.total?.toLocaleString()}
+                  </p>
+                </div>
+                <div className="row py-1">
+                  <h6 className="col-6">Discount</h6>
+                  <p className="col-6 text-end">
+                    ${(cart.final_total - cart.total)?.toLocaleString()}
+                  </p>
                 </div>
                 <div className="row py-1">
                   <h6 className="col-12 mb-1">Promo Code</h6>
                   <div className="input-group">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control ${coupon.success === null ? '' : 
+                        (coupon.success ? 'is-valid' : 'is-invalid')
+                      }`}
                       aria-label="Example text with button addon"
                       aria-describedby="button-addon1"
+                      value={coupon.code}
+                      // onChange={handleChange}
+                      name="code"
+                      onChange={(e) => {
+                        setCoupon({
+                          ...coupon,
+                          code: e.target.value});
+                        console.log(coupon.code, coupon.success);
+                      }}
                     />
                     <button
                       className="btn btn-outline-dark"
                       type="button"
                       id="button-addon1"
+                      onClick={applyCoupon}
+                      disabled={isLoading}
                     >
                       Apply
                     </button>
+                    <div class="valid-feedback">coupon applied!</div>
+                    {/* FIXME: feedback not showing immediately. */}
+                    <div class="invalid-feedback">cannot find this coupon!</div>
                   </div>
                 </div>
                 <div className="row py-1 border-top border-1 border-gray">
                   <h6 className="col-6">Total</h6>
-                  <p className="col-6 text-end">${cart.final_total?.toLocaleString()}</p>
+                  <p className="col-6 text-end">
+                    ${cart.final_total?.toLocaleString()}
+                  </p>
                 </div>
                 <div className="row mt-3">
                   <div className="col-12">

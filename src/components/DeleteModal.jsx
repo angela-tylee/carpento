@@ -1,4 +1,4 @@
-function DeleteModal({ id, text, handleDelete,closeDeleteModal}) {
+function DeleteModal({ id, text, handleDelete, closeDeleteModal}) {
   return (
     <div
       className='modal fade'
