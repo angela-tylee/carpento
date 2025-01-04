@@ -463,14 +463,15 @@ const Checkout = () => {
                 </div>
 
                 <div className="row py-1">
-                  <div className="col-8 d-flex align-items-center">
+                  <div className="col-9 d-flex align-items-center">
                     {/* TODO: add discount */}
                     <h6>Promo Code</h6>
                     <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
-                      discount
+                    {cart.carts && cart.carts[0].coupon.code}
+                    <i className="bi bi-x"></i>
                     </span>
                   </div>
-                  <p className="col-4 text-end">-$40</p>
+                  <p className="col-3 text-end">${cart.final_total - cart.total}</p>
                 </div>
 
                 <div className="row pt-2">

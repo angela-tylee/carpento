@@ -80,7 +80,7 @@ const AdminCoupons = () => {
       />
       <DeleteModal 
         closeDeleteModal={closeDeleteModal}
-        text={tempCoupon.title}
+        text={tempCoupon.code}
         id={tempCoupon.id}
         handleDelete={deleteCoupon}
       />

@@ -36,7 +36,7 @@ const Return = () => {
                     <strong>Receive a Refund</strong>: Once we receive and inspect the returned item, we’ll process your refund. Refunds will be issued to the original form of payment within 7-10 business days.
                   </li>
                 </ol>
-                <img src="../../images/return-flowchart-light.svg" alt="" />
+                <img src="../../images/return-flowchart-light.svg" alt="return-flowchart" width="100%" />
                 <h2 className="fs-4 mt-5">Non-Refundable Items</h2>
                 <ul className="mt-2 ps-4">
                   <li className="mt-1">

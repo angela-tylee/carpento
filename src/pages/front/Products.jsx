@@ -267,6 +267,7 @@ const Products = () => {
                 </div>
               ))} */}
             </div>
+            {/* TODO: `current_page` is not suitable for this page. */}
             <Pagination pagination={pagination} changePage={getProducts} />
             {/* <nav aria-label="..." className="mt-4">
               <ul className="pagination fw-bold justify-content-end">

@@ -6,7 +6,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [coupon, setCoupon] = useState({
-    code: '',
+    // code: '',
     success: null,
   });
 
@@ -40,6 +40,7 @@ const Cart = () => {
 
   useEffect(() => {
     getCart();
+    console.log(coupon);
   }, [coupon.success]);
 
   // const handleChange = (e) => {
@@ -176,7 +177,13 @@ const Cart = () => {
                   </p>
                 </div>
                 <div className="row py-1">
-                  <h6 className="col-12 mb-1">Promo Code</h6>
+                  <div className="col-12 mb-1 d-flex">
+                    <h6>Promo Code</h6>
+                    <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
+                      {cart.carts && cart.carts[0].coupon.code}
+                      <i className="bi bi-x"></i>
+                      </span>
+                  </div>
                   <div className="input-group">
                     <input
                       type="text"
@@ -192,7 +199,6 @@ const Cart = () => {
                         setCoupon({
                           ...coupon,
                           code: e.target.value});
-                        console.log(coupon.code, coupon.success);
                       }}
                     />
                     <button
@@ -204,9 +210,9 @@ const Cart = () => {
                     >
                       Apply
                     </button>
-                    <div class="valid-feedback">coupon applied!</div>
+                    <div className="valid-feedback">coupon applied!</div>
                     {/* FIXME: feedback not showing immediately. */}
-                    <div class="invalid-feedback">cannot find this coupon!</div>
+                    <div className="invalid-feedback">cannot find this coupon!</div>
                   </div>
                 </div>
                 <div className="row py-1 border-top border-1 border-gray">

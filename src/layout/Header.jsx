@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { NavLink, Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 
@@ -45,7 +45,7 @@ const Header = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item dropdown">
-                  <Link
+                  <NavLink
                     to="/products"
                     className="nav-link dropdown-toggle"
                     role="button"
@@ -53,7 +53,7 @@ const Header = () => {
                     aria-expanded="false"
                   >
                     Products
-                  </Link>
+                  </NavLink>
                   <ul className="dropdown-menu">
                     {PRODUCTS_CATEGORIES.map((tempCategory) => (
                       <li key={tempCategory}>
@@ -98,14 +98,14 @@ const Header = () => {
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <Link to="/blogs" className="nav-link">
+                  <NavLink to="/blogs" className="nav-link">
                     Blog
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to="/about" className="nav-link">
+                  <NavLink to="/about" className="nav-link">
                     About
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -178,6 +178,7 @@ const Header = () => {
                   </div>
                   <div className="col-6 py-1">
                     {/* FIXME: heading 破版 */}
+                    {/* TODO: Make scrollbar if product items exceeds viewport height. */}
                     <h6>{cartItem.product.title}</h6>
                     <p>
                       QTY: <span>{cartItem.qty}</span>
