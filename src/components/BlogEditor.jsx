@@ -1,50 +1,10 @@
-// import React from 'react';
-// import { CKEditor, useCKEditorCloud } from '@ckeditor/ckeditor5-react';
-
-// const CKEditorDemo = () => {
-//     const cloud = useCKEditorCloud( {
-//         version: '44.1.0',
-//         premium: true
-//     } );
-
-//     if ( cloud.status === 'error' ) {
-//         return <div>Error!</div>;
-//     }
-
-//     if ( cloud.status === 'loading' ) {
-//         return <div>Loading...</div>;
-//     }
-
-//     const {
-//         ClassicEditor,
-//         Essentials,
-//         Paragraph,
-//         Bold,
-//         Italic
-//     } = cloud.CKEditor;
-
-//     // const { FormatPainter } = cloud.CKEditorPremiumFeatures;
-
-//     return (
-//         <CKEditor
-//             editor={ ClassicEditor }
-//             data={ '<p>Hello world!</p>' }
-//             config={ {
-//                 licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjYxMDIzOTksImp0aSI6IjVhNzZhODcyLTY2ZWUtNGVhZS1hOGU1LTkyYWJiNjY3ZDBmMSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkJPWCJdLCJ2YyI6IjU2MDFlNzQ0In0.i1dnT1MDXS2rbykMv7cg8Q2fLD3M-a6ynB4Zjqe3p1fKlqD44yEyKmI6rb43oimWwTmq_KSFBT48Do1tyBTGog',
-//                 plugins: [ Essentials, Paragraph, Bold, Italic],
-//                 toolbar: [ 'undo', 'redo', '|', 'bold', 'italic', '|', 'formatPainter' ]
-//             } }
-//         />
-//     );
-// };
-
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { CKEditor, useCKEditorCloud } from '@ckeditor/ckeditor5-react';
 
 import '../assets/scss/components/_blog-editor.scss';
 
 const LICENSE_KEY =
-  'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjYxMDIzOTksImp0aSI6IjVhNzZhODcyLTY2ZWUtNGVhZS1hOGU1LTkyYWJiNjY3ZDBmMSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkJPWCJdLCJ2YyI6IjU2MDFlNzQ0In0.i1dnT1MDXS2rbykMv7cg8Q2fLD3M-a6ynB4Zjqe3p1fKlqD44yEyKmI6rb43oimWwTmq_KSFBT48Do1tyBTGog';
+  'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NjYxMDIzOTksImp0aSI6IjVhNzZhODcyLTY2ZWUtNGVhZS1hOGU1LTkyYWJiNjY3ZDBmMSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkJPWCJdLCJ2YyI6IjU2MDFlNzQ0In0.i1dnT1MDXS2rbykMv7cg8Q2fLD3M-a6ynB4Zjqe3p1fKlqD44yEyKmI6rb43oimWwTmq_KSFBT48Do1tyBTGog';  
 
 const CKEditorDemo = ({ editorData, handleEditorChange }) => {
   const editorContainerRef = useRef(null);
@@ -54,7 +14,6 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
 
   useEffect(() => {
     setIsLayoutReady(true);
-
     return () => setIsLayoutReady(false);
   }, []);
 
@@ -195,7 +154,6 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
             },
           },
         },
-        // placeholder: 'Type or paste your content here!',
         placeholder: '請輸入內容',
         // table: {
         // 	contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
@@ -211,12 +169,13 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
         ref={editorContainerRef}
       >
         <div className="editor-container__editor">
+          {/* TODO: Add loading effect */}
           <div ref={editorRef}>
             {ClassicEditor && editorConfig && (
               <CKEditor
                 editor={ClassicEditor}
                 config={editorConfig}
-                data={editorData}
+                data={editorData || ''}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   handleEditorChange(data); // Update parent state when editor content changes

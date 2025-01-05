@@ -13,15 +13,10 @@ const AdminProducts = () => {
   // const [tempProduct, setTempProduct] = useState({});
   const [tempArticle, setTempArticle] = useState({});
 
-  const productModal = useRef(null);
   const articleModal = useRef(null);
   const deleteModal = useRef(null);
 
   useEffect(() => {
-    // productModal.current = new Modal('#productModal', {
-    //   backdrop: 'static',
-    //   keyboard: true,
-    // });
     articleModal.current = new Modal('#articleModal', {
       backdrop: 'static',
       keyboard: true,
@@ -44,18 +39,17 @@ const AdminProducts = () => {
     // setPagination(res.data.pagination);
   }
 
-  // async function getProducts() {
-  //   const res = await axios.get(
-  //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products`
-  //   );
-  //   console.log(res.data);
-  //   setProducts(res.data.products);
-  //   // setPagination(res.data.pagination);
-  // }
+  async function getArticle(id) {
+    const res = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
+    );
+    console.log(res.data);
+    setTempArticle(res.data.article);
+  }
 
-  function openArticleModal(type, article) {
+  function openArticleModal(type, id) {
     setType(type);
-    setTempArticle(article);
+    getArticle(id);
     articleModal.current.show();
   }
 
@@ -156,7 +150,7 @@ const AdminProducts = () => {
                   <button
                     type="button"
                     className="btn btn-primary btn-sm"
-                    onClick={() => openArticleModal('edit', article)}
+                    onClick={() => openArticleModal('edit', article.id)}
                   >
                     編輯
                   </button>
