@@ -44,7 +44,7 @@ const Product = () => {
   }, [id]);
 
   return (
-    <main className="container mb-6">
+    <main className="product container mb-6">
       {/* TODO: Separate breadcrumb component */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
@@ -92,7 +92,7 @@ const Product = () => {
               <span className="text-primary me-1">${product.price?.toLocaleString()} </span>
               <del> ${product.origin_price?.toLocaleString()}</del>
             </p>
-            <p className="mt-2">{product.content}</p>
+            <p className="mt-2">{product.description}</p>
 
             <div className="mt-3 w-100 d-flex align-items-center">
               {/* TODO: 元件化？ Separate quantity component -> Cart.jsx*/}
@@ -136,11 +136,33 @@ const Product = () => {
       </section>
 
       <section className="section-info pt-5 pb-6 border-bottom border-1 border-secondary">
-        <div className="col-9">
-          <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
-            Info
-          </h2>
-          <p className="mt-5">{product.content}</p>
+        <div className="col-9 section-info-tabs">
+          {/* <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">Info</h2> */}
+          {/* <p className="mt-5">{product.content}</p> */}
+          {/* TODO: 拆分成：Info (Overview, Features), Size (Dimension), Maintenance (Care) */}
+          {/* <p className="mt-5 product-content" dangerouslySetInnerHTML={{ __html: product.content }}></p> */}
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="info-tab-pane" aria-selected="true"><h5>Info</h5></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="size-tab-pane" aria-selected="false"><h5>Size</h5></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="maintenance-tab-pane" aria-selected="false"><h5>Care Instructions</h5></button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.info }}></p>
+            </div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.size }}></p>
+            </div>
+            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.maintenance }}></p>
+            </div>
+          </div>
         </div>
       </section>
 

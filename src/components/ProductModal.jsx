@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
+import BlogEditor from './BlogEditor';
 
 function ProductModal({ closeProductModal, getProducts, type, tempProduct, currentPage}) {
   // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
@@ -12,7 +13,11 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
     "price": 0,
     "unit": "",
     "description": "",
-    "content": "",
+    "content": {
+      "info": "",
+      "size": "",
+      "maintenance": ""
+    },
     "is_enabled": 1,
     "imageUrl": "",
     "imagesUrl": [
@@ -44,7 +49,11 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
         "price": 0,
         "unit": "unit",
         "description": "",
-        "content": "",
+        "content": {
+          "info": "",
+          "size": "",
+          "maintenance": ""
+        },
         "is_enabled": 1,
         "imageUrl": "",
         "imagesUrl": [
@@ -60,7 +69,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
     }
   },[type, tempProduct])
 
-  async function handleChange(e) {
+  async function handleChange(e, editorData) {
     const { name, value, checked, files } = e.target;
     // console.log(e.target);
     if (['price', 'origin_price'].includes(name)) {
@@ -80,6 +89,19 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
       //   ...tempData,
       //   "imageUrl": uploadImageUrl
       // })
+    } else if (name === 'content') {
+      setTempData({
+        ...tempData,
+        [name]: editorData,
+      })
+    } else if (['info', 'size', 'maintenance'].includes(name)) {
+      setTempData({
+        ...tempData,
+        content: {
+          ...tempData.content,
+          [name]: editorData
+        }
+      })
     } else {
       setTempData({
         ...tempData,
@@ -161,7 +183,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
           <div className='modal-body'>
             <div className='row'>
               <div className='col-sm-8'>
-                {/* <pre className='py-3'> { JSON.stringify(tempData) }</pre> */}
+                <pre className='py-3'> { JSON.stringify(tempData) }</pre>
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='title'>
                     標題
@@ -191,17 +213,27 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
                   </label>
                 </div>
                 <div className='form-group mb-2'>
-                  <label className='w-100' htmlFor='content'>
-                    說明內容
-                    <textarea
+                  {/* <label className='w-100' htmlFor='content'> */}
+                    {/* 說明內容 */}
+                    {/* <textarea
                       type='text'
                       id='content'
                       name='content'
                       placeholder='請輸入產品說明內容'
                       className='form-control'
+                      rows="10"
                       onChange={handleChange}
                       value={tempData.content}
-                    />
+                    /> */}
+                  {/* </label> */}
+                  <label htmlFor="info" className="w-100">產品介紹
+                    <BlogEditor editorData={tempData.content.info} handleEditorChange={data => handleChange({ target: { name: 'info' } }, data)} />
+                  </label>
+                  <label htmlFor="size" className="w-100">規格
+                    <BlogEditor editorData={tempData.content.size} handleEditorChange={data => handleChange({ target: { name: 'size' } }, data)} />
+                  </label>
+                  <label htmlFor="maintenance" className="w-100">保養說明
+                    <BlogEditor editorData={tempData.content.maintenance} handleEditorChange={data => handleChange({ target: { name: 'maintenance' } }, data)} />
                   </label>
                 </div>
                 <hr />

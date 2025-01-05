@@ -4,3 +4,25 @@
   // background-position: center center;
   // background-size: cover;
 }
+
+.blog {
+
+  h2, h3 {
+    font-size: 20px; // fs-5
+  }
+
+  h2 {
+    margin-top: 48px; // mt-5
+    padding-left: 8px; /* Equivalent to Bootstrap's ps-1 */
+    border-left: 5px solid $dark; /* Equivalent to border-start, border-5, and border-dark */
+  }
+
+  h3 {
+    margin-top: 32px; // mt-4
+  }
+
+  p {
+    margin-top: 32px; // mt-4
+  }
+  
+}
