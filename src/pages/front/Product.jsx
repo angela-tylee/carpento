@@ -58,6 +58,35 @@ const Product = () => {
     getProducts();
   }, [id]);
 
+  const getRecentlySeen = () => {
+    const recentlySeen = localStorage.getItem('recentlySeen');
+    return recentlySeen ? JSON.parse(recentlySeen) : [];
+  };
+
+  const addRecentlySeen = (product) => {
+    const recentlySeen = getRecentlySeen();
+    // Remove the product if it already exists
+    const updatedRecentlySeen = recentlySeen.filter((p) => p.id !== product.id);
+    // Add the product to the beginning of the array
+    updatedRecentlySeen.unshift(product);
+    // Store back in localStorage
+    localStorage.setItem('recentlySeen', JSON.stringify(updatedRecentlySeen));
+  };
+
+  const [recentlySeenProducts, setRecentlySeenProducts] = useState([]);
+
+  useEffect(() => {
+    // Find the full product object by ID
+    const productViewed = products.find((p) => p.id === id);
+    if (productViewed) {
+      addRecentlySeen(productViewed);
+    }
+    // addRecentlySeen(id);
+    const items = getRecentlySeen();
+    setRecentlySeenProducts(items);
+    console.log(items, recentlySeenProducts);
+  }, [id]);
+
   return (
     <main className="product container mb-6">
       {/* TODO: Separate breadcrumb component */}
@@ -249,6 +278,86 @@ const Product = () => {
         </div>
       </section>
 
+      {recentlySeenProducts.length === 0 ? '' : (
+        // TODO: 資料沒有及時更新
+        <section className="section-seen pt-2">
+          <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
+            Recently Seen
+          </h2>
+          <div className="mt-5">
+            {/* Swiper Component */}
+            <Swiper
+              modules={[Navigation, Pagination]}
+              spaceBetween={10} // space between slides
+              slidesPerView={5} // number of products per slide
+              // loop={true} // enable infinite loop
+              navigation={true} // enable navigation buttons
+              pagination={{ clickable: true }}
+              scrollbar={{ draggable: true }}
+              onSlideChange={() => console.log('slide change')}
+              onSwiper={(swiper) => console.log(swiper)}
+              breakpoints={{
+                // Responsive breakpoints
+                320: {
+                  slidesPerView: 1, // 1 product per slide on small screens
+                },
+                768: {
+                  slidesPerView: 2, // 2 products per slide on medium screens
+                },
+                1024: {
+                  slidesPerView: 5, // 4 products per slide on large screens
+                },
+              }}
+            >
+              <div className="row">
+                {recentlySeenProducts.slice(0, 5).map((item) => (
+                  <SwiperSlide key={item.id}>
+                    {/* <div className="col-12 col-md-3"> */}
+                    <div className="card w-100 border-0">
+                      <img
+                        src={item.imageUrl}
+                        className="card-img-top"
+                        alt={item.title}
+                      />
+                      <div className="card-body p-0 mt-2">
+                        <h5 className="card-title fs-6 fw-bold">
+                          {item.title}
+                        </h5>
+                        <div className="card-text">
+                          <span className="text-primary">$1,500</span>
+                          <del>$2,000</del>
+                        </div>
+                        <div className="d-flex w-100 mt-2">
+                          <input
+                            type="number"
+                            name=""
+                            id=""
+                            className="form-control w-25 text-center"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-primary ms-1 w-75"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    {/* </div> */}
+                  </SwiperSlide>
+                ))}
+              </div>
+              <div className="swiper-button-next"></div>
+              <div className="swiper-button-prev"></div>
+              <div className="swiper-scrollbar"></div>
+            </Swiper>
+          </div>
+        </section>
+      )}
+      {!products
+          .some(
+            (item) => item.category === product.category && item.id !== id
+          ) ? "" :
       <section className="section-related pt-2">
         <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
           You might also need...
@@ -366,7 +475,7 @@ const Product = () => {
               ))}
           </div> */}
         </div>
-      </section>
+      </section>}
     </main>
   );
 };
