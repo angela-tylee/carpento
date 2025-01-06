@@ -105,7 +105,7 @@ const AdminCoupons = () => {
             <th scope="col" width="30%">
               說明
             </th>
-            <th scope="col" width="10%" className="text-center">
+            <th scope="col" width="20%" className="text-end">
               折扣
             </th>
             <th scope="col" width="20%">
@@ -127,8 +127,9 @@ const AdminCoupons = () => {
                 <td>
                   {coupon.title}
                 </td>
-                <td className="text-center">{100 - coupon.percent}% off</td>
-                <td className="text-end">{(() => {
+                {/* <td className="text-center">{100 - coupon.percent}% off</td> */}
+                <td className="text-end">{coupon.percent % 10 === 0  ? `${coupon.percent / 10}折` : `${coupon.percent}折`}</td>
+                <td className="text-start">{(() => {
                     const date = new Date(coupon.due_date);
 
                     const options = {

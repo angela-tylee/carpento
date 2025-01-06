@@ -2,13 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BlogEditor from './BlogEditor';
 
-function ArticleModal({
-  closeArticleModal,
-  getArticles,
-  type,
-  tempArticle,
-  openDeleteModal,
-}) {
+function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openDeleteModal }) {
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     title: '',
@@ -106,12 +100,13 @@ function ArticleModal({
   }
 
   async function submit() {
+    console.log(tempArticle.id);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`;
       let method = 'post';
       if (type === 'edit') {
         method = 'put';
-        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${tempArticle.id}`;
+        api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${tempArticle.id}`;
       }
       const res = await axios[method](api, {
         data: tempData,

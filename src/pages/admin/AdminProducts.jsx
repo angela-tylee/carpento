@@ -150,7 +150,7 @@ const AdminProducts = () => {
                 <td>{product.title}</td>
                 <td>
                   <span className="badge rounded-pill px-1 bg-primary-subtle text-dark">
-                    {product.category}
+                    {product.category.toLowerCase()}
                   </span>
                 </td>
                 <td className="text-end">{product.price.toLocaleString()}</td>

@@ -108,7 +108,7 @@ const AdminRoutes = () => {
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
                     <NavLink to="/" className="nav-link">
-                      回到前台<i class="bi bi-arrow-return-left ms-1 fs-7"></i>
+                      回到前台<i className="bi bi-arrow-return-left ms-1 fs-7"></i>
                     </NavLink>
                   </li>
                 </ul>

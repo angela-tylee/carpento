@@ -24,7 +24,7 @@ function OrderModal({
 
   // console.log(tempData, selectedOrder);
   useEffect(() => {
-    // console.log(type, tempProduct);
+    console.log(selectedOrder);
     // if(type === 'create') {
     //   setTempData({
     //     "title": "",
@@ -138,7 +138,7 @@ function OrderModal({
                       <p>小計：</p>{' '}
                       <span>${tempData?.total?.toLocaleString()}</span>
                     </div>
-                    {/* TODO: coupon */}
+                    {/* TODO: coupon order API 沒有 coupon code */}
                     <div className="d-flex justify-content-between">
                       <p>折扣碼：</p> <span>{tempData.coupon}</span>
                     </div>

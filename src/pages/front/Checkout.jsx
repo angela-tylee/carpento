@@ -50,6 +50,7 @@ const Checkout = () => {
     console.log(order);
 
     try {
+      // TODO: 清空表單、跳轉至 checkout-success
       const res = await axios.post(
         `/v2/api/${process.env.REACT_APP_API_PATH}/order`,
         order
@@ -467,7 +468,7 @@ const Checkout = () => {
                     {/* TODO: add discount */}
                     <h6>Promo Code</h6>
                     <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
-                    {cart.carts && cart.carts[0].coupon.code}
+                    {/* {(cart.carts && cart.carts[0].coupon.code) || ''} */}
                     <i className="bi bi-x"></i>
                     </span>
                   </div>

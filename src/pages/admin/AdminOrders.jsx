@@ -203,7 +203,7 @@ const AdminOrder = () => {
               <div className="mt-2">
                 <p>小計：${selectedOrder?.total?.toLocaleString()}</p>
                 {/* TODO: coupon */}
-                <p>折扣碼：{selectedOrder.coupon}</p>
+                <p>折扣碼：{Object.values(selectedOrder.products)[0]?.coupon?.code || '無'}</p>
                 <p>
                   總金額：${selectedOrder?.total?.toLocaleString()}{' '}
                   <span

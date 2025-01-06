@@ -4,6 +4,7 @@ import axios from 'axios';
 
 const Product = () => {
   const [product, setProduct] = useState({});
+  const [products, setProducts] = useState([]);
   const { id } = useParams();
   const [cartQuantity, setCartQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,13 @@ const Product = () => {
     console.log(res);
     setProduct(res.data.product);
   };
+
+  const getProducts = async () => {
+    const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
+    console.log(res);
+    setProducts(res.data.products);
+  };
+
 
   const addToCart = async () => {
     const data = {
@@ -41,19 +49,22 @@ const Product = () => {
   useEffect(() => {
     // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
     getProduct(id);
+    getProducts();
   }, [id]);
 
   return (
     <main className="product container mb-6">
       {/* TODO: Separate breadcrumb component */}
+      {/* TODO: Add links */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>
-          <li className="breadcrumb-item">Living Room</li>
+          {/* TODO: Make first letter capitalized */}
+          <li className="breadcrumb-item">{product.category}</li>
           <li className="breadcrumb-item active" aria-current="page">
-            Product
+            {product.title}
           </li>
         </ol>
       </nav>
@@ -168,25 +179,26 @@ const Product = () => {
 
       <section className="section-related pt-2">
         <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
-          Related Products
+          You might also need...
         </h2>
         <div className="mt-5">
           <div className="row">
-            {Array(4)
-              .fill()
-              .map((_, index) => (
-                <div className="col-3" key={index}>
+            {products
+              .filter(item => item.category === product.category && item.id !== id)
+              .slice(0, 4)
+              .map(item => (
+                <div className="col-3" key={item.id}>
                   <div
                     className="card w-100 border-0"
                     style={{ width: '18rem' }}
                   >
                     <img
-                      src="../assets/images/products/living-room/cabinet-3.jpeg"
+                      src={item.imageUrl}
                       className="card-img-top"
                       alt="Product"
                     />
                     <div className="card-body p-0 mt-2">
-                      <h5 className="card-title fs-6 fw-bold">Card title</h5>
+                      <h5 className="card-title fs-6 fw-bold">{item.title}</h5>
                       <div className="card-text">
                         <span className="text-primary">$1,500</span>
                         <del>$2,000</del>

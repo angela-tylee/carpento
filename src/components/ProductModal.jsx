@@ -242,7 +242,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
                       >
                         <option value='' disabled>請選擇分類</option>
                       {PRODUCTS_CATEGORIES.map((category) => (
-                        <option key={category} value={category.toLowerCase()}>{category}</option>
+                        <option key={category} value={category}>{category}</option>
                       ))}
                       </select>
                     </label>
