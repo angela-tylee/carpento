@@ -15,6 +15,9 @@ const Products = () => {
   const [cartQuantity, setCartQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [sortCriteria, setSortCriteria] = useState(null);
+  const [sortedProducts, setSortedProducts] = useState([...products]);
+
   // const categories = [
   //   'Living Room',
   //   'Bedroom',
@@ -26,8 +29,11 @@ const Products = () => {
 
   useEffect(() => {
     setProducts([]);
+    // setSortCriteria(null);
+    console.log(sortCriteria);
     getProducts();
-  }, [category]);
+    handleSort(null); // TODO: 這是對的嗎??
+  }, [category, sortCriteria]);
 
   // const getProducts = async (page = 1) => {
   //   const res = await axios.get(
@@ -43,27 +49,41 @@ const Products = () => {
   //   setPagination(res.data.pagination);
   // };
 
-  const getProducts = async ( page = 1 ) => {
+  const getProducts = async (page = 1) => {
     setProducts([]);
 
-    const page1 = page * 2 - 1;  // First page in the pair (1, 3, 5, etc.)
-    const page2 = page * 2;      // Second page in the pair (2, 4, 6, etc.)
+    const page1 = page * 2 - 1; // First page in the pair (1, 3, 5, etc.)
+    const page2 = page * 2; // Second page in the pair (2, 4, 6, etc.)
 
     const [res1, res2] = await Promise.all([
-      axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products?category=${encodeURIComponent(category.toLowerCase())}&page=${page1}`),
-      axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products?category=${encodeURIComponent(category.toLowerCase())}&page=${page2}`)
+      axios.get(
+        `/v2/api/${
+          process.env.REACT_APP_API_PATH
+        }/products?category=${encodeURIComponent(
+          category.toLowerCase()
+        )}&page=${page1}`
+      ),
+      axios.get(
+        `/v2/api/${
+          process.env.REACT_APP_API_PATH
+        }/products?category=${encodeURIComponent(
+          category.toLowerCase()
+        )}&page=${page2}`
+      ),
     ]);
 
     console.log(res1, res2);
-    const products = res1.data.products.length < 10 ? 
-    res1.data.products :
-    [...res1.data.products, ...res2.data.products];
-    
+    const products =
+      res1.data.products.length < 10
+        ? res1.data.products
+        : [...res1.data.products, ...res2.data.products];
+
     setProducts(products);
+    console.log(products);
 
     setPagination({
       ...res1.data.pagination,
-      total_pages: Math.ceil(res1.data.pagination.total_pages / 2)
+      total_pages: Math.ceil(res1.data.pagination.total_pages / 2),
     });
   };
 
@@ -87,6 +107,36 @@ const Products = () => {
       console.log(error);
       setIsLoading(false);
     }
+  };
+
+  const handleSort = (criteria, e) => {
+    console.log(e);
+    // const criteria = e.target.getAttribute("data-criteria");
+    // TODO: 總感覺這樣有點繞，還是 handleSort(criteria) 比較直觀，但要怎麼取到 e.target.innText 且能讓全域取得？
+    const label = e?.target.innerText;
+    setSortCriteria(label);
+
+    const sorted = [...products].sort((a, b) => {
+      switch (criteria) {
+        case 'newest':
+          return a.num - b.num;
+        case 'oldest':
+          return b.num - a.num;
+        case 'name-asc':
+          return a.title.localeCompare(b.title);
+        case 'name-desc':
+          return b.title.localeCompare(a.title);
+        case 'price-high-low':
+          return b.price - a.price;
+        case 'price-low-high':
+          return a.price - b.price;
+        default:
+          return 0;
+      }
+    });
+
+    setSortedProducts(sorted);
+    console.log(sortedProducts);
   };
 
   return (
@@ -179,36 +229,88 @@ const Products = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Select
+                    {sortCriteria || 'Select'}
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="name-asc"
+                        onClick={(e) => {
+                          handleSort('name-asc', e);
+                        }}
+                      >
                         Name (A-Z)
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="name-desc"
+                        onClick={(e) => {
+                          handleSort('name-desc', e);
+                        }}
+                      >
                         Name (Z-A)
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="price-high-low"
+                        onClick={(e) => {
+                          handleSort('price-high-low', e);
+                        }}
+                      >
                         Price (high-low)
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="price-low-high"
+                        onClick={(e) => {
+                          handleSort('price-low-high', e);
+                        }}
+                      >
                         Price (low-high)
-                      </a>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="price-high-low"
+                        onClick={(e) => {
+                          handleSort('newest', e);
+                        }}
+                      >
+                        Newest Arrivals
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        type="button"
+                        // data-criteria="price-low-high"
+                        onClick={(e) => {
+                          handleSort('oldest', e);
+                        }}
+                      >
+                        Oldest Arrivals
+                      </button>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
             <div className="row">
-              {/* TODO: make products multiple of 4 to fill the page (12, 16, 20) */}
-              {products.map((product) => (
+              {/* TODO: product card 元件化 */}
+              {(sortCriteria ? sortedProducts : products).map((product) => (
                 <div key={product.id} className="col-3 mt-4">
                   <div className="card w-100 border-0">
                     <NavLink to={`/product/${product.id}`}>

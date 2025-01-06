@@ -20,6 +20,7 @@
 - Bootstrap
   - Bootstrap Icon
 - CKEditor
+- Swiper
 
 ### What I learned
 
@@ -33,6 +34,7 @@
   - How to write JSX to import image, add inline style, comment, write loop and conditional JS inside.
 - CKEditor
 - React Hook Form
+- Swiper
 
 
 ### Continued development

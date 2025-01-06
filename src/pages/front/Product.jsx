@@ -1,6 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
 
 const Product = () => {
   const [product, setProduct] = useState({});
@@ -18,33 +23,34 @@ const Product = () => {
   };
 
   const getProducts = async () => {
-    const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
+    const res = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+    );
     console.log(res);
     setProducts(res.data.products);
   };
-
 
   const addToCart = async () => {
     const data = {
       data: {
         product_id: product.id,
         qty: cartQuantity,
-      }
-    }
+      },
+    };
     setIsLoading(true);
     try {
       // console.log(data);
       const res = await axios.post(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
-        data,
-      )
+        data
+      );
       console.log(res);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
@@ -100,7 +106,9 @@ const Product = () => {
           <div className="col-6">
             <h1 className="fs-2">{product.title}</h1>
             <p className="fs-5 mt-1">
-              <span className="text-primary me-1">${product.price?.toLocaleString()} </span>
+              <span className="text-primary me-1">
+                ${product.price?.toLocaleString()}{' '}
+              </span>
               <del> ${product.origin_price?.toLocaleString()}</del>
             </p>
             <p className="mt-2">{product.description}</p>
@@ -112,7 +120,9 @@ const Product = () => {
                   className="btn btn-outline-secondary text-dark"
                   type="button"
                   id="button-addon1"
-                  onClick={() => setCartQuantity((pre) => pre === 1 ? pre : pre - 1)}
+                  onClick={() =>
+                    setCartQuantity((pre) => (pre === 1 ? pre : pre - 1))
+                  }
                 >
                   <i className="bi bi-dash-lg "></i>
                 </button>
@@ -154,24 +164,86 @@ const Product = () => {
           {/* <p className="mt-5 product-content" dangerouslySetInnerHTML={{ __html: product.content }}></p> */}
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
-              <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="info-tab-pane" aria-selected="true"><h5>Info</h5></button>
+              <button
+                className="nav-link active"
+                id="home-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#home-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="info-tab-pane"
+                aria-selected="true"
+              >
+                <h5>Info</h5>
+              </button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="size-tab-pane" aria-selected="false"><h5>Size</h5></button>
+              <button
+                className="nav-link"
+                id="profile-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#profile-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="size-tab-pane"
+                aria-selected="false"
+              >
+                <h5>Size</h5>
+              </button>
             </li>
             <li className="nav-item" role="presentation">
-              <button className="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="maintenance-tab-pane" aria-selected="false"><h5>Care Instructions</h5></button>
+              <button
+                className="nav-link"
+                id="contact-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#contact-tab-pane"
+                type="button"
+                role="tab"
+                aria-controls="maintenance-tab-pane"
+                aria-selected="false"
+              >
+                <h5>Care Instructions</h5>
+              </button>
             </li>
           </ul>
           <div className="tab-content" id="myTabContent">
-            <div className="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabIndex="0">
-              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.info }}></p>
+            <div
+              className="tab-pane fade show active"
+              id="home-tab-pane"
+              role="tabpanel"
+              aria-labelledby="home-tab"
+              tabIndex="0"
+            >
+              <p
+                className="mt-5 ps-2 product-content"
+                dangerouslySetInnerHTML={{ __html: product.content?.info }}
+              ></p>
             </div>
-            <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex="0">
-              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.size }}></p>
+            <div
+              className="tab-pane fade"
+              id="profile-tab-pane"
+              role="tabpanel"
+              aria-labelledby="profile-tab"
+              tabIndex="0"
+            >
+              <p
+                className="mt-5 ps-2 product-content"
+                dangerouslySetInnerHTML={{ __html: product.content?.size }}
+              ></p>
             </div>
-            <div className="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabIndex="0">
-              <p className="mt-5 ps-2 product-content" dangerouslySetInnerHTML={{ __html: product.content?.maintenance }}></p>
+            <div
+              className="tab-pane fade"
+              id="contact-tab-pane"
+              role="tabpanel"
+              aria-labelledby="contact-tab"
+              tabIndex="0"
+            >
+              <p
+                className="mt-5 ps-2 product-content"
+                dangerouslySetInnerHTML={{
+                  __html: product.content?.maintenance,
+                }}
+              ></p>
             </div>
           </div>
         </div>
@@ -182,7 +254,78 @@ const Product = () => {
           You might also need...
         </h2>
         <div className="mt-5">
-          <div className="row">
+          {/* Swiper Component */}
+          <Swiper
+            modules={[Navigation, Pagination]}
+            spaceBetween={10} // space between slides
+            slidesPerView={5} // number of products per slide
+            // loop={true} // enable infinite loop
+            navigation={true} // enable navigation buttons
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+            onSlideChange={() => console.log('slide change')}
+            onSwiper={(swiper) => console.log(swiper)}
+            breakpoints={{
+              // Responsive breakpoints
+              320: {
+                slidesPerView: 1, // 1 product per slide on small screens
+              },
+              768: {
+                slidesPerView: 2, // 2 products per slide on medium screens
+              },
+              1024: {
+                slidesPerView: 5, // 4 products per slide on large screens
+              },
+            }}
+          >
+            <div className="row">
+              {products
+                .filter(
+                  (item) => item.category === product.category && item.id !== id
+                )
+                // .slice(0, 8)
+                .map((item) => (
+                  <SwiperSlide key={item.id}>
+                    {/* <div className="col-12 col-md-3"> */}
+                    <div className="card w-100 border-0">
+                      <img
+                        src={item.imageUrl}
+                        className="card-img-top"
+                        alt={item.title}
+                      />
+                      <div className="card-body p-0 mt-2">
+                        <h5 className="card-title fs-6 fw-bold">
+                          {item.title}
+                        </h5>
+                        <div className="card-text">
+                          <span className="text-primary">$1,500</span>
+                          <del>$2,000</del>
+                        </div>
+                        <div className="d-flex w-100 mt-2">
+                          <input
+                            type="number"
+                            name=""
+                            id=""
+                            className="form-control w-25 text-center"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-primary ms-1 w-75"
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    {/* </div> */}
+                  </SwiperSlide>
+                ))}
+            </div>
+            <div className="swiper-button-next"></div>
+            <div className="swiper-button-prev"></div>
+            <div className="swiper-scrollbar"></div>
+          </Swiper>
+          {/* <div className="row">
             {products
               .filter(item => item.category === product.category && item.id !== id)
               .slice(0, 4)
@@ -221,7 +364,7 @@ const Product = () => {
                   </div>
                 </div>
               ))}
-          </div>
+          </div> */}
         </div>
       </section>
     </main>
