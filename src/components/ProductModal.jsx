@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import BlogEditor from './BlogEditor';
 
 function ProductModal({ closeProductModal, getProducts, type, tempProduct, currentPage}) {
-  // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     "title": "",
@@ -29,18 +28,8 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
     ]
   })
 
-  // const categories = [
-  //   'Living Room',
-  //   'Bedroom',
-  //   'Dining',
-  //   'Workspace',
-  //   'Decoration',
-  //   'Others',
-  // ];
-
   useEffect(() => {
-    console.log(PRODUCTS_CATEGORIES);
-    console.log(type, tempProduct);
+
     if(type === 'create') {
       setTempData({
         "title": "",
@@ -67,6 +56,9 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
     } else if (type === 'edit') {
       setTempData(tempProduct)
     }
+
+    console.log(type, tempProduct);
+
   },[type, tempProduct])
 
   async function handleChange(e, editorData) {
@@ -95,13 +87,13 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
         [name]: editorData,
       })
     } else if (['info', 'size', 'maintenance'].includes(name)) {
-      setTempData({
+      setTempData( tempData => ({ 
         ...tempData,
         content: {
           ...tempData.content,
           [name]: editorData
         }
-      })
+      }))
     } else {
       setTempData({
         ...tempData,
@@ -127,11 +119,6 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
         ...tempData,
         "imageUrl": res.data.imageUrl
       })
-
-      // setTempData(prevData => ({
-      //   ...prevData,
-      //   imageUrl: res.data.imageUrl
-      // }));
 
       console.log(tempData);
     } catch (error) {
@@ -170,7 +157,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
         <div className='modal-content px-2 py-1'>
           <div className='modal-header'>
             <h1 className='modal-title fs-5' id='exampleModalLabel'>
-              { type === 'create' ? '建立新商品' : `編輯：${tempData.title}` }
+              { type === 'create' ? '建立新商品' : `編輯：${tempData?.title}` }
             </h1>
             <button
               type='button'
@@ -181,8 +168,9 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
             />
           </div>
           <div className='modal-body'>
-            <div className='row'>
+          <div className='row'>
               <div className='col-sm-8'>
+                <pre className='py-3'> { JSON.stringify(tempProduct) }</pre>
                 <pre className='py-3'> { JSON.stringify(tempData) }</pre>
                 <div className='form-group mb-2'>
                   <label className='w-100' htmlFor='title'>
@@ -212,6 +200,7 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
                     />
                   </label>
                 </div>
+                { tempData && 
                 <div className='form-group mb-2'>
                   {/* <label className='w-100' htmlFor='content'> */}
                     {/* 說明內容 */}
@@ -226,16 +215,19 @@ function ProductModal({ closeProductModal, getProducts, type, tempProduct, curre
                       value={tempData.content}
                     /> */}
                   {/* </label> */}
+                  {/* <label htmlFor="info" className="w-100">產品介紹
+                    <BlogEditor editorData={tempData.content} handleEditorChange={data => handleChange({ target: { name: 'content' } }, data)} />
+                  </label> */}
                   <label htmlFor="info" className="w-100">產品介紹
-                    <BlogEditor editorData={tempData.content.info} handleEditorChange={data => handleChange({ target: { name: 'info' } }, data)} />
+                    <BlogEditor editorData={tempData?.content?.info} handleEditorChange={data => handleChange({ target: { name: 'info' } }, data)} />
                   </label>
                   <label htmlFor="size" className="w-100">規格
-                    <BlogEditor editorData={tempData.content.size} handleEditorChange={data => handleChange({ target: { name: 'size' } }, data)} />
+                    <BlogEditor editorData={tempData?.content?.size} handleEditorChange={data => handleChange({ target: { name: 'size' } }, data)} />
                   </label>
                   <label htmlFor="maintenance" className="w-100">保養說明
-                    <BlogEditor editorData={tempData.content.maintenance} handleEditorChange={data => handleChange({ target: { name: 'maintenance' } }, data)} />
+                    <BlogEditor editorData={tempData?.content?.maintenance} handleEditorChange={data => handleChange({ target: { name: 'maintenance' } }, data)} />
                   </label>
-                </div>
+                </div>}
                 <hr />
                 <div className='row'>
                   <div className='form-group mb-2 col-md-6'>

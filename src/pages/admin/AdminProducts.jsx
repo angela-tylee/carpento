@@ -67,8 +67,8 @@ const AdminProducts = () => {
   }
 
   function openProductModal(type, product) {
-    setType(type);
     setTempProduct(product);
+    setType(type);
     productModal.current.show();
   }
 

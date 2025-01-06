@@ -60,10 +60,10 @@ function ArticleModal({
       //     [name]: tempData.create_at,
       //   })
     } else if (['description', 'content'].includes(name)) {
-      setTempData({
+      setTempData( tempData => ({
         ...tempData,
         [name]: editorData,
-      });
+      }));
     } else {
       setTempData({
         ...tempData,

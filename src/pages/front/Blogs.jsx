@@ -13,7 +13,7 @@ const Blogs = () => {
     );
     console.log(res);
     setArticles(res.data.articles);
-  })();
+  };
 
   useEffect(() => {
     getArticles();

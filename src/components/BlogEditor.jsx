@@ -11,11 +11,23 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
   const editorRef = useRef(null);
   const [isLayoutReady, setIsLayoutReady] = useState(false);
   const cloud = useCKEditorCloud({ version: '44.1.0' });
+  // const [editor, setEditor] = useState(null);
+
 
   useEffect(() => {
+    // console.log('BlogEditor useEffect - editorData:', editorData);
+    // console.log('BlogEditor useEffect - editor:', editor);
+    // if (editor && editorData !== editor.getData()) {
+    //   // Add a small delay
+    //   setTimeout(() => {
+    //     editor.setData(editorData || '');
+    //   }, 1000);
+    // }
     setIsLayoutReady(true);
     return () => setIsLayoutReady(false);
+
   }, []);
+  // }, [editorData, editor]);
 
   const { ClassicEditor, editorConfig } = useMemo(() => {
     if (cloud.status !== 'success' || !isLayoutReady) {
@@ -174,8 +186,13 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
             {ClassicEditor && editorConfig && (
               <CKEditor
                 editor={ClassicEditor}
+                ref={editorRef}
                 config={editorConfig}
                 data={editorData || ''}
+                // onReady={editor => {
+                //   console.log('CKEditor onReady');
+                //   setEditor(editor);
+                // }}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   handleEditorChange(data); // Update parent state when editor content changes
