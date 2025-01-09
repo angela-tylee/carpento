@@ -32,22 +32,24 @@ const Blogs = () => {
         </ol>
       </nav>
 
-      <section className="section-blogs mt-5">
+      <section className="section-blogs mt-3 mt-sm-5">
         {articles.map((article) => (
           <Link to={`/blog/${article.id}`} className="d-block" key={article.id}>
-            <div className="d-flex mb-4">
-              <div className="flex-shrink-0">
-                <img src={article.image} alt="Blog workspace" width="200px" />
+            <div className="d-flex mb-4 flex-column flex-sm-row ">
+              {/* TODO: Align image size */}
+              <div className="flex-shrink-0 col-md-4 col-lg-3 col-xl-2">
+                <img src={article.image} alt="Blog workspace" width="100%" height="156px" className="object-fit-cover"/>
               </div>
-              <div className="flex-grow-1 ms-3">
+              <div className="flex-grow-1 ms-0 ms-sm-3 mt-2 mt-sm-0">
                 <div className="h-100 d-flex flex-column justify-content-between">
                   <div>
+                    {/* FIXME: "Essential tips for maintaining wooden..." image width shrink at 768px */}
                     <h2 className="fs-4">{article.title}</h2>
-                    <p className="mt-2" dangerouslySetInnerHTML={{ __html: article.description }}>
+                    <p className="mt-1 mt-sm-2" dangerouslySetInnerHTML={{ __html: article.description }} style={{ maxHeight: "72px", overflowY: "hidden"}}>
                       {/* {article.description} */}
                     </p>
                   </div>
-                  <p className="text-end text-decoration-underline">
+                  <p className="text-end text-decoration-underline mt-1 mt-sm-2">
                     Read More
                   </p>
                 </div>

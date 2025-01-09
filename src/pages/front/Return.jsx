@@ -11,7 +11,7 @@ const Return = () => {
       </nav>
       <section className="section-return">
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12 col-md-10 col-xl-8">
             <div className="return-body">
               <h1 className="return-title fs-2 pb-1 text-center">Return</h1>
               <div className="return-text">

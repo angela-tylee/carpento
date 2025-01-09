@@ -7,7 +7,6 @@ function OrderModal({
   selectedOrder,
   openDeleteModal,
 }) {
-  // TODO: 應該要直接到 tempData.imageUrl? 2024-12-15
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     create_at: 0,

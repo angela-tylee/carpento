@@ -13,6 +13,7 @@ import Warranty from './pages/front/Warranty';
 import Return from './pages/front/Return';
 import Cart from './pages/front/Cart';
 import Checkout from './pages/front/Checkout';
+import CheckoutSuccess from './pages/front/CheckoutSuccess';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminBlogs from './pages/admin/AdminBlogs';
@@ -48,6 +49,7 @@ function App() {
           <Route path="return" element={<Return />}></Route>
           <Route path="cart" element={<Cart />}></Route>
           <Route path="checkout" element={<Checkout />}></Route>
+          <Route path="checkout-success/:id" element={<CheckoutSuccess />}></Route>
         </Route>
 
         {/* Admin Pages Routes */}

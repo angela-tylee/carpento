@@ -18,7 +18,7 @@ const About = () => {
         ></div>
 
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12 col-md-10 col-xl-8">
             <div className="about-body">
               <h1 className="about-title fs-2 text-center pb-1">About Us</h1>
               <div className="about-text">
@@ -43,8 +43,7 @@ const About = () => {
                 <p className="mt-4">
                   Today, Carpento is known for its dedication to excellence and sustainability. Our furniture reflects our commitment to quality and the desire to enhance living spaces with products that are both beautiful and environmentally conscious.
                 </p>
-                {/* TODO: Remove employees add store photos. */}
-                <div className="row mt-6">
+                {/* <div className="row mt-6">
                   {[
                     'employee-1', 'employee-3', 'employee-4', 'employee-6',
                     'employee-7', 'employee-8', 'employee-9', 'employee-10'
@@ -59,7 +58,7 @@ const About = () => {
                       </div>
                     </div>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

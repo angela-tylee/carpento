@@ -28,7 +28,7 @@ const AdminCoupons = () => {
     getCoupons();
   }, []);
 
-  async function getCoupons(page = 1) {
+  async function getCoupons(page = pagination.current_page) {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
     );
@@ -75,7 +75,6 @@ const AdminCoupons = () => {
         getCoupons={getCoupons}
         type={type}
         tempCoupon={tempCoupon}
-        // FIXME: put API 後 getProduct() 刷新又回到第一頁
         currentPate={pagination.current_page}
       />
       <DeleteModal 
@@ -150,7 +149,6 @@ const AdminCoupons = () => {
                   onClick={() => openCouponModal('edit', coupon)}>
                     編輯
                   </button>
-                  {/* TODO: move 刪除 button to ProductModal */}
                   {/* <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"

@@ -12,7 +12,7 @@ const Warranty = () => {
       </nav>
       <section className="section-warranty">
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12 col-md-10 col-xl-8">
             <div className="warranty-body">
               <h1 className="warranty-title fs-2 pb-1 text-center">Warranty</h1>
               <div className="warranty-text">

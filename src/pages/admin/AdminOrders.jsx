@@ -75,19 +75,22 @@ const AdminOrder = () => {
         <table className="table my-3">
           <thead>
             <tr>
-              <th scope="col" width="2%">
+              {/* <th scope="col" width="2%">
                 No
-              </th>
+              </th> */}
               <th scope="col" width="25%">
                 訂單編號
               </th>
-              <th scope="col" width="40%">
+              <th scope="col" width="35%">
                 品項
               </th>
-              <th scope="col" width="10%" className="text-end">
+              <th scope="col" width="8%">
+                姓名
+              </th>
+              <th scope="col" width="9%" className="text-end">
                 金額
               </th>
-              <th scope="col" width="13%">
+              <th scope="col" width="11%">
                 日期
               </th>
               <th scope="col" width="10%" className="text-center">
@@ -104,7 +107,7 @@ const AdminOrder = () => {
           <tbody>
             {orders.map((order, index) => (
               <tr key={order.id}>
-                <td>{index + 1}</td>
+                {/* <td>{index + 1}</td> */}
                 <td>
                   <div className="d-flex justify-content-between">
                     <span>{order.id}</span>
@@ -126,6 +129,7 @@ const AdminOrder = () => {
                     </div>
                   ))}
                 </td>
+                <td>{order.user.name}</td>
                 <td className="text-end">${order.total?.toLocaleString()}</td>
                 <td>
                   {/* TODO: Date is wrong, 1970 */}
@@ -202,7 +206,6 @@ const AdminOrder = () => {
               </div>
               <div className="mt-2">
                 <p>小計：${selectedOrder?.total?.toLocaleString()}</p>
-                {/* TODO: coupon */}
                 <p>折扣碼：{Object.values(selectedOrder.products)[0]?.coupon?.code || '無'}</p>
                 <p>
                   總金額：${selectedOrder?.total?.toLocaleString()}{' '}

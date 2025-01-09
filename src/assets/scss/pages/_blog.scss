@@ -1,8 +1,5 @@
 .blog-hero-img {
-  @include banner (454px);
-  // height: 454px;
-  // background-position: center center;
-  // background-size: cover;
+  @include banner (25vh, 40vh, 454px);
 }
 
 .blog {
@@ -12,17 +9,30 @@
   }
 
   h2 {
-    margin-top: 48px; // mt-5
-    padding-left: 8px; /* Equivalent to Bootstrap's ps-1 */
-    border-left: 5px solid $dark; /* Equivalent to border-start, border-5, and border-dark */
+    margin-top: 32px; // mt-5
+    padding-left: 8px; // ps-1
+    border-left: 5px solid $dark; 
   }
 
   h3 {
-    margin-top: 32px; // mt-4
+    margin-top: 24px; // mt-3
   }
 
-  p {
-    margin-top: 32px; // mt-4
+  p, ul, li {
+    margin-top: 16px; // mt-2
   }
+
+  @media (min-width: 568px) {
+    h2 {
+      margin-top: 48px; // mt-5
+    }
   
+    h3 {
+      margin-top: 32px; // mt-4
+    }
+  
+    p, ul, li {
+      margin-top: 32px; // mt-4
+    }
+  }
 }

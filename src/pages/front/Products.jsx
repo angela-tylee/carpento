@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
 import PRODUCTS_CATEGORIES from '../../constants/categories';
+import ProductCard2 from '../../components/ProductCard2';
 
 const Products = () => {
   // const { category } = useParams();
@@ -16,7 +17,7 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [sortCriteria, setSortCriteria] = useState(null);
-  const [sortedProducts, setSortedProducts] = useState([...products]);
+  const [sortedProducts, setSortedProducts] = useState(products);
 
   // const categories = [
   //   'Living Room',
@@ -30,24 +31,10 @@ const Products = () => {
   useEffect(() => {
     setProducts([]);
     // setSortCriteria(null);
-    console.log(sortCriteria);
+    // console.log(sortCriteria);
     getProducts();
-    handleSort(null); // TODO: 這是對的嗎??
+    // handleSort(null); // TODO: 這是對的嗎??
   }, [category, sortCriteria]);
-
-  // const getProducts = async (page = 1) => {
-  //   const res = await axios.get(
-  //     `/v2/api/${
-  //       process.env.REACT_APP_API_PATH
-  //     }/products?category=${encodeURIComponent(
-  //       category.toLowerCase()
-  //     )}&page=${page}`
-  //   );
-
-  //   console.log(res);
-  //   setProducts(res.data.products);
-  //   setPagination(res.data.pagination);
-  // };
 
   const getProducts = async (page = 1) => {
     setProducts([]);
@@ -59,16 +46,12 @@ const Products = () => {
       axios.get(
         `/v2/api/${
           process.env.REACT_APP_API_PATH
-        }/products?category=${encodeURIComponent(
-          category.toLowerCase()
-        )}&page=${page1}`
+        }/products?category=${encodeURIComponent(category)}&page=${page1}`
       ),
       axios.get(
         `/v2/api/${
           process.env.REACT_APP_API_PATH
-        }/products?category=${encodeURIComponent(
-          category.toLowerCase()
-        )}&page=${page2}`
+        }/products?category=${encodeURIComponent(category)}&page=${page2}`
       ),
     ]);
 
@@ -110,18 +93,11 @@ const Products = () => {
   };
 
   const handleSort = (criteria, e) => {
-    console.log(e);
     // const criteria = e.target.getAttribute("data-criteria");
     // TODO: 總感覺這樣有點繞，還是 handleSort(criteria) 比較直觀，但要怎麼取到 e.target.innText 且能讓全域取得？
-    const label = e?.target.innerText;
-    setSortCriteria(label);
-
+    // FIXME: Cannot get data by category after sorting. 2025-01-08
     const sorted = [...products].sort((a, b) => {
       switch (criteria) {
-        case 'newest':
-          return a.num - b.num;
-        case 'oldest':
-          return b.num - a.num;
         case 'name-asc':
           return a.title.localeCompare(b.title);
         case 'name-desc':
@@ -130,13 +106,19 @@ const Products = () => {
           return b.price - a.price;
         case 'price-low-high':
           return a.price - b.price;
+        case 'newest':
+          return a.num - b.num;
+        case 'oldest':
+          return b.num - a.num;
         default:
           return 0;
       }
     });
 
     setSortedProducts(sorted);
-    console.log(sortedProducts);
+
+    const label = e?.target.innerText;
+    setSortCriteria(label);
   };
 
   return (
@@ -152,21 +134,11 @@ const Products = () => {
         </ol>
       </nav>
       <div className="row">
-        <div className="col-3">
+        <div className="col-lg-3 d-none d-lg-block">
           <div
             className="list-group pe-3 position-sticky"
             style={{ top: '128px' }}
           >
-            {/* <a
-              href="/"
-              className={`list-group-item list-group-item-action fw-bold ${
-                selectedCategory === '' ? 'active' : ''
-              }`}
-              aria-current={selectedCategory === '' ? 'true' : 'false'}
-              onClick={(e) => {e.preventDefault();setSelectedCategory('')}}
-            >
-              All
-            </a> */}
             <Link
               to={`/products`}
               className={`list-group-item list-group-item-action fw-bold ${
@@ -175,22 +147,8 @@ const Products = () => {
             >
               All
             </Link>
-            {/* {PRODUCTS_CATEGORIES.map((category) => (
-              <a
-                key={category}
-                href="/"
-                className={`list-group-item list-group-item-action fw-bold ${
-                  selectedCategory === category ? 'active' : ''
-                }`}
-                aria-current={selectedCategory === category ? 'true' : 'false'}
-                onClick={(e) => {e.preventDefault(); setSelectedCategory(category)}}
-              >
-                {category}
-              </a>
-            ))} */}
-            {PRODUCTS_CATEGORIES.map((tempCategory) => (
+            {Object.keys(PRODUCTS_CATEGORIES).map((tempCategory) => (
               <Link
-                // to={`/products/${tempCategory.toLowerCase()}`}
                 to={`/products?category=${encodeURIComponent(tempCategory)}`}
                 key={tempCategory}
                 className={`list-group-item list-group-item-action fw-bold ${
@@ -200,23 +158,16 @@ const Products = () => {
                 {tempCategory}
               </Link>
             ))}
-            {/* <a href="#" className="list-group-item list-group-item-action active" aria-current="true">All</a>
-            <a href="#" className="list-group-item list-group-item-action">Living Room</a>
-            <a href="#" className="list-group-item list-group-item-action">Bedroom</a>
-            <a href="#" className="list-group-item list-group-item-action">Dining</a>
-            <a href="#" className="list-group-item list-group-item-action">Workspace</a>
-            <a href="#" className="list-group-item list-group-item-action">Decoration</a>
-            <a className="list-group-item list-group-item-action disabled" aria-disabled="true">Others</a> */}
           </div>
         </div>
-        <div className="col-9">
+        <div className="col-12 col-lg-9">
           <h1 className="fs-2 mb-3">{category || 'All'}</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime
-            vitae voluptatum consequuntur expedita in minima.
+            {PRODUCTS_CATEGORIES[category] ||
+              'Discover a wide range of stylish furniture and home essentials for every space. From modern to classic designs, find everything you need to create a beautiful, functional home.'}
           </p>
           <div>
-            <div className="mt-4 mb-2 d-flex justify-content-between align-items-center">
+            <div className="mt-4 d-flex justify-content-between align-items-center">
               <p>
                 <span>{products.length}</span> items
               </p>
@@ -231,6 +182,7 @@ const Products = () => {
                   >
                     {sortCriteria || 'Select'}
                   </button>
+                  {/* FIXME: not working ಥ_ಥ  */}
                   <ul className="dropdown-menu">
                     <li>
                       <button
@@ -309,17 +261,38 @@ const Products = () => {
               </div>
             </div>
             <div className="row">
-              {/* TODO: product card 元件化 */}
               {(sortCriteria ? sortedProducts : products).map((product) => (
-                <div key={product.id} className="col-3 mt-4">
-                  <div className="card w-100 border-0">
-                    <NavLink to={`/product/${product.id}`}>
-                      <img
-                        src={product.imageUrl}
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body p-0 mt-2">
+                <div key={product.id} className="col-6 col-sm-3 mt-4">
+                  <ProductCard2 product={product} hasFooter={true} addToCart={addToCart}/>
+                  {/* <div className="card w-100 border-0 d-flex flex-column h-100 justify-content-between">
+                    <NavLink
+                      to={`/product/${product.id}`}
+                      className="card-header px-0 border-0"
+                      style={{
+                        backgroundImage: `url(${product.imageUrl})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        width: '100%',
+                        height: '240px',
+                      }}
+                    >
+                      <span
+                        className={`badge ${
+                          product.tag === 'sale' || product.tag === 'hot'
+                            ? 'bg-danger'
+                            : product.tag === 'new'
+                            ? 'bg-warning'
+                            : ''
+                        }`}
+                      >
+                        {product.tag}
+                      </span>
+                    </NavLink>
+                    <NavLink
+                      to={`/product/${product.id}`}
+                      className="card-body p-0 mt-2 flex-grow"
+                    >
+                      <div className="d-flex flex-column h-100 justify-content-between">
                         <h5 className="card-title fs-6 fw-bold">
                           {product.title}
                         </h5>
@@ -331,45 +304,20 @@ const Products = () => {
                         </div>
                       </div>
                     </NavLink>
-                    <div className="card-footer d-flex w-100 mt-2">
-                      <input
-                        type="text"
-                        className="form-control w-25 text-center"
-                        value="1"
-                        readOnly
-                      />
+                    <div className="card-footer d-flex w-100 mt-2 bg-transparent border-0 p-0">
                       <button
                         type="button"
-                        className="btn btn-primary ms-1 w-75"
+                        className="btn btn-primary w-100"
                         onClick={() => addToCart(product.id)}
                       >
                         Add to Cart
                       </button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               ))}
-              {/* QUESTION: Array.from? */}
-              {/* {Array.from({ length: 4 }).map((_, idx) => (
-                <div key={idx} className="col-3">
-                  <div className="card w-100 border-0">
-                    <img src="../assets/images/products/living-room/cabinet-3.jpeg" className="card-img-top" alt="..." />
-                    <div className="card-body p-0 mt-2">
-                      <h5 className="card-title fs-6 fw-bold">Card title</h5>
-                      <div className="card-text">
-                        <span className="text-primary">$1,500</span>
-                        <del>$2,000</del>
-                      </div>
-                      <div className="d-flex w-100 mt-2">
-                        <input type="number" className="form-control w-25 text-center" />
-                        <button type="button" className="btn btn-primary ms-1 w-75">Add to Cart</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))} */}
             </div>
-            {/* TODO: `current_page` is not suitable for this page. */}
+            {/* FIXME: `current_page` is not suitable for this page. */}
             <Pagination pagination={pagination} changePage={getProducts} />
             {/* <nav aria-label="..." className="mt-4">
               <ul className="pagination fw-bold justify-content-end">

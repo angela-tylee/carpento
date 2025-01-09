@@ -27,22 +27,41 @@ header {
   //       background-color: $black;
   //   }
   // }
-  // FIXME: hover 和 click 的 dropdown 顯示位置不一樣
-  .nav-item.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0; /* Optional: Adjust this for better alignment */
-  }
 
   .dropdown-toggle::after {
     display: none;
   }
 
-  .cart-dropdown {
+  .cart-dropdown .dropdown-menu {
+    width: 100%;
+    max-width: 500px;
+    &[data-bs-popper] {
+      left: 0;
+      right: 0;
+      
+      @media (min-width: 576px) {
+        left: calc(100% - 500px);
+      }
+    }
+
+  }
+
+  // FIXME: hover 和 click 的 dropdown 顯示位置不一樣
+  .nav-item.dropdown:hover {
     .dropdown-menu {
-      width: 500px;
-      &[data-bs-popper] {
+      display: block;
+      margin-top: 0; /* Optional: Adjust this for better alignment */
+    }
+    &.cart-dropdown .dropdown-menu {
+      // transform: none; // Remove the default Popper.js positioning?
+      top: 100%;
+      left: 0;
+      right: 0;
+      
+      @media (min-width: 576px) {
         left: calc(100% - 500px);
       }
     }
   }
+  
 }

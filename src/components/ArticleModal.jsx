@@ -85,7 +85,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
         formData
       );
-      // FIXME: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
+      // QUESTION: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
 
       // setUploadImageUrl(res.data.imageUrl);
       setTempData({
@@ -176,7 +176,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                 </div>
                 <div className="form-group mb-2 col-md-6">
                   <label className="w-100" htmlFor="create_at">
-                    {/* FIXME: input type="date" doesn't match API Date.now() data type */}
+                    {/* QUESTION: input type="date" doesn't match API Date.now() data type, 再順一次 */}
                     建立日期
                     <input
                       type="text"
@@ -272,7 +272,6 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                         name="imageUpload"
                         id="customFile"
                         className="form-control"
-                        // TODO: Upload storage.imageURL to temp.imageUrl 2024-12-15
                         // onChange={(e) => uploadImage(e.target.files[0])}
                         onChange={handleChange}
                       />
@@ -319,7 +318,6 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                       className="w-100 form-check-label"
                       htmlFor="isPublic"
                     >
-                      {/* FIXME: checkbox 無法正常運作 */}
                       是否發布
                       <input
                         type="checkbox"

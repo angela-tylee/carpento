@@ -12,10 +12,19 @@
   }
 }
 
-@mixin banner($height: 660px, $positionY: 50%){
+// TODO: RWD: about, blog, faq banner height
+@mixin banner($height: 50vh, $sm-height: 75vh, $lg-height: 660px, $positionY: 50%){
   height: $height;
   background-position: center $positionY;
   background-size: cover;
+
+  @media (min-width: 576px) {
+    height: $sm-height;
+  }
+
+  @media (min-width: 992px) {
+    height: $lg-height;
+  }
 }
 
 @mixin nav-hover ($color: $dark){

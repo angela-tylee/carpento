@@ -1,0 +1,36 @@
+.swiper {
+  width: calc(100% - 32px);
+  padding-inline: 50px;
+  margin-inline: 10%;
+  position: relative;
+}
+
+.swiper-button-prev{
+  z-index: 1000;
+  position: absolute;
+  left: -100px; /* Position left button outside Swiper */
+  &::after {
+    color: $dark;
+  }
+}
+
+.swiper-button-next{
+  z-index: 1000;
+  position: absolute;
+  right: -100px; /* Position right button outside Swiper */
+  &::after {
+    color: $dark;
+  }
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+  background-color: $dark;
+}
+// /* Adjust for small screens */
+// @media (max-width: 768px) {
+//   .swiper-button-prev.custom-nav,
+//   .swiper-button-next.custom-nav {
+//     left: -30px;
+//     right: -30px;
+//   }
+// }

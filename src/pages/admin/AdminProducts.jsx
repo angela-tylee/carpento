@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductModal from '../../components/ProductModal';
 import DeleteModal from '../../components/DeleteModal';
@@ -25,7 +26,6 @@ const AdminProducts = () => {
 
     // axios.defaults.headers.common['Authorization'] = token;
 
-    // QUESTION: 為什麼 React 立即函式特別多？ 2024-12-11
     // (async () => {
     //   const productRes = await axios.get(
     //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
@@ -45,8 +45,7 @@ const AdminProducts = () => {
   }, []);
 
   // FIXED: Need to re-login after refreshing page. 2024-12-10 -> Add to AdminRoutes page 2024-12-11? 
-  async function getProducts(page) {
-    // TODO: Remove pagination?
+  async function getProducts(page = pagination.current_page) {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=${page}`
     );
@@ -93,7 +92,6 @@ const AdminProducts = () => {
         getProducts={getProducts}
         type={type}
         tempProduct={tempProduct}
-        // FIXME: put API 後 getProduct() 刷新又回到第一頁
         currentPate={pagination.current_page}
       />
       <DeleteModal 
@@ -118,15 +116,17 @@ const AdminProducts = () => {
       <table className="table my-3">
         <thead>
           <tr>
-            {/* TODO: Add link to go to front page */}
             <th scope="col" width="10%">
               圖片
             </th>
-            <th scope="col" width="40%">
+            <th scope="col" width="30%">
               產品名稱
             </th>
             <th scope="col" width="10%">
               分類
+            </th>
+            <th scope="col" width="10%">
+              標籤
             </th>
             <th scope="col" width="10%" className="text-end">
               售價
@@ -143,14 +143,26 @@ const AdminProducts = () => {
           </tr>
         </thead>
         <tbody>
+          {/* FIXME: "Fern & Succulent Artificial Plant" 產品不存在 */}
           {products.map((product) => {
             return (
               <tr key={product.id}>
                 <td><img src={product.imageUrl} alt={product.title} width="100%"/></td>
-                <td>{product.title}</td>
+                <td><Link to={`/product/${product.id}`}>{product.title}</Link></td>
                 <td>
                   <span className="badge rounded-pill px-1 bg-primary-subtle text-dark">
-                    {product.category.toLowerCase()}
+                    {product.category}
+                  </span>
+                </td>
+                <td>
+                  <span className={`badge rounded-pill px-1 ${
+                      product.tag === "sale" || product.tag === "hot"
+                        ? "bg-danger-subtle"
+                        : product.tag === "new"
+                        ? "bg-warning-subtle"
+                        : ""
+                    } text-dark`}>
+                    {product.tag || ''}
                   </span>
                 </td>
                 <td className="text-end">{product.price.toLocaleString()}</td>
@@ -163,7 +175,6 @@ const AdminProducts = () => {
                   onClick={() => openProductModal('edit', product)}>
                     編輯
                   </button>
-                  {/* TODO: move 刪除 button to ProductModal */}
                   {/* <button
                     type="button"
                     className="btn btn-outline-danger btn-sm ms-1"

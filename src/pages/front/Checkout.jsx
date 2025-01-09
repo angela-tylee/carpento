@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
 const Checkout = () => {
   const [cart, setCart] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  let navigate = useNavigate();
 
   const getCart = async () => {
     const res = await axios.get(
@@ -59,10 +61,17 @@ const Checkout = () => {
 
       if (res.data.orderId) {
         const paymentRes = await axios.post(
-          `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`
+          `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`,
+          // FIXME: 日期錯誤 1970
+          // {
+          //   ...order,
+          //   create_at: Date.now(),
+          // }
         );
         console.log(paymentRes);
       }
+
+      navigate(`/checkout-success/${res.data.orderId}`);
     } catch (error) {
       console.log(error);
     }
@@ -71,36 +80,36 @@ const Checkout = () => {
   // console.log(watch());
   // console.log('errors:', errors);
 
-  const getOrder = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/orders`
-    );
-    console.log(res);
-  };
+  // const getOrders = async () => {
+  //   const res = await axios.get(
+  //     `/v2/api/${process.env.REACT_APP_API_PATH}/orders`
+  //   );
+  //   console.log("order",res);
+  // };
 
   useEffect(() => {
     getCart();
-    getOrder();
+    // getOrders();
   }, []);
 
   return (
     <main className="container mb-7">
       <div className="row justify-content-center">
-        <div className="col-8">
+        <div className="col-12 col-md-10 col-xl-8 d-none d-sm-block">
           <nav className="stepper mt-6 mb-5 d-flex justify-content-between">
-            <div className="d-flex align-items-center bg-light px-2">
+            <div className="d-flex align-items-center bg-light pe-1 pe-md-2">
               <div className="step-number bg-secondary text-dark text-center pt-1">
                 1
               </div>
               <p className="ms-1 text-uppercase">Order Detail</p>
             </div>
-            <div className="d-flex align-items-center bg-light px-2">
+            <div className="d-flex align-items-center bg-light px-1 px-md-2">
               <div className="step-number bg-dark text-secondary text-center pt-1">
                 2
               </div>
               <p className="ms-1 text-uppercase">Shipping & Payment</p>
             </div>
-            <div className="d-flex align-items-center bg-light px-2">
+            <div className="d-flex align-items-center bg-light ps-1 pe-0 px-md-2">
               <div className="step-number bg-secondary text-dark text-center pt-1">
                 3
               </div>
@@ -112,7 +121,7 @@ const Checkout = () => {
 
       <section>
         <div className="row">
-          <form className="col-8" action="" onSubmit={handleSubmit(onSubmit)}>
+          <form className="col-12 col-lg-7 col-xl-8" action="" onSubmit={handleSubmit(onSubmit)}>
             <h2 className="fs-4 mt-4 mb-3">Email Address</h2>
             <div className="mb-2">
               <label htmlFor="email" className="form-label">
@@ -420,7 +429,7 @@ const Checkout = () => {
             </button>
           </form>
 
-          <div className="col-4">
+          <div className="col-12 col-lg-5 col-xl-4 mt-4 mt-lg-0">
             <div className="bg-secondary p-3">
               <div className="d-flex justify-content-between pb-1 mb-2 border-bottom border-1 border-gray">
                 <h5>Order Summary</h5>
@@ -438,14 +447,14 @@ const Checkout = () => {
                   {cart.carts &&
                     cart.carts.map((cartItem) => (
                       <div className="row py-1">
-                        <div className="col-3">
+                        <div className="d-none d-md-block col-md-2 col-lg-3">
                           <img
                             src={cartItem.product.imageUrl}
                             alt={cartItem.product.title}
                             width="100%"
                           />
                         </div>
-                        <div className="col-6 py-1">
+                        <div className="col-9 col-md-7 col-lg-6 py-1">
                           <h6>{cartItem.product.title}</h6>
                           <p>
                             QTY: <span>{cartItem.qty}</span>

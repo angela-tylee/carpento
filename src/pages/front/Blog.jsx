@@ -22,13 +22,13 @@ const Blog = () => {
     <main className="blog container mb-7">
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className="breadcrumb-item">
+          <li className="breadcrumb-item mt-1 mt-sm-2">
             <Link to="/">Home</Link>
           </li>
-          <li className="breadcrumb-item">
+          <li className="breadcrumb-item mt-1 mt-sm-2">
             <Link to="/blogs">Blog</Link>
           </li>
-          <li className="breadcrumb-item active" aria-current="page">
+          <li className="breadcrumb-item mt-1 mt-sm-2 active" aria-current="page">
             {article.title}
           </li>
         </ol>
@@ -36,11 +36,11 @@ const Blog = () => {
 
       <section className="section-blog">
         <div
-          className="blog-hero-img mb-7"
+          className="blog-hero-img mb-4 mb-sm-5 mb-lg-7"
           style={{ backgroundImage: `url(${article.image})` }}
         ></div>
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-12 col-md-10 col-xl-8">
             <div className="blog-body">
               <h1 className="blog-title fs-1 pb-1 text-capitalize">
                 {article.title}

@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 // import ProductModal from '../../components/ProductModal';
 import ArticleModal from '../../components/ArticleModal';
@@ -134,7 +135,7 @@ const AdminProducts = () => {
           {articles.map((article) => {
             return (
               <tr key={article.id}>
-                <td>{article.title}</td>
+                <td><Link to={`/blog/${article.id}`}>{article.title}</Link></td>
                 <td className="text-start">
                   {(() => {
                     const date = new Date(article.create_at);
