@@ -4,6 +4,7 @@ import axios from 'axios';
 import Pagination from '../../components/Pagination';
 import PRODUCTS_CATEGORIES from '../../constants/categories';
 import ProductCard2 from '../../components/ProductCard2';
+import useSort from '../../hooks/useSort';
 
 const Products = () => {
   // const { category } = useParams();
@@ -14,10 +15,13 @@ const Products = () => {
   const [pagination, setPagination] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [cartQuantity, setCartQuantity] = useState(1);
+
+  // const [sortCriteria, setSortCriteria] = useState(null);
+  // const [sortedProducts, setSortedProducts] = useState(products);
+  const { sortedItems, sortCriteria, sortLabel, handleSort } = useSort(products);
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const [sortCriteria, setSortCriteria] = useState(null);
-  const [sortedProducts, setSortedProducts] = useState(products);
 
   // const categories = [
   //   'Living Room',
@@ -29,12 +33,19 @@ const Products = () => {
   // ];
 
   useEffect(() => {
-    setProducts([]);
+    // setProducts([]);
     // setSortCriteria(null);
     // console.log(sortCriteria);
     getProducts();
     // handleSort(null); // TODO: 這是對的嗎??
-  }, [category, sortCriteria]);
+
+    // const fetchProducts = async () => {
+    //   const newProducts = await getProducts();
+    //   setProducts(newProducts);
+    // };
+
+    // fetchProducts();
+  }, [category]);
 
   const getProducts = async (page = 1) => {
     setProducts([]);
@@ -92,34 +103,34 @@ const Products = () => {
     }
   };
 
-  const handleSort = (criteria, e) => {
-    // const criteria = e.target.getAttribute("data-criteria");
-    // TODO: 總感覺這樣有點繞，還是 handleSort(criteria) 比較直觀，但要怎麼取到 e.target.innText 且能讓全域取得？
-    // FIXME: Cannot get data by category after sorting. 2025-01-08
-    const sorted = [...products].sort((a, b) => {
-      switch (criteria) {
-        case 'name-asc':
-          return a.title.localeCompare(b.title);
-        case 'name-desc':
-          return b.title.localeCompare(a.title);
-        case 'price-high-low':
-          return b.price - a.price;
-        case 'price-low-high':
-          return a.price - b.price;
-        case 'newest':
-          return a.num - b.num;
-        case 'oldest':
-          return b.num - a.num;
-        default:
-          return 0;
-      }
-    });
+  // const handleSort = (criteria, e) => {
+  //   // const criteria = e.target.getAttribute("data-criteria");
+  //   // TODO: 總感覺這樣有點繞，還是 handleSort(criteria) 比較直觀，但要怎麼取到 e.target.innText 且能讓全域取得？
+  //   // FIXME: Cannot get data by category after sorting. 2025-01-08
+  //   const sorted = [...products].sort((a, b) => {
+  //     switch (criteria) {
+  //       case 'name-asc':
+  //         return a.title.localeCompare(b.title);
+  //       case 'name-desc':
+  //         return b.title.localeCompare(a.title);
+  //       case 'price-high-low':
+  //         return b.price - a.price;
+  //       case 'price-low-high':
+  //         return a.price - b.price;
+  //       case 'newest':
+  //         return a.num - b.num;
+  //       case 'oldest':
+  //         return b.num - a.num;
+  //       default:
+  //         return 0;
+  //     }
+  //   });
 
-    setSortedProducts(sorted);
+  //   setSortedProducts(sorted);
 
-    const label = e?.target.innerText;
-    setSortCriteria(label);
-  };
+  //   const label = e?.target.innerText;
+  //   setSortCriteria(label);
+  // };
 
   return (
     <main className="container mb-6">
@@ -169,7 +180,7 @@ const Products = () => {
           <div>
             <div className="mt-4 d-flex justify-content-between align-items-center">
               <p>
-                <span>{products.length}</span> items
+                <span>{products?.length}</span> items
               </p>
               <div className="d-flex align-items-center">
                 <p className="me-1">Sort by:</p>
@@ -180,7 +191,7 @@ const Products = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {sortCriteria || 'Select'}
+                    {sortLabel || 'Select'}
                   </button>
                   {/* FIXME: not working ಥ_ಥ  */}
                   <ul className="dropdown-menu">
@@ -261,7 +272,7 @@ const Products = () => {
               </div>
             </div>
             <div className="row">
-              {(sortCriteria ? sortedProducts : products).map((product) => (
+              {(sortCriteria ? sortedItems : products)?.map((product) => (
                 <div key={product.id} className="col-6 col-sm-3 mt-4">
                   <ProductCard2 product={product} hasFooter={true} addToCart={addToCart}/>
                   {/* <div className="card w-100 border-0 d-flex flex-column h-100 justify-content-between">

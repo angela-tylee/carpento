@@ -4,8 +4,6 @@ import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 
 const Header = () => {
-  // const [searchParams] = useSearchParams();
-  // const category = searchParams.get('category') || '';
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({
     carts: [],
@@ -79,12 +77,25 @@ const Header = () => {
       <div className="container py-1 py-sm-2 py-lg-3">
         <nav className="navbar navbar-expand-md p-0 fw-semibold">
           <div className="container-fluid p-0">
+
+            {/* Logo */}
             <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
-              <img src="/images/logo.png" alt="logo" width="154px" className="w-100" />
+              <img
+                src="/images/logo.png"
+                alt="logo"
+                width="154px"
+                className="w-100"
+              />
             </Link>
+
+            {/* Mobile menu */}
             <div className="d-flex align-items-center">
               {/* TODO: cart 元件化 */}
-              <Link to="/cart" className="nav-link me-2 d-block d-md-none" role="button">
+              <Link
+                to="/cart"
+                className="nav-link me-2 d-block d-md-none"
+                role="button"
+              >
                 <div className="position-relative mt-1">
                   <i className="bi bi-bag fs-4"></i>
                   <span
@@ -112,6 +123,8 @@ const Header = () => {
                 <span className="navbar-toggler-icon"></span>
               </button>
             </div>
+
+            {/* Nav Items */}
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item text-center text-md-start py-1 py-md-0 dropdown">
@@ -125,7 +138,7 @@ const Header = () => {
                     {/* FIXME: no active style */}
                     Products
                   </NavLink>
-                    {/* TODO: make border and shadow responsive */}
+                  {/* TODO: make border and shadow responsive */}
                   <ul className="dropdown-menu border-0 border-md border-1 border-gray shadow-md-sm">
                     <li className="text-center text-md-start">
                       <Link to="/products" className="w-100 dropdown-item">
@@ -133,7 +146,10 @@ const Header = () => {
                       </Link>
                     </li>
                     {Object.keys(PRODUCTS_CATEGORIES).map((tempCategory) => (
-                      <li className="text-center text-md-start" key={tempCategory}>
+                      <li
+                        className="text-center text-md-start"
+                        key={tempCategory}
+                      >
                         <Link
                           to={`/products?category=${encodeURIComponent(
                             tempCategory
@@ -192,6 +208,8 @@ const Header = () => {
               </ul>
             </div>
           </div>
+
+          {/* Search */}
           <div className="position-relative col-12 col-md-4 col-lg-3 me-3">
             <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
               {/* TODO: 輸入產品文字太長時，會破版 */}
@@ -245,6 +263,8 @@ const Header = () => {
               </div>
             )}
           </div>
+          
+          {/* Language Switcher */}
           {/* <div className="language-dropdown nav-item dropdown me-2">
             <a
               className="nav-link dropdown-toggle"
@@ -269,6 +289,8 @@ const Header = () => {
               </li>
             </ul>
           </div> */}
+
+          {/* Cart */}
           {/* TODO: cart-dropdown 元件化 */}
           <div className="cart-dropdown nav-item dropdown position-static d-none d-md-block">
             <Link

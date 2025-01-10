@@ -10,7 +10,6 @@ function ProductModal({
   tempProduct,
   currentPage,
 }) {
-  // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -28,6 +27,7 @@ function ProductModal({
     imagesUrl: ['', '', '', '', ''],
     tag: '',
   });
+  const [uploadImageUrl, setUploadImageUrl] = useState('');
 
   useEffect(() => {
     if (type === 'create') {
@@ -45,7 +45,7 @@ function ProductModal({
         },
         is_enabled: 1,
         imageUrl: '',
-        imagesUrl: ['', '', '', '', ''],
+        imagesUrl: ['image1', 'image2', 'image3', 'image4', 'image5'],
         tag: '',
       });
     } else if (type === 'edit') {
@@ -72,7 +72,7 @@ function ProductModal({
     } else if (name === 'imageUpload' && files[0]) {
       await uploadImage(files[0]);
     } else if (name === 'imagesUpload') {
-      await uploadAdditionalImage(files[0]);
+      await uploadImages(e);
     } else if (['info', 'size', 'maintenance'].includes(name)) {
       setTempData((tempData) => ({
         ...tempData,
@@ -114,23 +114,49 @@ function ProductModal({
     }
   }
 
-  const uploadAdditionalImage = async (file) => {
-    if (!file) return;
-    const formData = new FormData();
-    formData.append('file-to-upload', file);
+  const uploadImages = async (e) => {
+    e.preventDefault();
+    console.log(e);
 
-    try {
-      const res = await axios.post(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
-        formData
-      );
+    if (tempData.imagesUrl.length >= 6) {
+      alert("最多上傳 6 張照片");
+      return;
+    }
 
-      setTempData((tempData) => ({
-        ...tempData,
-        imagesUrl: [...tempData.imagesUrl, res.data.imageUrl],
-      }));
-    } catch (error) {
-      console.error(error);
+    const { files } = e.target;
+
+    if (files?.[0]) {
+
+      const formData = new FormData();
+      formData.append('file-to-upload', files[0]);
+
+      try {
+        const res = await axios.post(
+          `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
+          formData
+        );
+
+        setTempData((prev) => ({
+          ...prev,
+          imagesUrl: [...prev.imagesUrl, res.data.imageUrl],
+        }));
+
+        console.log(tempData);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // Get URL from form data instead of state
+      // const formData = new FormData(e.target);
+      // const imageUrl = formData.get('imageUrl').trim();
+
+      if (uploadImageUrl) {
+        setTempData((prev) => ({
+          ...prev,
+          imagesUrl: [...prev.imagesUrl, uploadImageUrl.trim()],
+        }));
+        setUploadImageUrl(""); // Clear form
+      }
     }
   };
 
@@ -249,7 +275,7 @@ function ProductModal({
                           handleChange({ target: { name: 'size' } }, data)
                         }
                       />
-                    </label> 
+                    </label>
                     <label htmlFor="maintenance" className="w-100">
                       保養說明
                       <BlogEditor
@@ -304,12 +330,14 @@ function ProductModal({
                       標籤
                       <select
                         id=""
-                        name="tag" 
+                        name="tag"
                         className="form-control"
                         onChange={handleChange}
                         value={tempData.tag}
                       >
-                        <option value="" disabled>請選擇標籤</option>
+                        <option value="" disabled>
+                          請選擇標籤
+                        </option>
                         <option value="new">new</option>
                         <option value="sale">sale</option>
                         <option value="hot">hot</option>
@@ -386,6 +414,7 @@ function ProductModal({
               </div>
               <div className="col-sm-4">
                 <div className="form-group mb-2">
+                  {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                   <label className="w-100" htmlFor="image">
                     輸入圖片網址
                     <input
@@ -407,14 +436,11 @@ function ProductModal({
                       name="imageUpload"
                       id="customFile"
                       className="form-control"
-                      // TODO: Upload storage.imageURL to temp.imageUrl 2024-12-15
                       // onChange={(e) => uploadImage(e.target.files[0])}
                       onChange={handleChange}
                     />
                   </label>
                 </div>
-                {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
-                {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                 {tempData.imageUrl ? (
                   <img
                     src={tempData.imageUrl}
@@ -424,9 +450,28 @@ function ProductModal({
                 ) : (
                   'Add image to preview'
                 )}
-                {/* <img src={uploadImageUrl} alt="preview" className="img-fluid"/> */}
                 <div className="col-12 mt-4">
                   <h5>Additional Images</h5>
+                  <div className="row mb-3">
+                    <div className="col-sm-8">
+                      <form
+                        onSubmit={uploadImages}
+                        className="d-flex gap-2"
+                      >
+                        <input
+                          type="text"
+                          name="imagesUpload"
+                          placeholder="Enter image URL"
+                          className="form-control"
+                          value={uploadImageUrl}
+                          onChange={(e) => setUploadImageUrl(e.target.value)}
+                        />
+                        <button type="submit" className="btn btn-primary">
+                          Add
+                        </button>
+                      </form>
+                    </div>
+                  </div>
                   <div className="row g-3">
                     {tempData.imagesUrl.map((url, index) => (
                       <div key={index} className="col-sm-6">

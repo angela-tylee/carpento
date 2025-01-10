@@ -70,7 +70,10 @@ const Product = () => {
     // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
     getProduct(id);
     getProducts();
+    getCart();
   }, [id]);
+
+  const [recentlySeenProducts, setRecentlySeenProducts] = useState([]);
 
   const getRecentlySeen = () => {
     const recentlySeen = localStorage.getItem('recentlySeen');
@@ -87,7 +90,13 @@ const Product = () => {
     localStorage.setItem('recentlySeen', JSON.stringify(updatedRecentlySeen));
   };
 
-  const [recentlySeenProducts, setRecentlySeenProducts] = useState([]);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const openLightbox = (image) => {
+    setSelectedImage(image);
+    setLightboxOpen(true);
+  };
 
   useEffect(() => {
     // Find the full product object by ID
@@ -125,28 +134,89 @@ const Product = () => {
       <section className="section-product">
         <div className="row">
           <div className="col-md-6">
-            <div className="row me-md-7">
+            {/* <div className="row me-md-7">
               <div className="col-2">
                 <img
                   src="../assets/images/products/decoration/fake-plant-1.jpeg"
-                  className="w-100 mb-2"
+                  className="w-100 mb-2 pointer opacity-hover"
                   alt="Fake Plant 1"
+                  onClick={() =>
+                    openLightbox(
+                      '../assets/images/products/decoration/fake-plant-1.jpeg'
+                    )
+                  }
                 />
                 <img
                   src="../assets/images/products/decoration/fake-plant-2.jpeg"
-                  className="w-100 mb-2"
+                  className="w-100 mb-2 pointer opacity-hover"
                   alt="Fake Plant 2"
+                  onClick={() =>
+                    openLightbox(
+                      '../assets/images/products/decoration/fake-plant-2.jpeg'
+                    )
+                  }
                 />
               </div>
               <div className="col-10">
                 <img
                   src={product.imageUrl}
-                  className="w-100"
+                  className="w-100 pointer opacity-hover"
                   alt="Fake Plant 3"
+                  onClick={() => openLightbox(product.imageUrl)}
+                />
+              </div>
+            </div> */}
+            <div className="row me-md-7">
+              <div className="col-2">
+                {product?.imagesUrl?.slice(1).map((imageUrl, index) => (
+                  <img
+                    src={imageUrl}
+                    className="w-100 mb-2 pointer opacity-hover"
+                    alt={`${product.title}-${index + 2}`}
+                    onClick={() => openLightbox(imageUrl)}
+                  />
+                ))}
+              </div>
+              <div className="col-10">
+                <img
+                  src={(product.imagesUrl && product.imagesUrl[0]) || ''}
+                  className="w-100 pointer opacity-hover"
+                  alt={`${product.title}-1`}
+                  onClick={() => openLightbox((product.imagesUrl && product.imagesUrl[2]) )|| ''}
                 />
               </div>
             </div>
           </div>
+
+          {lightboxOpen && (
+            <div
+              className="position-fixed top-0 start-0 bottom-0 end-0 bg-dark bg-opacity-75 d-flex align-items-center justify-content-center"
+              style={{ zIndex: 1050 }}
+              onClick={() => setLightboxOpen(false)}
+            >
+              <div className="position-relative container-md mx-3">
+                <img
+                  src={selectedImage}
+                  className="w-100 h-auto"
+                  alt="Lightbox view"
+                />
+                <button
+                  className="position-absolute top-0 end-0 m-3 btn btn-dark rounded-circle"
+                  style={{ width: '40px', height: '40px' }}
+                  onClick={() => setLightboxOpen(false)}
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          )}
+
+          <style>
+            {`
+          .pointer { cursor: pointer; }
+          .opacity-hover:hover { opacity: 0.8; transition: opacity 0.3s; }
+        `}
+          </style>
 
           <div className="col-md-6">
             <h1 className="fs-2 mt-4 mt-md-0">{product.title}</h1>
@@ -300,11 +370,7 @@ const Product = () => {
       {/* mobile start*/}
       <div className="mt-3 w-100 d-flex justify-content-between sticky-bottom d-md-none py-2 bg-light">
         {/* TODO: cart 元件化 */}
-        <Link
-          to="/cart"
-          className="nav-link me-2"
-          role="button"
-        >
+        <Link to="/cart" className="nav-link me-2" role="button">
           <div className="position-relative mt-1">
             <i className="bi bi-bag fs-4"></i>
             <span
@@ -502,8 +568,6 @@ const Product = () => {
           </div>
         </section>
       )}
-
-
     </main>
   );
 };

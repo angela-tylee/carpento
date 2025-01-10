@@ -28,6 +28,7 @@ const CheckoutSuccess = () => {
         </h1>
         <p className="mt-2">Thank you for purchasing from Carpento.</p>
         <div className="mt-4 d-flex">
+          {/* FIXME: < 375px 按鈕太高 */}
           <Link to="/" className="btn btn-outline-dark w-100 me-2">
             Back to Home
           </Link>
@@ -93,6 +94,7 @@ const CheckoutSuccess = () => {
               <h5 className="pb-1 mt-4 mb-2 border-bottom border-1 border-gray">
                 Order Details
               </h5>
+              {/* FIXME: < 375px 破版 */}
               <div className="border-bottom border-1 border-gray">
                 {order.products &&
                   Object.values(order.products).map((item) => (
