@@ -8,10 +8,8 @@ function Login() {
     username: '',
     password: '',
   });
-
-  const [loginState, setLoginState] = useState({
-
-  })
+  const [loginState, setLoginState] = useState({})
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -22,17 +20,20 @@ function Login() {
   // QUESTION: Cookie, useEffect 2024-12-10
 
   async function submit() {
+    setIsLoading(true);
     try {
       const res = await axios.post('/v2/admin/signin', data);
       const { token, expired } = res.data; // 取得 token
       console.log(res.data);
       document.cookie = `carpento=${token}; expires=${new Date(expired)}`; // 儲存 token 到 cookie
-      console.log('submit');
+    
+      setIsLoading(false);
   
       if (res.data.success) {
         navigate('/admin/products'); // 登入成功：畫面轉到 admin/products
       }
     } catch (error) {
+      setIsLoading(false);
       setLoginState(error.response.data); // 登入失敗
     }
   }
@@ -106,7 +107,16 @@ function Login() {
               type="button"
               className="btn btn-primary w-100 text-uppercase text-light"
               onClick={submit}
+              disabled={isLoading}
             >
+              <div
+                className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                  isLoading ? '' : 'd-none'
+                }`}
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
               Sign in
             </button>
           </div>

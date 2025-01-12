@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import axios from 'axios';
 
 const Checkout = () => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   let navigate = useNavigate();
@@ -51,6 +51,8 @@ const Checkout = () => {
     };
     console.log(order);
 
+    setIsLoading(true);
+
     try {
       // TODO: 清空表單、跳轉至 checkout-success
       const res = await axios.post(
@@ -61,7 +63,7 @@ const Checkout = () => {
 
       if (res.data.orderId) {
         const paymentRes = await axios.post(
-          `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`,
+          `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`
           // FIXME: 日期錯誤 1970
           // {
           //   ...order,
@@ -71,9 +73,12 @@ const Checkout = () => {
         console.log(paymentRes);
       }
 
+      setIsLoading(false);
+
       navigate(`/checkout-success/${res.data.orderId}`);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -121,7 +126,11 @@ const Checkout = () => {
 
       <section>
         <div className="row">
-          <form className="col-12 col-lg-7 col-xl-8" action="" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="col-12 col-lg-7 col-xl-8"
+            action=""
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <h2 className="fs-4 mt-4 mb-3">Email Address</h2>
             <div className="mb-2">
               <label htmlFor="email" className="form-label">
@@ -370,7 +379,9 @@ const Checkout = () => {
                 <input
                   type="text"
                   id="expiryDate"
-                  className={`form-control ${errors.expiryDate && 'is-invalid'}`}
+                  className={`form-control ${
+                    errors.expiryDate && 'is-invalid'
+                  }`}
                   placeholder="MM/YY"
                   {...register('expiryDate', {
                     required: {
@@ -424,8 +435,21 @@ const Checkout = () => {
             <button
               type="submit"
               className="mt-5 btn btn-primary text-uppercase fs-5 fw-normal w-100"
+              disabled={isLoading}
             >
-              Place Order
+              {/* ${isLoading ? '' : 'd-none'} */}
+              <div className="d-flex align-items-center justify-content-center">
+                <div
+                  className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                    isLoading ? '' : 'd-none'
+                  }
+                      `}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <span>Place Order</span>
+              </div>
             </button>
           </form>
 
@@ -449,7 +473,7 @@ const Checkout = () => {
                       <div className="row py-1">
                         <div className="d-none d-md-block col-md-2 col-lg-3">
                           <img
-                            src={cartItem.product.imageUrl}
+                            src={cartItem.product.imagesUrl[0]}
                             alt={cartItem.product.title}
                             width="100%"
                           />
@@ -474,14 +498,18 @@ const Checkout = () => {
 
                 <div className="row py-1">
                   <div className="col-9 d-flex align-items-center">
-                    {/* TODO: add discount */}
                     <h6>Promo Code</h6>
-                    <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
-                    {/* {(cart.carts && cart.carts[0].coupon.code) || ''} */}
-                    <i className="bi bi-x"></i>
-                    </span>
+                    {/* TODO: remove discount */}
+                    {cart.carts && cart.carts[0].coupon && (
+                      <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
+                        {cart.carts[0].coupon.code || ''}
+                        <i className="bi bi-x"></i>
+                      </span>
+                    )}
                   </div>
-                  <p className="col-3 text-end">${cart.final_total - cart.total}</p>
+                  <p className="col-3 text-end">
+                    ${cart.final_total - cart.total}
+                  </p>
                 </div>
 
                 <div className="row pt-2">

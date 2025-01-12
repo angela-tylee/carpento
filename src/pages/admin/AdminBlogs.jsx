@@ -14,6 +14,7 @@ const AdminProducts = () => {
   const [type, setType] = useState('create');
   // const [tempProduct, setTempProduct] = useState({});
   const [tempArticle, setTempArticle] = useState({});
+  const [isLoadingModal, setLoadingModal] = useState(false);
 
   const articleModal = useRef(null);
   const deleteModal = useRef(null);
@@ -42,11 +43,18 @@ const AdminProducts = () => {
   }
 
   async function getArticle(id) {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
-    );
-    console.log(res.data);
-    setTempArticle(res.data.article);
+    setLoadingModal(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
+      );
+      console.log(res.data);
+      setTempArticle(res.data.article);
+      setLoadingModal(false);
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
   async function deleteArticle(id) {
     const res = await axios.delete(
@@ -87,6 +95,7 @@ const AdminProducts = () => {
         type={type}
         // tempProduct={tempProduct}
         tempArticle={tempArticle}
+        isLoadingModal={isLoadingModal}
       />
       <DeleteModal
         closeDeleteModal={closeDeleteModal}

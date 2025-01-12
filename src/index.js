@@ -7,6 +7,7 @@ import axios from 'axios';
 import {
   BrowserRouter,
 } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL; // 預設 axios base URL，之後就不用重複寫
 
@@ -14,7 +15,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -1,13 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
-const ProductCard2 = ({ product, hasFooter, addToCart }) => {
+const ProductCard2 = ({ product, hasFooter, addToCart, isLoading: isLoadingItem }) => {
   return (
     <div className="card product-card-2 w-100 border-0 d-flex flex-column h-100 justify-content-between">
       <NavLink
         to={`/product/${product.id}`}
         className="card-header px-0 border-0"
         style={{
-          backgroundImage: `url(${product.imageUrl})`,
+          backgroundImage: `url(${product.imagesUrl[0]})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           width: '100%',
@@ -40,7 +40,11 @@ const ProductCard2 = ({ product, hasFooter, addToCart }) => {
           </div>
         </div>
       </NavLink>
-      <div className={`card-footer w-100 mt-2 bg-transparent border-0 p-0 ${hasFooter ? 'd-flex' : 'd-none'}`}>
+      <div
+        className={`card-footer w-100 mt-2 bg-transparent border-0 p-0 ${
+          hasFooter ? 'd-flex' : 'd-none'
+        }`}
+      >
         {/* <input
             type="text"
             className="form-control w-25 me-1 text-center"
@@ -50,8 +54,17 @@ const ProductCard2 = ({ product, hasFooter, addToCart }) => {
         <button
           type="button"
           className="btn btn-primary w-100"
-          onClick={() => addToCart(product.id)}
+          onClick={() => addToCart(product.id, 1)}
+          disabled={isLoadingItem === product.id}
         >
+          {isLoadingItem === product.id && (
+            <div
+              className={`spinner-border spinner-border-sm text-light opacity-50 me-1`}
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          )}
           Add to Cart
         </button>
       </div>

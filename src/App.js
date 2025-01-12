@@ -18,22 +18,13 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminBlogs from './pages/admin/AdminBlogs';
 import AdminCoupons from './pages/admin/AdminCoupons';
-
-import { useEffect } from 'react';
-import axios from 'axios';
+import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
 
-  // useEffect(() => {
-  //   // console.log(process.env.REACT_APP_API_URL, process.env.REACT_APP_API_PATH);
-  //   (async () => {
-  //     const res = await axios.get(`/v2/api/${process.env.REACT_APP_API_PATH}/products/all`);
-  //     console.log(res);
-  //   })()
-  // })
-
   return (
     <div className='App'>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />}></Route>
         {/* Front Pages Routes */}

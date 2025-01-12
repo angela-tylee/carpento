@@ -38,12 +38,12 @@ const AdminCoupons = () => {
   }
 
   async function deleteCoupon(id) {
-    // const res = await axios.delete(
-    //   `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
-    // );
-    // console.log(res);
-    // alert(res.data.message);
-    // console.log('delete', id);
+    const res = await axios.delete(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
+    );
+    console.log(res);
+    alert(res.data.message);
+    console.log('delete', id);
     closeDeleteModal();
     getCoupons(pagination.current_page);
   }

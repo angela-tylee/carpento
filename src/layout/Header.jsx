@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { NavLink, Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
+import { CartContext } from '../context/CartContext';
 
 const Header = () => {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState({
-    carts: [],
-  });
+  // const [cart, setCart] = useState({
+  //   carts: [],
+  // });
   const [isLoading, setIsLoading] = useState(false);
+  const { cart, getCart } = useContext(CartContext);
 
-  const getProducts = async () => {
+  const getProductsAll = async () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
@@ -20,18 +22,18 @@ const Header = () => {
     setProducts(res.data.products);
   };
 
-  const getCart = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
-    );
-    console.log('cart', res.data.data);
-    setCart(res.data.data);
-  };
+  // const getCart = async () => {
+  //   const res = await axios.get(
+  //     `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
+  //   );
+  //   console.log('cart', res.data.data);
+  //   setCart(res.data.data);
+  // };
 
   useEffect(() => {
     setSearchTerm('');
-    getCart();
-    getProducts();
+    // getCart();
+    getProductsAll();
   }, []);
 
   const deleteCartItem = async (id) => {
@@ -77,7 +79,6 @@ const Header = () => {
       <div className="container py-1 py-sm-2 py-lg-3">
         <nav className="navbar navbar-expand-md p-0 fw-semibold">
           <div className="container-fluid p-0">
-
             {/* Logo */}
             <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
               <img
@@ -106,6 +107,7 @@ const Header = () => {
                       top: '10%',
                     }}
                   >
+                    {/* FIXME: need total items count, not item types count*/}
                     {cart.carts?.length}
                     <span className="visually-hidden">New alerts</span>
                   </span>
@@ -263,7 +265,7 @@ const Header = () => {
               </div>
             )}
           </div>
-          
+
           {/* Language Switcher */}
           {/* <div className="language-dropdown nav-item dropdown me-2">
             <a
@@ -311,7 +313,7 @@ const Header = () => {
                   }}
                 >
                   {cart.carts?.length}
-                  <span className="visually-hidden">New alerts</span>
+                  {/* <span className="visually-hidden">New alerts</span> */}
                 </span>
               </div>
             </Link>
@@ -347,8 +349,9 @@ const Header = () => {
                       <div className="row">
                         <div className="col-3">
                           <img
-                            src={cartItem.product.imageUrl}
-                            alt="mug"
+                            src={cartItem.product.imagesUrl[0]}
+                            alt={cartItem.product.title}
+                            className="text-wrap"
                             width="100px"
                           />
                         </div>
@@ -361,17 +364,29 @@ const Header = () => {
                           </p>
                         </div>
                         <div className="col-3 py-1 text-end d-flex flex-column justify-content-between">
-                          {/* TODO: Remove item */}
-                          <p>
-                            <i
-                              className="bi bi-x"
-                              onClick={() => {
-                                deleteCartItem(cartItem.id);
-                              }}
-                              style={{ cursor: 'pointer' }}
-                            ></i>{' '}
+                          {/* FIXME: 移除商品 or 點擊商品 容易點歪*/}
+                          <button
+                            className="btn btn-none border-0"
+                            onClick={() => {
+                              deleteCartItem(cartItem.id);
+                            }}
+                            disabled={isLoading}
+                          >
+                            {isLoading ? (
+                              <div
+                                className={`spinner-border spinner-border-sm text-secondary me-1 
+                                `}
+                                role="status"
+                              >
+                                <span className="visually-hidden">
+                                  Loading...
+                                </span>
+                              </div>
+                            ) : (
+                              <i className="bi bi-x me-1"></i>
+                            )}
                             Remove
-                          </p>
+                          </button>
                           <p>${cartItem.final_total}</p>
                         </div>
                       </div>

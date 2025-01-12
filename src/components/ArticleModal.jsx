@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BlogEditor from './BlogEditor';
 
-function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openDeleteModal }) {
+function ArticleModal({
+  closeArticleModal,
+  getArticles,
+  type,
+  tempArticle,
+  isLoadingModal,
+  openDeleteModal,
+}) {
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     title: '',
@@ -14,6 +21,8 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
     isPublic: false,
     content: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingImg, setIsLoadingImg] = useState(false);
 
   useEffect(() => {
     console.log(type, tempArticle);
@@ -54,7 +63,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
       //     [name]: tempData.create_at,
       //   })
     } else if (['description', 'content'].includes(name)) {
-      setTempData( tempData => ({
+      setTempData((tempData) => ({
         ...tempData,
         [name]: editorData,
       }));
@@ -66,14 +75,8 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
     }
   }
 
-  // const handleEditorChange = (data) => {
-  //   setTempData({
-  //     ...tempData,
-  //     description: data, // Update the content field with CKEditor data
-  //   });
-  // };
-
   async function uploadImage(file) {
+    setIsLoadingImg(true);
     console.log(file);
     if (!file) return;
 
@@ -85,8 +88,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
         formData
       );
-      // QUESTION: 總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
-
+      // QUESTION: 用 setUploadImageUrl 設定預覽圖片的話，總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
       // setUploadImageUrl(res.data.imageUrl);
       setTempData({
         ...tempData,
@@ -94,12 +96,15 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
       });
 
       console.log(tempData);
+      setIsLoadingImg(false);
     } catch (error) {
       console.log(error);
+      setIsLoadingImg(false);
     }
   }
 
   async function submit() {
+    setIsLoading(true);
     console.log(tempArticle.id);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`;
@@ -112,11 +117,14 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
         data: tempData,
       });
       console.log(res);
-      console.log('submit', tempData, tempArticle);
+      setIsLoading(false);
       closeArticleModal();
+      alert(res.data.message);
       getArticles();
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
+      alert(error.response.data.message);
     }
   }
 
@@ -126,10 +134,36 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
       id="articleModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      // aria-hidden='true'
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-xl">
         <div className="modal-content px-2 py-1">
+          {isLoadingModal && (
+            <div className="loading-overlay">
+              <div
+                className="spinner-border text-secondary-emphasis border-5"
+                role="status"
+                style={{ width: '80px', height: '80px' }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
+          {/* TODO: Separate CSS, consider loading-overlay mixin(spinner-border width, color, border, padding-top) */}
+          <style>
+            {`.loading-overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: rgba(255, 255, 255, 0.8);
+              display: flex;
+              justify-content: center;
+              padding-top: 40vh;
+              z-index: 1050; /* Higher than modal content */
+            }`}
+          </style>
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
               {type === 'create' ? '建立新文章' : `編輯：${tempData.title}`}
@@ -182,10 +216,8 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                       type="text"
                       id="create_at"
                       name="create_at"
-                      // placeholder='請輸入日期'
                       className="form-control border-0"
                       onChange={handleChange}
-                      // value={tempData.create_at}
                       value={(() => {
                         const date = new Date(tempData.create_at);
 
@@ -274,6 +306,7 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                         className="form-control"
                         // onChange={(e) => uploadImage(e.target.files[0])}
                         onChange={handleChange}
+                        disabled={isLoadingImg}
                       />
                     </label>
                   </div>
@@ -282,7 +315,20 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
               <div className="col-md-12 mb-2">
                 {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
                 {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
-                {tempData.image ? (
+                {isLoadingImg ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ height: '300px' }}
+                  >
+                    <div
+                      className={`spinner-border text-secondary opacity-50`}
+                      style={{ width: '80px', height: '80px' }}
+                      role="status"
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                ) : tempData.image ? (
                   <img
                     src={tempData.image}
                     alt="preview"
@@ -337,7 +383,8 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
                       type="button"
                       className="btn border-0 text-danger btn-md p-0"
                       // onClick={() => openDeleteModal(tempArticle)}
-                      data-bs-target="#deleteModal" data-bs-toggle="modal"
+                      data-bs-target="#deleteModal"
+                      data-bs-toggle="modal"
                     >
                       <i className="bi bi-trash3"></i> 刪除文章
                     </button>
@@ -359,7 +406,16 @@ function ArticleModal({ closeArticleModal, getArticles, type, tempArticle, openD
               type="button"
               className="btn btn-primary w-50"
               onClick={submit}
+              disabled={isLoading}
             >
+              <div
+                className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                  isLoading ? '' : 'd-none'
+                }`}
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
               儲存
             </button>
           </div>

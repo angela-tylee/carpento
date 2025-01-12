@@ -6,7 +6,7 @@ import ProductCard from '../../components/ProductCard';
 const Home = () => {
   const [products, setProducts] = useState([]);
 
-  const getProducts = async (page = 1) => {
+  const getProductsAll = async (page = 1) => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
@@ -16,7 +16,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getProducts();
+    getProductsAll();
   }, []);
 
   return (

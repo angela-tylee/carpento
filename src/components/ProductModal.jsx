@@ -9,6 +9,7 @@ function ProductModal({
   type,
   tempProduct,
   currentPage,
+  // isLoadingModal,
 }) {
   const [tempData, setTempData] = useState({
     title: '',
@@ -24,10 +25,12 @@ function ProductModal({
     },
     is_enabled: 1,
     imageUrl: '',
-    imagesUrl: ['', '', '', '', ''],
+    imagesUrl: [],
     tag: '',
   });
   const [uploadImageUrl, setUploadImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingImg, setIsLoadingImg] = useState(false);
 
   useEffect(() => {
     if (type === 'create') {
@@ -45,7 +48,7 @@ function ProductModal({
         },
         is_enabled: 1,
         imageUrl: '',
-        imagesUrl: ['image1', 'image2', 'image3', 'image4', 'image5'],
+        imagesUrl: [],
         tag: '',
       });
     } else if (type === 'edit') {
@@ -69,8 +72,8 @@ function ProductModal({
         // [name]: +e.target.is_enabled
         [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       });
-    } else if (name === 'imageUpload' && files[0]) {
-      await uploadImage(files[0]);
+      // } else if (name === 'imageUpload' && files[0]) {
+      //   await uploadImage(files[0]);
     } else if (name === 'imagesUpload') {
       await uploadImages(e);
     } else if (['info', 'size', 'maintenance'].includes(name)) {
@@ -89,44 +92,46 @@ function ProductModal({
     }
   }
 
-  async function uploadImage(file) {
-    console.log(file);
-    if (!file) return;
+  // async function uploadImage(file) {
+  //   console.log(file);
+  //   if (!file) return;
 
-    // QUESTION: How does `FormData()` work? 2024-12-15
-    const formData = new FormData();
-    formData.append('file-to-upload', file);
+  //   // QUESTION: How does `FormData()` work? 2024-12-15
+  //   const formData = new FormData();
+  //   formData.append('file-to-upload', file);
 
-    try {
-      const res = await axios.post(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
-        formData
-      );
+  //   try {
+  //     const res = await axios.post(
+  //       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
+  //       formData
+  //     );
 
-      setTempData({
-        ...tempData,
-        imageUrl: res.data.imageUrl,
-      });
+  //     setTempData({
+  //       ...tempData,
+  //       imageUrl: res.data.imageUrl,
+  //     });
 
-      console.log(tempData);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     console.log(tempData);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   const uploadImages = async (e) => {
     e.preventDefault();
     console.log(e);
+    setIsLoadingImg(true);
 
-    if (tempData.imagesUrl.length >= 6) {
-      alert("最多上傳 6 張照片");
+    console.log('length', tempData.imagesUrl.length);
+
+    if (tempData.imagesUrl.length >= 5) {
+      alert('最多上傳 5 張照片');
       return;
     }
 
     const { files } = e.target;
 
     if (files?.[0]) {
-
       const formData = new FormData();
       formData.append('file-to-upload', files[0]);
 
@@ -142,8 +147,10 @@ function ProductModal({
         }));
 
         console.log(tempData);
+        setIsLoadingImg(false);
       } catch (error) {
         console.log(error);
+        setIsLoadingImg(false);
       }
     } else {
       // Get URL from form data instead of state
@@ -155,7 +162,7 @@ function ProductModal({
           ...prev,
           imagesUrl: [...prev.imagesUrl, uploadImageUrl.trim()],
         }));
-        setUploadImageUrl(""); // Clear form
+        setUploadImageUrl(''); // Clear form
       }
     }
   };
@@ -170,6 +177,7 @@ function ProductModal({
   };
 
   async function submit() {
+    setIsLoading(true);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
       let method = 'post';
@@ -181,10 +189,13 @@ function ProductModal({
         data: tempData,
       });
       console.log(res);
+      setIsLoading(false);
+      alert(res.data.message);
       closeProductModal();
       getProducts(currentPage);
     } catch (error) {
       console.log(error.response.message);
+      setIsLoading(false);
     }
   }
 
@@ -213,8 +224,6 @@ function ProductModal({
           <div className="modal-body">
             <div className="row">
               <div className="col-sm-8">
-                <pre className="py-3"> {JSON.stringify(tempProduct)}</pre>
-                <pre className="py-3"> {JSON.stringify(tempData)}</pre>
                 <div className="form-group mb-2">
                   <label className="w-100" htmlFor="title">
                     標題
@@ -335,6 +344,7 @@ function ProductModal({
                         onChange={handleChange}
                         value={tempData.tag}
                       >
+                        {/* FIXME: 如果前一個值不是空值，就會取到前一個值 */}
                         <option value="" disabled>
                           請選擇標籤
                         </option>
@@ -413,8 +423,134 @@ function ProductModal({
                 </div>
               </div>
               <div className="col-sm-4">
+                <div className="col-12 mb-2">
+                  <form
+                    onSubmit={uploadImages}
+                    // className="d-flex gap-2"
+                  >
+                    <label htmlFor="imageUrl">輸入圖片網址</label>
+                    <div className="d-flex">
+                      <input
+                        type="text"
+                        name="imagesUpload"
+                        id="imageUrl"
+                        placeholder="請輸入圖片網址"
+                        className="form-control"
+                        value={uploadImageUrl}
+                        onChange={(e) => setUploadImageUrl(e.target.value)}
+                      />
+                      <button type="submit" className="btn btn-primary">
+                        Add
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div className="col-12 mb-2">
+                  <label
+                    htmlFor="imageFile"
+                    className="bg-secondary border border-2 border-secondary text-body-tertiary d-flex align-items-center justify-content-center opacity-hover"
+                    style={{ height: '150px', cursor: 'pointer' }}
+                  >
+                    <input
+                      type="file"
+                      name="imagesUpload"
+                      onChange={handleChange}
+                      className="d-none"
+                      id="imageFile"
+                    />
+                    <i class="bi bi-plus"></i>或點擊上傳圖片檔案
+                    <i class="bi bi-image ms-1"></i>
+                  </label>
+                </div>
+                <div className="row g-2 mb-2">
+                  {tempData.imagesUrl.length > 0 || isLoadingImg ? (
+                    <>
+                      <div className="col-sm-12">
+                        {isLoadingImg && tempData.imagesUrl.length === 0 ? (
+                          <div
+                            className="d-flex justify-content-center align-items-center"
+                            style={{ height: '150px' }}
+                          >
+                            <div
+                              className={`spinner-border text-secondary`}
+                              style={{ width: '50px', height: '50px' }}
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="position-relative opacity-hover">
+                            <img
+                              src={tempData.imagesUrl[0]}
+                              alt={`${tempData.title}-1`}
+                              className="img-fluid w-100"
+                              style={{ objectFit: 'cover' }}
+                            />
+                            <button
+                              onClick={() => deleteImage(0)}
+                              className="btn btn-secondary btn-sm position-absolute top-0 end-0 m-1 rounded-circle opacity-50"
+                              style={{ padding: '1px 3px 0px 4px' }}
+                            >
+                              <i class="bi bi-x text-dark"></i>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      {tempData.imagesUrl.slice(1).map((url, index) => (
+                        <div key={index} className="col-sm-6">
+                          {/* FIXME: not showing loading effect */}
+                          {isLoadingImg &&
+                          tempData.imagesUrl.length === index + 1 ? (
+                            <div
+                              className="d-flex justify-content-center align-items-center"
+                              style={{ height: '120px' }}
+                            >
+                              <div
+                                className={`spinner-border text-secondary`}
+                                style={{ width: '30px', height: '30px' }}
+                                role="status"
+                              >
+                                <span className="visually-hidden">
+                                  Loading...
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="position-relative opacity-hover">
+                              <img
+                                src={url}
+                                alt={`${tempData.title}-${index + 2}`}
+                                className="img-fluid"
+                                style={{ height: '120px', objectFit: 'cover' }}
+                              />
+                              <button
+                                onClick={() => deleteImage(index + 1)}
+                                className="btn btn-secondary btn-sm position-absolute top-0 end-0 m-1 rounded-circle opacity-50"
+                                style={{ padding: '1px 3px 0px 4px' }}
+                              >
+                                <i class="bi bi-x text-dark"></i>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </div>
+                <style>
+                  {/* TODO: Separate CSS */}
+                  {`
+              .opacity-hover:hover { opacity: 0.8; transition: opacity 0.3s; }
+            `}
+                </style>
+
+                {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                 <div className="form-group mb-2">
-                  {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                   <label className="w-100" htmlFor="image">
                     輸入圖片網址
                     <input
@@ -428,7 +564,7 @@ function ProductModal({
                     />
                   </label>
                 </div>
-                <div className="form-group mb-2">
+                {/* <div className="form-group mb-2">
                   <label className="w-100" htmlFor="customFile">
                     或 上傳圖片
                     <input
@@ -449,68 +585,11 @@ function ProductModal({
                   />
                 ) : (
                   'Add image to preview'
-                )}
-                <div className="col-12 mt-4">
-                  <h5>Additional Images</h5>
-                  <div className="row mb-3">
-                    <div className="col-sm-8">
-                      <form
-                        onSubmit={uploadImages}
-                        className="d-flex gap-2"
-                      >
-                        <input
-                          type="text"
-                          name="imagesUpload"
-                          placeholder="Enter image URL"
-                          className="form-control"
-                          value={uploadImageUrl}
-                          onChange={(e) => setUploadImageUrl(e.target.value)}
-                        />
-                        <button type="submit" className="btn btn-primary">
-                          Add
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                  <div className="row g-3">
-                    {tempData.imagesUrl.map((url, index) => (
-                      <div key={index} className="col-sm-6">
-                        <div className="position-relative">
-                          <img
-                            src={url}
-                            alt={`Product ${index}`}
-                            className="img-fluid"
-                            style={{ height: '150px', objectFit: 'cover' }}
-                          />
-                          <button
-                            onClick={() => deleteImage(index)}
-                            className="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="col-sm-3">
-                      <input
-                        type="file"
-                        name="imagesUpload"
-                        onChange={handleChange}
-                        className="d-none"
-                        id="imagesUpload"
-                      />
-                      <label
-                        htmlFor="imagesUpload"
-                        className="border border-2 border-dashed d-flex align-items-center justify-content-center"
-                        style={{ height: '150px', cursor: 'pointer' }}
-                      >
-                        + Add Image
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                )} */}
               </div>
             </div>
+            <pre className="py-3"> {JSON.stringify(tempProduct)}</pre>
+            <pre className="py-3"> {JSON.stringify(tempData)}</pre>
           </div>
           <div className="modal-footer flex-nowrap">
             <button
@@ -525,7 +604,16 @@ function ProductModal({
               type="button"
               className="btn btn-primary w-50"
               onClick={submit}
+              disabled={isLoading}
             >
+              <div
+                className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                  isLoading ? '' : 'd-none'
+                }`}
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
               儲存
             </button>
           </div>

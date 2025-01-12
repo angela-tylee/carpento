@@ -175,6 +175,7 @@ const AdminOrder = () => {
         </table>
         <footer className="d-flex justify-content-between align-items-end">
           <p className="ps-1">
+            {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
             目前有 <span>{orders.length}</span> 筆訂單
           </p>
           <Pagination pagination={pagination} changePage={getOrders} />

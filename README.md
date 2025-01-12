@@ -18,6 +18,7 @@
   - React Hook Form
   - React i18n
 - Bootstrap
+  - Bootstrap Components: Accordion, Tabs
   - Bootstrap Icon
 - CKEditor
 - Swiper

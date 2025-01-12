@@ -20,32 +20,12 @@ function OrderModal({
       tel: '',
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // console.log(tempData, selectedOrder);
   useEffect(() => {
     console.log(selectedOrder);
-    // if(type === 'create') {
-    //   setTempData({
-    //     "title": "",
-    //     "category": "",
-    //     "origin_price": 0,
-    //     "price": 0,
-    //     "unit": "unit",
-    //     "description": "",
-    //     "content": "",
-    //     "is_enabled": 1,
-    //     "imageUrl": "",
-    //     "imagesUrl": [
-    //       "",
-    //       "",
-    //       "",
-    //       "",
-    //       ""
-    //     ]
-    //   })
-    // } else if (type === 'edit') {
     setTempData(selectedOrder);
-    // }
   }, [selectedOrder]);
 
   function handleChange(e) {
@@ -64,17 +44,19 @@ function OrderModal({
   }
 
   async function submit() {
+    setIsLoading(true);
     try {
       const res = await axios.put(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${selectedOrder.id}`, {
         data: tempData,
       });
       console.log(res);
+      setIsLoading(false);
       alert(res.data.message);
-      // console.log(tempData);
       closeOrderModal();
       getOrders();
     } catch (error) {
       console.log(error.response.message)
+      setIsLoading(false);
     }
   }
 
@@ -86,7 +68,7 @@ function OrderModal({
       aria-labelledby="exampleModalLabel"
       // aria-hidden='true'
     >
-      <div className="modal-dialog modal-xl">
+      <div className="modal-dialog modal-lg">
         <div className="modal-content px-2 py-1">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
@@ -102,7 +84,7 @@ function OrderModal({
           </div>
           {tempData && (
             <div className="modal-body">
-              <h2 className="card-title mb-2">訂單編號：{selectedOrder?.id}</h2>
+              <h2 className="card-title mb-2 fs-5">訂單編號：{selectedOrder?.id}</h2>
               <div className="row">
                 <div className="col-sm-7 pe-4">
                   <p>
@@ -134,15 +116,15 @@ function OrderModal({
                   <hr />
                   <div className="mt-2">
                     <div className="d-flex justify-content-between">
-                      <p>小計：</p>{' '}
+                      <p>小計：</p>
                       <span>${tempData?.total?.toLocaleString()}</span>
                     </div>
                     {/* TODO: coupon order API 沒有 coupon code */}
                     <div className="d-flex justify-content-between">
-                      <p>折扣碼：</p> <span>{tempData.coupon}</span>
+                      <p>折扣碼：</p> <span>{tempData.coupon || '無'}</span>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p>總金額：</p>{' '}
+                      <p>總金額：</p>
                       <span>${tempData?.total?.toLocaleString()} </span>
                     </div>
                   </div>
@@ -220,7 +202,16 @@ function OrderModal({
               type="button"
               className="btn btn-primary w-50"
               onClick={submit}
+              disabled={isLoading}
             >
+              <div
+                className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                  isLoading ? '' : 'd-none'
+                }`}
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
               儲存
             </button>
           </div>

@@ -1,10 +1,11 @@
 import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
 import PRODUCTS_CATEGORIES from '../../constants/categories';
 import ProductCard2 from '../../components/ProductCard2';
 import useSort from '../../hooks/useSort';
+import { CartContext } from '../../context/CartContext';
 
 const Products = () => {
   // const { category } = useParams();
@@ -12,31 +13,25 @@ const Products = () => {
   const category = searchParams.get('category') || '';
 
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [cartQuantity, setCartQuantity] = useState(1);
+  // const [cartQuantity, setCartQuantity] = useState(1);
 
   // const [sortCriteria, setSortCriteria] = useState(null);
   // const [sortedProducts, setSortedProducts] = useState(products);
-  const { sortedItems, sortCriteria, sortLabel, handleSort } = useSort(products);
+  // TODO: sort all products, not single page
+  const { sortedItems, sortCriteria, sortLabel, handleSort } = useSort(allProducts);
+  // const [isLoading, setIsLoading] = useState(false);
+  const { addToCart, isLoading } = useContext(CartContext);
 
-  const [isLoading, setIsLoading] = useState(false);
-
-
-  // const categories = [
-  //   'Living Room',
-  //   'Bedroom',
-  //   'Dining',
-  //   'Workspace',
-  //   'Decoration',
-  //   'Others',
-  // ];
 
   useEffect(() => {
     // setProducts([]);
     // setSortCriteria(null);
     // console.log(sortCriteria);
     getProducts();
+    getProductsAll(category);
     // handleSort(null); // TODO: 這是對的嗎??
 
     // const fetchProducts = async () => {
@@ -73,7 +68,7 @@ const Products = () => {
         : [...res1.data.products, ...res2.data.products];
 
     setProducts(products);
-    console.log(products);
+    console.log("products",products);
 
     setPagination({
       ...res1.data.pagination,
@@ -81,27 +76,41 @@ const Products = () => {
     });
   };
 
-  const addToCart = async (id) => {
-    const data = {
-      data: {
-        product_id: id,
-        qty: cartQuantity,
-      },
-    };
-    setIsLoading(true);
-    try {
-      // console.log(data);
-      const res = await axios.post(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
-        data
-      );
-      console.log(res);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+  const getProductsAll = async (category) => {
+    const res = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+    );
+    console.log("allProducts", res);
+    const categorizedProducts = res.data.products.filter(product => {
+      if (category === '') {
+        return product
+      } 
+      return product.category === category
+    })
+    setAllProducts(categorizedProducts);
   };
+
+  // const addToCart = async (id) => {
+  //   const data = {
+  //     data: {
+  //       product_id: id,
+  //       qty: cartQuantity,
+  //     },
+  //   };
+  //   setIsLoading(true);
+  //   try {
+  //     // console.log(data);
+  //     const res = await axios.post(
+  //       `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
+  //       data
+  //     );
+  //     console.log(res);
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // const handleSort = (criteria, e) => {
   //   // const criteria = e.target.getAttribute("data-criteria");
@@ -274,7 +283,7 @@ const Products = () => {
             <div className="row">
               {(sortCriteria ? sortedItems : products)?.map((product) => (
                 <div key={product.id} className="col-6 col-sm-3 mt-4">
-                  <ProductCard2 product={product} hasFooter={true} addToCart={addToCart}/>
+                  <ProductCard2 product={product} hasFooter={true} addToCart={addToCart} isLoading={isLoading}/>
                   {/* <div className="card w-100 border-0 d-flex flex-column h-100 justify-content-between">
                     <NavLink
                       to={`/product/${product.id}`}
@@ -295,7 +304,7 @@ const Products = () => {
                             ? 'bg-warning'
                             : ''
                         }`}
-                      >
+            ｀          >
                         {product.tag}
                       </span>
                     </NavLink>
@@ -329,27 +338,8 @@ const Products = () => {
               ))}
             </div>
             {/* FIXME: `current_page` is not suitable for this page. */}
-            <Pagination pagination={pagination} changePage={getProducts} />
-            {/* <nav aria-label="..." className="mt-4">
-              <ul className="pagination fw-bold justify-content-end">
-                <li className={`page-item disabled=${!pagination.has_pre}`}>
-                  <a className="page-link" href="/" onClick={(e) => {e.preventDefault(); getProducts(pagination.current_page - 1);}}>&lt;</a>
-                </li>
-                {[...Array(pagination.total_pages)].map((_, index) => (
-                    <li key={index}
-                    className={`page-item ${pagination.current_page === index + 1 ? 'active' : ''}`} 
-                    aria-current={pagination.current_page === index + 1 ? 'page': undefined}>
-                    <a className="page-link" href="/"
-                    onClick={(e) => {e.preventDefault(); getProducts(index + 1);}}>
-                      {index + 1}
-                    </a>
-                  </li>
-                  ))}
-                <li className={`page-item disabled=${!pagination.has_next}`}>
-                  <a className="page-link" href="/" onClick={(e) => {e.preventDefault(); getProducts(pagination.current_page + 1);}}>&gt;</a>
-                </li>
-              </ul>
-            </nav> */}
+            {!sortCriteria && <Pagination pagination={pagination} changePage={getProducts} />}
+            {/* <Pagination pagination={pagination} changePage={getProducts} /> */}
           </div>
         </div>
       </div>

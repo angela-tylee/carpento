@@ -15,7 +15,7 @@ const ProductCard = ({ product, colNum }) => {
         <div
           className="card-header px-0 border-0"
           style={{
-            backgroundImage: `url(${product.imageUrl})`,
+            backgroundImage: `url(${product.imagesUrl[0]})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             width: '100%',

@@ -43,13 +43,14 @@ const CheckoutSuccess = () => {
           <div className="bg-secondary p-3">
             <div className="d-flex justify-content-between pb-1 mb-2 border-bottom border-1 border-gray">
               <h5>Order Summary</h5>
-              <div>
+              <div className="d-flex align-items-center">
                 <button
-                  className="btn p-0 text-decoration-underline"
+                  className="btn p-0 text-decoration-underline d-flex align-items-center"
                   // onClick={}
                 >
                   {/* TODO: add copy link */}
-                  <p>Copy link<i className="bi bi-link-45deg fs-5 ms-1"></i></p>
+                  <span>Copy link</span>
+                  <i className="bi bi-link-45deg fs-5 ms-1"></i>
                 </button>
                 <span className="mx-1">or</span>
                 <button
@@ -101,7 +102,7 @@ const CheckoutSuccess = () => {
                     <div className="row py-1">
                       <div className="col-3 col-sm-2">
                         <img
-                          src={item.product.imageUrl}
+                          src={item.product.imagesUrl[0]}
                           alt={item.product.title}
                           width="100%"
                         />
