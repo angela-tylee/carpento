@@ -181,7 +181,6 @@ const CKEditorDemo = ({ editorData, handleEditorChange }) => {
         ref={editorContainerRef}
       >
         <div className="editor-container__editor">
-          {/* TODO: Add loading effect */}
           <div ref={editorRef}>
             {ClassicEditor && editorConfig && (
               <CKEditor

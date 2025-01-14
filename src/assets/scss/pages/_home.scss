@@ -66,20 +66,23 @@ h6 {
 // }
 
 .section-recycle {
-  @include banner;
+  @include banner(30vh, 45vh);
   background-size: 120%;
 }
 
 .section-award {
-  .container {
-    padding-inline: 7%;
-  }
+  // .container {
+  //   padding-inline: 7%;
+  // }
   // margin-inline: -111px;
-  .awards {
-    &>div {
-      width: 100px;
-      // margin-inline: 111px;
-    }
+  // .awards {
+  //   &>div {
+  //     width: 100px;
+  //     // margin-inline: 111px;
+  //   }
+  // }
+  .img-grayscale {
+    filter: grayscale(100%);
   }
 }
 

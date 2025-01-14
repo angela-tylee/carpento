@@ -119,7 +119,6 @@ const AdminProducts = () => {
       <table className="table my-3">
         <thead>
           <tr>
-            {/* TODO: Add link to go to front page */}
             <th scope="col" width="40%">
               文章標題
             </th>
@@ -190,7 +189,6 @@ const AdminProducts = () => {
       </table>
       <footer className="d-flex justify-content-between align-items-end">
         <p className="ps-1">
-          {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
           目前有 <span>{articles.length}</span> 篇文章
         </p>
         <Pagination pagination={pagination} changePage={getArticles}/>

@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { set, useForm } from 'react-hook-form';
 import axios from 'axios';
+import { CartContext } from '../../context/CartContext';
 
 const Checkout = () => {
-  const [cart, setCart] = useState({});
+  // const [cart, setCart] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   let navigate = useNavigate();
 
-  const getCart = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
-    );
-    console.log(res.data.data);
-    setCart(res.data.data);
-  };
+  const { cart, getCart } = useContext(CartContext);
+
+  // const getCart = async () => {
+  //   const res = await axios.get(
+  //     `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
+  //   );
+  //   console.log(res.data.data);
+  //   setCart(res.data.data);
+  // };
 
   const {
     register,
@@ -54,7 +57,6 @@ const Checkout = () => {
     setIsLoading(true);
 
     try {
-      // TODO: 清空表單、跳轉至 checkout-success
       const res = await axios.post(
         `/v2/api/${process.env.REACT_APP_API_PATH}/order`,
         order
@@ -64,16 +66,13 @@ const Checkout = () => {
       if (res.data.orderId) {
         const paymentRes = await axios.post(
           `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`
-          // FIXME: 日期錯誤 1970
-          // {
-          //   ...order,
-          //   create_at: Date.now(),
-          // }
         );
         console.log(paymentRes);
       }
 
       setIsLoading(false);
+
+      getCart();
 
       navigate(`/checkout-success/${res.data.orderId}`);
     } catch (error) {
@@ -82,23 +81,12 @@ const Checkout = () => {
     }
   };
 
-  // console.log(watch());
-  // console.log('errors:', errors);
-
-  // const getOrders = async () => {
-  //   const res = await axios.get(
-  //     `/v2/api/${process.env.REACT_APP_API_PATH}/orders`
-  //   );
-  //   console.log("order",res);
-  // };
-
   useEffect(() => {
     getCart();
-    // getOrders();
   }, []);
 
   return (
-    <main className="container mb-7">
+    <main className="container mb-7 checkout">
       <div className="row justify-content-center">
         <div className="col-12 col-md-10 col-xl-8 d-none d-sm-block">
           <nav className="stepper mt-6 mb-5 d-flex justify-content-between">
@@ -338,19 +326,22 @@ const Checkout = () => {
             <h2 className="fs-4 mt-4 mb-3">Payment</h2>
             <div className="mb-2">
               {/* TODO: Validate Card Info */}
-              <label htmlFor="cardInfo" className="form-label">
-                Card Info<span className="text-danger">*</span>
+              <label htmlFor="cardInfo" className="form-label w-100 d-flex justify-content-between align-items-end">
+                <p>Card Info<span className="text-danger">*</span></p>
+                <div className="d-flex justify-content-end">
+                  <img src="/images/credit-cards/visa.png" alt="visa-card" className="credit-card" width="40px"/>
+                  <img src="/images/credit-cards/master.png" alt="master-card" className="credit-card" width="40px"/>
+                  <img src="/images/credit-cards/american-express.png" alt="american-express-card" className="credit-card" width="40px"/>
+                </div>
               </label>
-              {/* TODO: Add Cards icon */}
               <input
                 type="text"
                 className={`form-control ${errors.cardInfo && 'is-invalid'}`}
                 id="cardInfo"
-                inputmode="numeric"
-                pattern="\d{13,19}"
+                inputMode="numeric"
+                // pattern="\d{13,19}"
                 placeholder="1234 5678 9012 3456"
-                autocomplete="cc-number"
-                maxLength="19"
+                autoComplete="cc-number"
                 {...register('cardInfo', {
                   required: {
                     value: true,
@@ -404,10 +395,10 @@ const Checkout = () => {
                   placeholder="CVV"
                   id="cvv"
                   name="cvv"
-                  inputmode="numeric"
-                  pattern="\d{3,4}"
-                  autocomplete="cc-csc"
-                  maxLength="4"
+                  inputMode="numeric"
+                  // pattern="\d{3,4}"
+                  autoComplete="cc-csc"
+                  // maxLength="4"
                   {...register('cvv', {
                     required: {
                       value: true,
@@ -464,28 +455,28 @@ const Checkout = () => {
 
               <div>
                 <h6 className="mt-3 mb-1 fw-normal">
-                  Cart (<span>{cart.carts?.length}</span> items)
+                  Cart (<span>{cart.carts?.reduce((total, cartItem) => total + cartItem.qty, 0)}</span> items)
                 </h6>
 
                 <div className="border-top border-bottom border-1 border-gray">
                   {cart.carts &&
                     cart.carts.map((cartItem) => (
-                      <div className="row py-1">
-                        <div className="d-none d-md-block col-md-2 col-lg-3">
+                      <div className="row py-1" key={cartItem.product.id}>
+                        <div className="d-none d-sm-block col-sm-2 col-lg-3">
                           <img
                             src={cartItem.product.imagesUrl[0]}
                             alt={cartItem.product.title}
                             width="100%"
                           />
                         </div>
-                        <div className="col-9 col-md-7 col-lg-6 py-1">
+                        <div className="col-8 col-sm-8 col-lg-6 py-1">
                           <h6>{cartItem.product.title}</h6>
                           <p>
                             QTY: <span>{cartItem.qty}</span>
                           </p>
                         </div>
-                        <div className="col-3 py-1 text-end d-flex flex-column justify-content-end">
-                          <p>${cartItem.total}</p>
+                        <div className="col-4 col-sm-2 col-lg-3 py-1 text-end d-flex flex-column justify-content-end">
+                          <p>${cartItem.total?.toLocaleString()}</p>
                         </div>
                       </div>
                     ))}
@@ -493,28 +484,27 @@ const Checkout = () => {
 
                 <div className="row pt-2 pb-1">
                   <h6 className="col-6">Subtotal</h6>
-                  <p className="col-6 text-end">${cart.total}</p>
+                  <p className="col-6 text-end">${cart.total?.toLocaleString()}</p>
                 </div>
 
                 <div className="row py-1">
                   <div className="col-9 d-flex align-items-center">
-                    <h6>Promo Code</h6>
-                    {/* TODO: remove discount */}
-                    {cart.carts && cart.carts[0].coupon && (
+                    <h6>Discount</h6>
+                    {cart.carts && cart.carts[0]?.coupon && (
                       <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
+                        {/* FIXME: NaN */}
                         {cart.carts[0].coupon.code || ''}
-                        <i className="bi bi-x"></i>
                       </span>
                     )}
                   </div>
                   <p className="col-3 text-end">
-                    ${cart.final_total - cart.total}
+                    ${(cart.final_total - cart.total?.toLocaleString())}
                   </p>
                 </div>
 
                 <div className="row pt-2">
                   <h6 className="col-6 fs-5">Total</h6>
-                  <p className="col-6 text-end">${cart.final_total}</p>
+                  <p className="col-6 text-end">${cart.final_total?.toLocaleString()}</p>
                 </div>
               </div>
             </div>

@@ -42,7 +42,7 @@ function useSort(items) {
     setSortCriteria(criteria);
     // setSortCriteria(e.target.innerText);
     //   const label = e?.target.innerText;
-      setSortLabel(e?.target.innerText);
+    setSortLabel(e?.target.innerText);
   };
   
 

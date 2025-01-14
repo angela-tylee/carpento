@@ -3,8 +3,11 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductModal from '../../components/ProductModal';
 import DeleteModal from '../../components/DeleteModal';
-import { Modal } from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 import Pagination from '../../components/Pagination';
+import Message from '../../components/Message';
+// import useMessage from '../../hooks/useMessage';
+import { useMessage } from '../../context/MessageContext';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -17,22 +20,13 @@ const AdminProducts = () => {
   const productModal = useRef(null);
   const deleteModal = useRef(null);
 
+  const { message, messageType, showMessage } = useMessage();
+
+  // const successMessage = useRef(null);
+
   useEffect(() => {
-    // const token = document.cookie // 取出 token
-    //   .split('; ')
-    //   .find((row) => row.startsWith('carpento='))
-    //   ?.split('=')[1];
 
-    // console.log(token);
-
-    // axios.defaults.headers.common['Authorization'] = token;
-
-    // (async () => {
-    //   const productRes = await axios.get(
-    //     `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
-    //   );
-    //   console.log(productRes);
-    // })();
+    // successMessage.current = new Toast('#liveToast');
 
     productModal.current = new Modal('#productModal', {
       backdrop: 'static',
@@ -81,6 +75,15 @@ const AdminProducts = () => {
     getProducts(pagination.current_page);
   }
 
+  // const [messageType, setMessageType] = useState('success');
+  // const [message, setMessage] = useState('');
+
+  // const showToast = (type, text) => {
+  //   setMessageType(type);
+  //   setMessage(text);
+  //   successMessage.current.show();
+  // };
+
   function openProductModal(type, product) {
     setTempProduct(product);
     setType(type);
@@ -101,18 +104,14 @@ const AdminProducts = () => {
     deleteModal.current.hide();
   }
 
-  // TODO: search filter 元件化 'useFilter'
   const [searchTerm, setSearchTerm] = useState('');
-  // const [filteredProducts, setFilteredProducts] = useState([]);
 
   const filteredProducts = allProducts.filter((product) => {
     return product.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  // console.log(filteredProducts);
-
   const handleFilter = (e) => {
-  // FIXME: 清空 searchTerm 時，頁碼要恢復正常
+    // FIXME: 清空 searchTerm 時，頁碼要恢復正常
     setPagination({ ...pagination, total_pages: 1, current_page: 1 });
     e.preventDefault();
   };
@@ -125,6 +124,7 @@ const AdminProducts = () => {
         type={type}
         tempProduct={tempProduct}
         currentPate={pagination.current_page}
+        showMessage={showMessage}
         // isLoadingModal={isLoadingModal}
       />
       <DeleteModal
@@ -133,6 +133,8 @@ const AdminProducts = () => {
         id={tempProduct.id}
         handleDelete={deleteProduct}
       />
+      <Message type={messageType} message={message}/>
+
       <header className="d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <h1 className="fs-5">產品列表</h1>
@@ -145,25 +147,23 @@ const AdminProducts = () => {
             <i className="bi bi-plus-lg"></i> 新增產品
           </button>
         </div>
-        <form onSubmit={handleFilter} className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
-          {/* TODO: 輸入產品文字太長時，會破版 */}
-          {/* <form onSubmit={handleFilter}> */}
-            <input
-              className="form-control p-0 border-0 shadow-none"
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              // onFocus={() => setShowSuggestions(true)}
-              // onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-            />
-            <button
-              className="btn btn-none border-0"
-              // onClick={handleFilter}
-            >
-              <i className="icon-search bi bi-search px-1"></i>
-            </button>
-          {/* </form> */}
+        <form
+          onSubmit={handleFilter}
+          className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3"
+        >
+          <input
+            className="form-control p-0 border-0 shadow-none"
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onBlur={handleFilter}
+          />
+          <button
+            className="btn btn-none border-0"
+          >
+            <i className="icon-search bi bi-search px-1"></i>
+          </button>
         </form>
       </header>
       <hr />
@@ -261,8 +261,11 @@ const AdminProducts = () => {
       </table>
       <footer className="d-flex justify-content-between align-items-end">
         <p className="ps-1">
-          {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
-          目前有 <span>{filteredProducts ? filteredProducts.length : allProducts.length}</span> 項產品
+          目前有{' '}
+          <span>
+            {filteredProducts ? filteredProducts.length : allProducts.length}
+          </span>{' '}
+          項產品
         </p>
         <Pagination
           pagination={pagination}

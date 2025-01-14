@@ -23,7 +23,7 @@ const Home = () => {
     <div className="home">
       <main>
         <section
-          className="section-hero py-3 py-md-5 py-lg-7"
+          className="section-hero py-3 py-sm-5 py-lg-7"
           style={{ backgroundImage: 'url(/images/banner-6.jpeg)' }}
         >
           <div className="container section-body section-hero-body">
@@ -37,7 +37,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-sale container py-3 py-md-5 py-lg-7">
+        <section className="section-sale container py-3 py-sm-5 py-lg-7">
           <h2 className="fs-4 text-center mb-0 mb-md- mb-lg-6">Special Offer</h2>
           <div className="sale-cards d-flex">
             <div className="row">
@@ -80,7 +80,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-feature py-3 py-md-5 py-lg-7 bg-secondary">
+        <section className="section-feature py-3 py-sm-5 py-lg-7 bg-secondary">
           <div className="container col-md-8">
             <div className="row">
               <div className="col-sm-4 mt-4 mt-sm-0">
@@ -122,7 +122,7 @@ const Home = () => {
           }}
         ></section>
 
-        <section className="section-bestseller py-3 py-md-5 py-lg-7">
+        <section className="section-bestseller py-3 py-sm-5 py-lg-7">
           <div className="container col-lg-8">
             <h2 className="fs-4 text-center mb-0 mb-md-3 mb-lg-6">Best Seller</h2>
             <div className="sale-cards d-flex">
@@ -171,34 +171,86 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-award py-3 py-md-5 py-lg-7 bg-secondary">
-          <div className="container">
-            <h2 className="fs-4 text-center mb-0 mb-md-3 mb-lg-6">Award-winning Design</h2>
-            <div className="d-flex awards justify-content-between align-items-center flex-wrap">
-              {[
-                'if-award-2020',
-                'innovation-by-design-2021',
-                'reddot-2019',
-                'idea-award',
-                'good-design-2023',
-                'greenguard-logo',
-                'forest-Stewardship-Council',
-                'amazon-5star',
-                'adesign-award',
-              ].map((award, index) => (
-                <div key={index}>
+        <section className="section-award py-3 py-sm-5 py-lg-7 bg-secondary">
+          <div className="container col-10 col-sm-12 col-md-10 col-xl-12">
+            <h2 className="fs-4 text-center mb-2 mb-md-3 mb-lg-6">Award-winning Design</h2>
+            {/* <div className="d-flex justify-content-between align-items-center"> */}
+            <div className="row align-items-center">
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                   <img
-                    src={`/images/awards/${award}.png`}
-                    alt={award}
-                    width={index === 2 ? '120px' : '100px'}
+                    src="/images/awards/if-award-2020.png"
+                    className="img-grayscale"
+                    alt="if-award-2020"
+                    width="120px"
                   />
                 </div>
-              ))}
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/innovation-by-design-2021.png"
+                    className="img-grayscale"
+                    alt="innovation-by-design-2021"
+                    width="60px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/reddot-2019.png"
+                    className="img-grayscale"
+                    alt="reddot-2019"
+                    width="170px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/idea-award.png"
+                    className="img-grayscale"
+                    alt="idea-award"
+                    width="110px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/good-design-2023.png"
+                    className="img-grayscale"
+                    alt="good-design-2023"
+                    width="140px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/greenguard-logo.png"
+                    className="img-grayscale"
+                    alt="greenguard-logo"
+                    width="90px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/forest-Stewardship-Council.png"
+                    className="img-grayscale"
+                    alt="forest-Stewardship-Council"
+                    width="130px"
+                  />
+                </div>
+                <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
+                  <img
+                    src="/images/awards/adesign-award.png"
+                    className="img-grayscale"
+                    alt="adesign-award"
+                    width="70px"
+                  />
+                </div>
+                {/* <img
+                  src="/images/awards/amazon-5star.png"
+                  className="img-grayscale"
+                  alt="amazon-5star"
+                  width="80px"
+                /> */}
             </div>
           </div>
         </section>
 
-        <section className="section-new py-3 py-md-5 py-lg-7 container">
+        <section className="section-new py-3 py-sm-5 py-lg-7 container">
           <h2 className="fs-4 text-center mb-0 mb-md-3 mb-lg-6">New Arrivals</h2>
           <div className="sale-cards d-flex">
             <div className="row">
@@ -250,7 +302,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-recommendation py-3 py-md-5 py-lg-7 container">
+        <section className="section-recommendation py-3 py-sm-5 py-lg-7 container">
           {/* TODO: Make scrolling animation?. */}
           <h2 className="fs-4 text-center mb-0 mb-md-3 mb-lg-6">
             Recommended by 1000+ Customers
@@ -320,7 +372,7 @@ const Home = () => {
         </section>
 
         <section
-          className="section-contact py-3 py-md-5 py-lg-7"
+          className="section-contact py-3 py-sm-5 py-lg-7"
           style={{ backgroundImage: 'url(/images/contact-xl.jpeg)' }}
         >
           <div className="container section-body section-hero-body">

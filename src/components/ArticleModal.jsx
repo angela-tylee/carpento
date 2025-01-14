@@ -313,8 +313,6 @@ function ArticleModal({
                 </div>
               </div>
               <div className="col-md-12 mb-2">
-                {/* <img src={uploadImageUrl} alt="preview" width="100%" className="mt-4"/> */}
-                {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                 {isLoadingImg ? (
                   <div
                     className="d-flex justify-content-center align-items-center"
@@ -337,7 +335,6 @@ function ArticleModal({
                 ) : (
                   'Add image to preview'
                 )}
-                {/* <img src={uploadImageUrl} alt="preview" className="img-fluid"/> */}
               </div>
               <div className="row">
                 <div className="form-group mb-2 col-md-12">

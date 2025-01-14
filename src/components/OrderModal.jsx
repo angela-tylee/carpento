@@ -68,7 +68,7 @@ function OrderModal({
       aria-labelledby="exampleModalLabel"
       // aria-hidden='true'
     >
-      <div className="modal-dialog modal-lg">
+      <div className="modal-dialog modal-xl">
         <div className="modal-content px-2 py-1">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
@@ -95,14 +95,27 @@ function OrderModal({
                     >
                       {tempData.is_paid ? '已付款' : '未付款'}
                     </span>
-                    訂單日期：{tempData.create_at}
+                    訂單日期：
+                    {(() => {
+                  const date = new Date(tempData.create_at * 1000);
+
+                  const options = {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                  };
+
+                  return date.toLocaleString('zh-TW', options);
+                })()}
                   </p>
                   <div className="mt-2">
                     {Object.entries(tempData.products).map(([key, product]) => (
-                      <div className="d-flex">
+                      <div className="d-flex mb-1" key={key}>
                         <img
-                          key={key}
-                          src={product.product.imageUrl}
+                          src={product.product.imagesUrl[0]}
                           alt={product.product.title}
                           className="me-2"
                           width="15%"
@@ -117,11 +130,13 @@ function OrderModal({
                   <div className="mt-2">
                     <div className="d-flex justify-content-between">
                       <p>小計：</p>
-                      <span>${tempData?.total?.toLocaleString()}</span>
+                      <span>${Object.values(tempData.products)?.reduce((total, product) => total + product.total , 0)?.toLocaleString()}</span>
                     </div>
                     {/* TODO: coupon order API 沒有 coupon code */}
                     <div className="d-flex justify-content-between">
-                      <p>折扣碼：</p> <span>{tempData.coupon || '無'}</span>
+                      {/* <p>折扣碼：</p> <span>{tempData.coupon || '無'}</span> */}
+                      <p>折扣碼：</p>
+                      <span>{Object.values(tempData.products)[0]?.coupon?.code ||'無'}</span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <p>總金額：</p>
@@ -186,7 +201,17 @@ function OrderModal({
                   </div>
                 </div>
               </div>
-              <pre className="py-3"> {JSON.stringify(tempData.user)}</pre>
+              <div className="mt-2 text-end">
+                <button
+                  type="button"
+                  className="btn border-0 text-danger btn-md p-0"
+                  // onClick={openDeleteModal}
+                  data-bs-target="#deleteModal"
+                  data-bs-toggle="modal"
+                >
+                  <i className="bi bi-trash3"></i> 刪除訂單
+                </button>
+              </div>
             </div>
           )}
           <div className="modal-footer flex-nowrap">

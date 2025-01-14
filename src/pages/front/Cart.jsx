@@ -87,7 +87,7 @@ const Cart = () => {
     }
   };
   <div>
-    <i class="bi bi-basket2"></i>
+    <i className="bi bi-basket2"></i>
     <p>Your cart is empty</p>
     <p>Add something to cart</p>
   </div>;
@@ -98,7 +98,6 @@ const Cart = () => {
       {cart.carts && cart.carts.length === 0 ? (
         <main className="container mb-7 d-flex justify-content-center align-items-center">
           <div className="text-center">
-            {/* <i className="bi bi-cart3 display-1"></i> */}
             <i className="bi bi-basket3 display-1"></i>
             <h1 className="fs-2 mt-2">Your cart is empty.</h1>
             <p className="mt-1">Add something to cart.</p>
@@ -110,7 +109,6 @@ const Cart = () => {
       ) : (
         <main className="container mb-7">
           <div className="row justify-content-center">
-            {/* TODO: stepper 元件化 */}
             <div className="col-12 col-md-10 col-xl-8 d-none d-sm-block">
               <nav className="stepper mt-6 mb-5 d-flex justify-content-between">
                 <div className="d-flex align-items-center bg-light pe-1 pe-md-2">
@@ -199,27 +197,35 @@ const Cart = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="col-3 col-sm-2 ps-0 ps-sm-auto text-end d-flex flex-column justify-content-between">
-                            <button
+                          <div className="col-3 col-sm-2 ps-0 ps-sm-auto text-end d-flex flex-column justify-content-between align-items-end">
+                            {isLoadingDeleteItem === cartItem.id ? (
+                              <div
+                                className={`spinner-border spinner-border-sm text-secondary me-1 
+                                `}
+                                role="status"
+                              >
+                                <span className="visually-hidden">
+                                  Loading...
+                                </span>
+                              </div>
+                            ) : (
+                              <button
+                                className="btn btn-close btn-sm"
+                                aria-label="remove item"
+                                onClick={() => {
+                                  deleteCartItem(cartItem.id);
+                                }}
+                              ></button>
+                            )}
+                            {/* <button
                               className="btn btn-none border-0 p-0 text-end"
+                              aria-label="remove item"
                               onClick={() => {
                                 deleteCartItem(cartItem.id);
                               }}
                             >
-                              {isLoadingDeleteItem === cartItem.id ? (
-                                <div
-                                  className={`spinner-border spinner-border-sm text-secondary me-1 
-                                `}
-                                  role="status"
-                                >
-                                  <span className="visually-hidden">
-                                    Loading...
-                                  </span>
-                                </div>
-                              ) : (
-                                <i className="bi bi-x-lg"></i>
-                              )}
-                            </button>
+                              <i className="bi bi-x-lg"></i>
+                            </button> */}
                             <p>${cartItem.total.toLocaleString()}</p>
                           </div>
                         </div>
@@ -247,11 +253,9 @@ const Cart = () => {
                     <div className="row py-1">
                       <div className="col-12 mb-1 d-flex">
                         <h6>Promo Code</h6>
-                        {/* TODO: remove discount */}
                         {cart.carts && cart.carts[0].coupon && (
                           <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
                             {cart.carts[0].coupon.code || ''}
-                            <i className="bi bi-x"></i>
                           </span>
                         )}
                       </div>
@@ -282,7 +286,7 @@ const Cart = () => {
                           type="button"
                           id="button-addon1"
                           onClick={applyCoupon}
-                          disabled={isLoadingCoupon}
+                          disabled={isLoadingCoupon || !coupon.code}
                         >
                           {isLoadingCoupon ? (
                             <div
@@ -298,7 +302,7 @@ const Cart = () => {
                           )}
                         </button>
                         <div className="valid-feedback">coupon applied!</div>
-                        {/* FIXME: feedback not showing immediately. */}
+                        {/* FIXME: FIXED? feedback not showing immediately. */}
                         <div className="invalid-feedback">
                           cannot find this coupon!
                         </div>
@@ -323,6 +327,8 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
+
+
             </div>
           </section>
         </main>

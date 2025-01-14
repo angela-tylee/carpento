@@ -1,0 +1,9 @@
+.checkout-success {
+  .checkout-success-btn-group {
+    flex-direction: column;
+    gap: 16px;
+    @media (min-width: 420px) {
+      flex-direction: row;
+    }
+  }
+}

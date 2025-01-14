@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import BlogEditor from './BlogEditor';
+import Message from './Message';
+import useMessage from '../hooks/useMessage';
 
 function ProductModal({
   closeProductModal,
@@ -9,6 +11,7 @@ function ProductModal({
   type,
   tempProduct,
   currentPage,
+  showMessage,
   // isLoadingModal,
 }) {
   const [tempData, setTempData] = useState({
@@ -85,10 +88,11 @@ function ProductModal({
         },
       }));
     } else {
-      setTempData({
-        ...tempData,
-        [name]: value, // Others remain.
-      });
+      setTempData((tempData) => ({
+          ...tempData,
+          [name]: value, // Others remain.
+        }
+      ));
     }
   }
 
@@ -162,6 +166,7 @@ function ProductModal({
           ...prev,
           imagesUrl: [...prev.imagesUrl, uploadImageUrl.trim()],
         }));
+        setIsLoadingImg(false);
         setUploadImageUrl(''); // Clear form
       }
     }
@@ -175,6 +180,8 @@ function ProductModal({
       ),
     }));
   };
+
+  // const { message, messageType, showMessage } = useMessage();
 
   async function submit() {
     setIsLoading(true);
@@ -190,12 +197,17 @@ function ProductModal({
       });
       console.log(res);
       setIsLoading(false);
-      alert(res.data.message);
+      // alert(res.data.message);
+      // FIXME: 不穩定，有時有用有時沒用
+      showMessage('success', `成功：${res.data.message}`);
       closeProductModal();
       getProducts(currentPage);
     } catch (error) {
-      console.log(error.response.message);
+      console.log(error);
+      console.log(error?.response?.data.message);
+      console.error(error);
       setIsLoading(false);
+      showMessage('danger', `失敗：${error.response.data.message}`);
     }
   }
 
@@ -344,6 +356,7 @@ function ProductModal({
                         onChange={handleChange}
                         value={tempData.tag}
                       >
+                        {/* TODO: 要可以改回空值 */}
                         {/* FIXME: 如果前一個值不是空值，就會取到前一個值 */}
                         <option value="" disabled>
                           請選擇標籤
@@ -458,8 +471,8 @@ function ProductModal({
                       className="d-none"
                       id="imageFile"
                     />
-                    <i class="bi bi-plus"></i>或點擊上傳圖片檔案
-                    <i class="bi bi-image ms-1"></i>
+                    <i className="bi bi-plus"></i>或點擊上傳圖片檔案
+                    <i className="bi bi-image ms-1"></i>
                   </label>
                 </div>
                 <div className="row g-2 mb-2">
@@ -494,49 +507,49 @@ function ProductModal({
                               className="btn btn-secondary btn-sm position-absolute top-0 end-0 m-1 rounded-circle opacity-50"
                               style={{ padding: '1px 3px 0px 4px' }}
                             >
-                              <i class="bi bi-x text-dark"></i>
+                              <i className="bi bi-x text-dark"></i>
                             </button>
                           </div>
                         )}
                       </div>
                       {tempData.imagesUrl.slice(1).map((url, index) => (
                         <div key={index} className="col-sm-6">
-                          {/* FIXME: not showing loading effect */}
-                          {isLoadingImg &&
-                          tempData.imagesUrl.length === index + 1 ? (
-                            <div
-                              className="d-flex justify-content-center align-items-center"
-                              style={{ height: '120px' }}
+                          <div className="position-relative opacity-hover">
+                            <img
+                              src={url}
+                              alt={`${tempData.title}-${index + 2}`}
+                              className="img-fluid"
+                              style={{ height: '120px', objectFit: 'cover' }}
+                            />
+                            <button
+                              onClick={() => deleteImage(index + 1)}
+                              className="btn btn-secondary btn-sm position-absolute top-0 end-0 m-1 rounded-circle opacity-50"
+                              style={{ padding: '1px 3px 0px 4px' }}
                             >
-                              <div
-                                className={`spinner-border text-secondary`}
-                                style={{ width: '30px', height: '30px' }}
-                                role="status"
-                              >
-                                <span className="visually-hidden">
-                                  Loading...
-                                </span>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="position-relative opacity-hover">
-                              <img
-                                src={url}
-                                alt={`${tempData.title}-${index + 2}`}
-                                className="img-fluid"
-                                style={{ height: '120px', objectFit: 'cover' }}
-                              />
-                              <button
-                                onClick={() => deleteImage(index + 1)}
-                                className="btn btn-secondary btn-sm position-absolute top-0 end-0 m-1 rounded-circle opacity-50"
-                                style={{ padding: '1px 3px 0px 4px' }}
-                              >
-                                <i class="bi bi-x text-dark"></i>
-                              </button>
-                            </div>
-                          )}
+                              <i className="bi bi-x text-dark"></i>
+                            </button>
+                          </div>
                         </div>
                       ))}
+                      {/* FIXME: not showing loading effect */}
+                      {isLoadingImg && tempData.imagesUrl.length >= 1 && (
+                        <div className="col-sm-6">
+                          <div
+                            className="d-flex justify-content-center align-items-center"
+                            style={{ height: '120px' }}
+                          >
+                            <div
+                              className={`spinner-border text-secondary`}
+                              style={{ width: '30px', height: '30px' }}
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     ''
@@ -549,7 +562,6 @@ function ProductModal({
             `}
                 </style>
 
-                {/* TODO: 不要暴露 storage.imageURL，考慮 {tempData.imageUrl || tempData.imageUpload} 2024-12-17 */}
                 <div className="form-group mb-2">
                   <label className="w-100" htmlFor="image">
                     輸入圖片網址

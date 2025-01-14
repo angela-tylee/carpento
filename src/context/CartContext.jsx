@@ -1,11 +1,17 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
+// import useMessage from '../hooks/useMessage';
+import { MessageContext } from './MessageContext';
+// import { useMessage } from './MessageContext';
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ carts: []});
   const [isLoadingItem, setIsLoadingItem] = useState(null);
+  const cartDropdownRef = useRef(null);
+  const { showMessage, clearMessage } = useContext( MessageContext);
+  // const { showMessage } = useMessage();
 
   const getCart = async () => {
     try {
@@ -19,7 +25,6 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (productId, quantity) => {
-    console.log("CartContext addToCart()", productId, quantity);
     setIsLoadingItem(productId);
     try {
       const data = {
@@ -33,6 +38,8 @@ export const CartProvider = ({ children }) => {
         data
       );
       await getCart(); // Refresh cart data after adding
+      showCartDropdown();
+      showMessage("success", "已加入購物車");
       setIsLoadingItem(null);
     } catch (error) {
       console.log(error);
@@ -40,13 +47,40 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+
+  const showCartDropdown = () => {
+    console.log("CartContext showCartDropdown()");
+
+    if (cartDropdownRef.current) {
+      cartDropdownRef.current.classList.add('cart-dropdown-visible');
+      
+      setTimeout(() => {
+        if (cartDropdownRef.current) {
+          cartDropdownRef.current.classList.remove('cart-dropdown-visible');
+        }
+      }, 2000);
+    }    
+
+    // if (cartDropdownRef.current) {
+    //   cartDropdownRef.current.style.display = 'block'; // Show dropdown
+    //   cartDropdownRef.current.style.left = 'calc(100% - 500px)'; // Show dropdown
+    //   cartDropdownRef.current.style.top = '100%'; // Show dropdown
+    //   setTimeout(() => {
+    //     if (cartDropdownRef.current) {
+    //       cartDropdownRef.current.style.display = ''; // Hide dropdown after 2 seconds
+    //     }
+    //   }, 2000);
+    // }
+  };
+
+
   useEffect(() => {
     getCart();
   }, []);
 
   // return { cart, isLoading, addToCart, getCart };
   return (
-    <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart }}>
+    <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart, showCartDropdown, cartDropdownRef }}>
       {children}
     </CartContext.Provider>
   );

@@ -45,12 +45,6 @@ const ProductCard2 = ({ product, hasFooter, addToCart, isLoading: isLoadingItem 
           hasFooter ? 'd-flex' : 'd-none'
         }`}
       >
-        {/* <input
-            type="text"
-            className="form-control w-25 me-1 text-center"
-            value="1"
-            readOnly
-          /> */}
         <button
           type="button"
           className="btn btn-primary w-100"

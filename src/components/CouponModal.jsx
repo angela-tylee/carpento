@@ -145,7 +145,6 @@ function CouponModal({
               <div className="row">
                 <div className="form-group mb-2 col-md-6">
                   <label className="w-100" htmlFor="percent">
-                    {/* TODO: 轉換折扣為 8折、20% of 等等，直觀數字 */}
                     折扣
                     <input
                       type="number"

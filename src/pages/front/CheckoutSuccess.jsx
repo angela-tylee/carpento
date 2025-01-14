@@ -20,15 +20,14 @@ const CheckoutSuccess = () => {
   }, []);
 
   return (
-    <main className="container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
+    <main className="checkout-success container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
       <section className="text-center py-7">
         <h1 className="fs-2">
           <i className="bi bi-check-square-fill text-success me-1"></i>Your
           Purchase is Complete.
         </h1>
         <p className="mt-2">Thank you for purchasing from Carpento.</p>
-        <div className="mt-4 d-flex">
-          {/* FIXME: < 375px 按鈕太高 */}
+        <div className="mt-4 d-flex checkout-success-btn-group">
           <Link to="/" className="btn btn-outline-dark w-100 me-2">
             Back to Home
           </Link>
@@ -38,6 +37,7 @@ const CheckoutSuccess = () => {
         </div>
       </section>
       <hr />
+      {/* TODO: Add order summary loading effects.  */}
       {order && order.id && (
         <section className="mt-4 col-12 col-md-10 col-xl-8">
           <div className="bg-secondary p-3">
@@ -68,11 +68,9 @@ const CheckoutSuccess = () => {
                 <p className="card-text pt-1">
                   Payment Status：{order.is_paid ? 'Paid' : 'Not paid yet'}
                 </p>
-                {/* FIXME: 日期錯誤 1970 */}
                 <p className="card-text pt-1">
-                  Paid Date: {new Date(order.paid_date).toDateString()}
+                  Paid Date: {new Date(order.paid_date * 1000).toDateString()}
                 </p>
-                <p>{new Date(1736140929).toDateString()}</p>
                 <p className="card-text pt-1">
                   Total: ${order.total.toLocaleString()}
                 </p>
@@ -95,25 +93,24 @@ const CheckoutSuccess = () => {
               <h5 className="pb-1 mt-4 mb-2 border-bottom border-1 border-gray">
                 Order Details
               </h5>
-              {/* FIXME: < 375px 破版 */}
               <div className="border-bottom border-1 border-gray">
                 {order.products &&
                   Object.values(order.products).map((item) => (
                     <div className="row py-1">
-                      <div className="col-3 col-sm-2">
+                      <div className="d-none d-sm-block col-sm-2">
                         <img
                           src={item.product.imagesUrl[0]}
                           alt={item.product.title}
                           width="100%"
                         />
                       </div>
-                      <div className="col-7 col-sm-8 py-1">
+                      <div className="col-8 col-sm-8 py-1">
                         <h6>{item.product.title}</h6>
                         <p>
                           QTY: <span>{item.qty}</span>
                         </p>
                       </div>
-                      <div className="col-2 py-1 text-end d-flex flex-column justify-content-end">
+                      <div className="col-4 col-sm-2 py-1 text-end d-flex flex-column justify-content-end">
                         <del>${item.total.toLocaleString()}</del>
                         <span>${item.final_total.toLocaleString()}</span>
                       </div>

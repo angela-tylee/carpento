@@ -9,20 +9,9 @@ const AdminOrder = () => {
   const [orders, setOrders] = useState([]);
   const [pagination, setPagination] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
-  // const [type, setType] = useState('edit');
-  // const [tempProduct, setTempProduct] = useState({});
 
   const orderModal = useRef(null);
   const deleteModal = useRef(null);
-
-  const getOrders = async ( page = 1 ) => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
-    );
-    console.log(res);
-    setOrders(res.data.orders);
-    setPagination(res.data.pagination);
-  };
 
   useEffect(() => {
     orderModal.current = new Modal('#orderModal', {
@@ -35,9 +24,29 @@ const AdminOrder = () => {
     getOrders();
   }, []);
 
+  const getOrders = async (page = 1) => {
+    const res = await axios.get(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
+    );
+    console.log(res);
+    setOrders(res.data.orders);
+    setPagination(res.data.pagination);
+  };
+  async function deleteOrder(id) {
+    const res = await axios.delete(
+      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
+    );
+    console.log('delete', id);
+    console.log(res);
+    alert(res.data.message);
+    closeDeleteModal();
+    getOrders(pagination.current_page);
+  }
+
   function openOrderModal(order) {
     // setType(type);
     // setTempProduct(product);
+    console.log(order);
     orderModal.current.show();
   }
 
@@ -60,14 +69,14 @@ const AdminOrder = () => {
       <OrderModal
         closeOrderModal={closeOrderModal}
         getOrders={getOrders}
-        // type={type}
         selectedOrder={selectedOrder}
-        // tempProduct={tempProduct}
-        closeDeleteModal={closeDeleteModal} 
+        closeDeleteModal={closeDeleteModal}
       />
-      <DeleteModal 
-        // tempProduct={tempProduct}
-        openDeleteModal={openDeleteModal}
+      <DeleteModal
+        closeDeleteModal={closeDeleteModal}
+        text={selectedOrder?.id}
+        id={selectedOrder?.id}
+        handleDelete={deleteOrder}
       />
       <div className="col-9">
         <h1 className="fs-5 mt-1">訂單列表</h1>
@@ -90,18 +99,12 @@ const AdminOrder = () => {
               <th scope="col" width="9%" className="text-end">
                 金額
               </th>
-              <th scope="col" width="11%">
-                日期
+              <th scope="col" width="13%">
+                訂單日期
               </th>
-              <th scope="col" width="10%" className="text-center">
+              <th scope="col" width="8%" className="text-center">
                 付款狀態
               </th>
-              {/* <th scope="col" width="6%" className="text-center">
-                編輯
-              </th> */}
-              {/* <th scope="col" width="5%">
-                查看訂單
-              </th> */}
             </tr>
           </thead>
           <tbody>
@@ -132,26 +135,24 @@ const AdminOrder = () => {
                 <td>{order.user.name}</td>
                 <td className="text-end">${order.total?.toLocaleString()}</td>
                 <td>
-                  {/* TODO: Date is wrong, 1970 */}
                   {(() => {
-                    const date = new Date(order.create_at);
+                    const date = new Date(order.create_at * 1000);
 
                     const options = {
                       year: 'numeric',
-                      month: 'numeric',
+                      month: 'long',
                       day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
                     };
 
-                    return date.toLocaleString('en-US', options);
+                    return date.toLocaleString('zh-TW', options);
                   })()}
                 </td>
                 <td className="text-center">
-                  <span className={order.is_paid ? 'text-success' : 'text-danger'}>
+                  <span
+                    className={order.is_paid ? 'text-success' : 'text-danger'}
+                  >
                     {order.is_paid ? '已付款' : '未付款'}
-                    </span>
+                  </span>
                 </td>
                 {/* <td className="text-center">
                   <button type="button" className="btn btn-primary btn-sm">
@@ -175,44 +176,66 @@ const AdminOrder = () => {
         </table>
         <footer className="d-flex justify-content-between align-items-end">
           <p className="ps-1">
-            {/* TODO: 要計算所有頁面的產品數量，不只單頁 */}
             目前有 <span>{orders.length}</span> 筆訂單
           </p>
           <Pagination pagination={pagination} changePage={getOrders} />
         </footer>
       </div>
       <div className="col-3">
+        {/* QUESTION: 為什麼舊訂單無法 fetch imagesUrl[0]  */}
         <h2 className="fs-5 mt-1">訂單細節</h2>
         <hr className="mb-4" />
         {selectedOrder ? (
           <div className="card mb-3">
             <div className="card-body">
               <h5 className="card-title fs-6">訂單編號：{selectedOrder.id}</h5>
-              {/* TODO: Update date format */}
-              <p>訂單日期：{selectedOrder.create_at}</p>
+              <p>
+                訂單日期：
+                {(() => {
+                  const date = new Date(selectedOrder.create_at * 1000);
+
+                  const options = {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                  };
+
+                  return date.toLocaleString('zh-TW', options);
+                })()}
+              </p>
               <div className="mt-2">
-                {Object.entries(selectedOrder.products).map(([key, product]) => (
-                  <div className="d-flex">
-                    <img
-                      key={key}
-                      src={product.product.imageUrl}
-                      alt={product.product.title}
-                      className="me-2 w-25"
-                    />
-                    <p>
-                      {product.product.title} * {product.qty}
-                    </p>
-                  </div>
-                ))}
+                {Object.entries(selectedOrder.products).map(
+                  ([key, product]) => (
+                    <div className="d-flex mb-1" key={key}>
+                      <img
+                        src={product.product.imagesUrl[0]}
+                        alt={product.product.title}
+                        className="me-2 w-25"
+                      />
+                      <p>
+                        {product.product.title} * {product.qty}
+                      </p>
+                    </div>
+                  )
+                )}
               </div>
               <div className="mt-2">
-                <p>小計：${selectedOrder?.total?.toLocaleString()}</p>
-                <p>折扣碼：{Object.values(selectedOrder.products)[0]?.coupon?.code || '無'}</p>
+                <p>小計：${Object.values(selectedOrder.products)?.reduce((total, product) => total + product.total , 0)?.toLocaleString()}</p>
+                <p>
+                  折扣碼：
+                  {Object.values(selectedOrder.products)[0]?.coupon?.code ||
+                    '無'}
+                </p>
                 <p>
                   總金額：${selectedOrder?.total?.toLocaleString()}{' '}
                   <span
                     className={`badge rounded-pill text-light ${
-                      selectedOrder.is_paid ? 'text-bg-success' : 'text-bg-danger'
+                      selectedOrder.is_paid
+                        ? 'text-bg-success'
+                        : 'text-bg-danger'
                     }`}
                   >
                     {selectedOrder.is_paid ? '已付款' : '未付款'}
@@ -222,11 +245,17 @@ const AdminOrder = () => {
               <hr />
               <div>
                 <p className="card-text">姓名：{selectedOrder.user.name}</p>
-                <p className="card-text">電子郵件：{selectedOrder.user.email}</p>
+                <p className="card-text">
+                  電子郵件：{selectedOrder.user.email}
+                </p>
                 <p className="card-text">電話：{selectedOrder.user.tel}</p>
                 <p className="card-text">地址：{selectedOrder.user.address}</p>
               </div>
-              <button type="button" className="btn btn-outline-primary btn-sm mt-4 w-100" onClick={() => openOrderModal(selectedOrder)}>  
+              <button
+                type="button"
+                className="btn btn-outline-primary btn-sm mt-4 w-100"
+                onClick={() => openOrderModal(selectedOrder)}
+              >
                 編輯
               </button>
             </div>

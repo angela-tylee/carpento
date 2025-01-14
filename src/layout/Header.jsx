@@ -1,16 +1,23 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { NavLink, Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import { CartContext } from '../context/CartContext';
+import { StickyHeaderContext } from '../context/StickyHeaderContext';
 
 const Header = () => {
   const [products, setProducts] = useState([]);
   // const [cart, setCart] = useState({
   //   carts: [],
   // });
-  const [isLoading, setIsLoading] = useState(false);
-  const { cart, getCart } = useContext(CartContext);
+  const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
+  const { cart, getCart, cartDropdownRef } = useContext(CartContext);
+
+  // const cartDropdownRef = useRef(null);
+  // const {cartDropdownRef} = useContext(CartContext);
+
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category');
 
   const getProductsAll = async () => {
     const res = await axios.get(
@@ -30,25 +37,45 @@ const Header = () => {
   //   setCart(res.data.data);
   // };
 
+  const { headerRef, unstickyDistance } = useContext(StickyHeaderContext);
+
+  // const headerRef = useRef(null); // Create a ref for the header element
+  // const unstickyDistance = 900; // Distance in pixels
+
   useEffect(() => {
     setSearchTerm('');
     // getCart();
     getProductsAll();
+
+    const handleScroll = () => {
+      if (window.scrollY > unstickyDistance) {
+        headerRef.current?.classList.add('unsticky');
+      } else {
+        headerRef.current?.classList.remove('unsticky');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const deleteCartItem = async (id) => {
-    setIsLoading(true);
+    setIsLoadingDeleteItem(id);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       console.log(res);
       alert(res.data.message);
-      setIsLoading(false);
+      setIsLoadingDeleteItem(null);
       getCart();
     } catch (error) {
       console.log(error);
-      setIsLoading(false);
+      setIsLoadingDeleteItem(null);
     }
   };
 
@@ -75,7 +102,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-light sticky-top">
+    <header ref={headerRef} className="bg-light sticky">
       <div className="container py-1 py-sm-2 py-lg-3">
         <nav className="navbar navbar-expand-md p-0 fw-semibold">
           <div className="container-fluid p-0">
@@ -84,17 +111,16 @@ const Header = () => {
               <img
                 src="/images/logo.png"
                 alt="logo"
-                width="154px"
+                // width="154px"
                 className="w-100"
               />
             </Link>
 
             {/* Mobile menu */}
             <div className="d-flex align-items-center">
-              {/* TODO: cart 元件化 */}
               <Link
                 to="/cart"
-                className="nav-link me-2 d-block d-md-none"
+                className="me-2 d-block d-md-none"
                 role="button"
               >
                 <div className="position-relative mt-1">
@@ -107,8 +133,7 @@ const Header = () => {
                       top: '10%',
                     }}
                   >
-                    {/* FIXME: need total items count, not item types count*/}
-                    {cart.carts?.length}
+                    {cart.carts?.reduce((total, cartItem) => total + cartItem.qty, 0)}
                     <span className="visually-hidden">New alerts</span>
                   </span>
                 </div>
@@ -137,11 +162,10 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {/* FIXME: no active style */}
+                    {/* FIXME: no active style: active class is added, but no ::after element added like othersP */}
                     Products
                   </NavLink>
-                  {/* TODO: make border and shadow responsive */}
-                  <ul className="dropdown-menu border-0 border-md border-1 border-gray shadow-md-sm">
+                  <ul className="product-dropdown-menu dropdown-menu">
                     <li className="text-center text-md-start">
                       <Link to="/products" className="w-100 dropdown-item">
                         All
@@ -162,39 +186,6 @@ const Header = () => {
                         </Link>
                       </li>
                     ))}
-                    {/* <li>
-                      <NavLink to="/products" className="w-100 dropdown-item">
-                        Living Room
-                      </NavLink>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Bedroom
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Dining
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Workspace
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Decoration
-                      </a>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Others
-                      </a>
-                    </li> */}
                   </ul>
                 </li>
                 <li className="nav-item text-center text-md-start py-1 py-md-0">
@@ -214,9 +205,8 @@ const Header = () => {
           {/* Search */}
           <div className="position-relative col-12 col-md-4 col-lg-3 me-3">
             <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
-              {/* TODO: 輸入產品文字太長時，會破版 */}
               <input
-                className="form-control p-0 border-0 shadow-none"
+                className="form-control p-0 border-0 shadow-none flex-grow-1 me-2"
                 type="text"
                 placeholder="Search..."
                 value={searchTerm}
@@ -224,7 +214,7 @@ const Header = () => {
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
               />
-              <i className="icon-search bi bi-search px-1"></i>
+              <i className="icon-search bi bi-search px-1 flex-shrink-0"></i>
             </div>
 
             {showSuggestions && searchTerm && (
@@ -248,7 +238,7 @@ const Header = () => {
                           to={`/product/${item.id}`}
                           className="d-flex flex-column"
                         >
-                          {/* TODO: explain this */}
+                          {/* QUESTION: explain this */}
                           <div>{highlightMatch(item.title, searchTerm)}</div>
                           {/* <small className="text-muted">{item.category}</small> */}{' '}
                           {/* text-muted will be deprecated */}
@@ -293,7 +283,6 @@ const Header = () => {
           </div> */}
 
           {/* Cart */}
-          {/* TODO: cart-dropdown 元件化 */}
           <div className="cart-dropdown nav-item dropdown position-static d-none d-md-block">
             <Link
               to="/cart"
@@ -303,7 +292,7 @@ const Header = () => {
               aria-expanded="false"
             >
               <div className="position-relative">
-                <i className="bi bi-bag"></i>
+                <i className="bi bi-bag fs-5"></i>
                 <span
                   className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
                   style={{
@@ -312,14 +301,13 @@ const Header = () => {
                     top: '10%',
                   }}
                 >
-                  {cart.carts?.length}
-                  {/* <span className="visually-hidden">New alerts</span> */}
+                  {cart.carts?.reduce((total, cartItem) => total + cartItem.qty, 0)}
                 </span>
               </div>
             </Link>
-            <div className="dropdown-menu shadow-sm">
+            <div ref={cartDropdownRef} className="dropdown-menu shadow-sm">
               <h5 className="px-2 my-2">
-                Cart (<span>{cart.carts?.length}</span> items)
+                Cart (<span>{cart.carts?.reduce((total, cartItem) => total + cartItem.qty, 0)}</span> items)
               </h5>
               <div>
                 <hr className="dropdown-divider" />
@@ -342,55 +330,60 @@ const Header = () => {
                   </div>
                 ) : (
                   cart.carts?.map((cartItem) => (
-                    <Link
-                      className="dropdown-item px-2 py-1"
-                      to={`/product/${cartItem.product.id}`}
-                    >
-                      <div className="row">
-                        <div className="col-3">
-                          <img
-                            src={cartItem.product.imagesUrl[0]}
-                            alt={cartItem.product.title}
-                            className="text-wrap"
-                            width="100px"
-                          />
-                        </div>
-                        <div className="col-6 py-1">
-                          <h6 className="text-wrap">
-                            {cartItem.product.title}
-                          </h6>
-                          <p>
-                            QTY: <span>{cartItem.qty}</span>
-                          </p>
-                        </div>
-                        <div className="col-3 py-1 text-end d-flex flex-column justify-content-between">
-                          {/* FIXME: 移除商品 or 點擊商品 容易點歪*/}
-                          <button
-                            className="btn btn-none border-0"
-                            onClick={() => {
-                              deleteCartItem(cartItem.id);
-                            }}
-                            disabled={isLoading}
-                          >
-                            {isLoading ? (
-                              <div
-                                className={`spinner-border spinner-border-sm text-secondary me-1 
-                                `}
-                                role="status"
-                              >
-                                <span className="visually-hidden">
-                                  Loading...
-                                </span>
-                              </div>
-                            ) : (
-                              <i className="bi bi-x me-1"></i>
-                            )}
-                            Remove
-                          </button>
-                          <p>${cartItem.final_total}</p>
+                    // <Link
+                    //   className="dropdown-item px-2 py-1"
+                    //   to={`/product/${cartItem.product.id}`}
+                    // >
+                      <div className="dropdown-item px-2 py-1" key={cartItem.product.id}>
+                        <div className="row">
+                          <div className="col-3">
+                            <Link to={`/product/${cartItem.product.id}`}>
+                              <img
+                                src={cartItem.product.imagesUrl[0]}
+                                alt={cartItem.product.title}
+                                className="text-wrap"
+                                width="100px"
+                              />
+                            </Link>
+                          </div>
+                          <div className="col-6 py-1">
+                            <Link to={`/product/${cartItem.product.id}`}>
+                              <h6 className="text-wrap">
+                                {cartItem.product.title}
+                              </h6>
+                            </Link>
+                            <p>
+                              QTY: <span>{cartItem.qty}</span>
+                            </p>
+                          </div>
+                          <div className="col-3 py-1 text-end d-flex flex-column justify-content-between">
+                            <button
+                              className="btn btn-none border-0 pt-0"
+                              onClick={() => {
+                                deleteCartItem(cartItem.id);
+                              }}
+                              disabled={isLoadingDeleteItem === cartItem.id}
+                            >
+                              {isLoadingDeleteItem === cartItem.id ? (
+                                <div
+                                  className={`spinner-border spinner-border-sm text-secondary me-1
+                                  `}
+                                  role="status"
+                                >
+                                  <span className="visually-hidden">
+                                    Loading...
+                                  </span>
+                                </div>
+                              ) : (
+                                <i className="bi bi-x me-1"></i>
+                              )}
+                              Remove
+                            </button>
+                            <p>${cartItem.final_total}</p>
+                          </div>
                         </div>
                       </div>
-                    </Link>
+                    // </Link>
                   ))
                 )}
               </div>
