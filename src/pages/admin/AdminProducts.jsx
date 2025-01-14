@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductModal from '../../components/ProductModal';
@@ -7,7 +7,8 @@ import { Modal, Toast } from 'bootstrap';
 import Pagination from '../../components/Pagination';
 import Message from '../../components/Message';
 // import useMessage from '../../hooks/useMessage';
-import { useMessage } from '../../context/MessageContext';
+// import { useMessage } from '../../context/MessageContext';
+import { MessageContext } from '../../context/MessageContext';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -20,7 +21,8 @@ const AdminProducts = () => {
   const productModal = useRef(null);
   const deleteModal = useRef(null);
 
-  const { message, messageType, showMessage } = useMessage();
+  // const { message, messageType, showMessage } = useMessage();
+  const { message, messageType, showMessage } = useContext(MessageContext);
 
   // const successMessage = useRef(null);
 

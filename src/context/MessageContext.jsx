@@ -12,11 +12,11 @@ export const MessageProvider = ({ children }) => {
     successMessage.current = new Toast('#myToast');
 
     // Cleanup when component unmounts
-    return () => {
-      if (successMessage.current) {
-        successMessage.current.dispose();
-      }
-    };
+    // return () => {
+    //   if (successMessage.current) {
+    //     successMessage.current.dispose(); /* Cannot read properties of undefined (reading 'classList') */
+    //   }
+    // };
 
   }, []);
 
@@ -27,17 +27,25 @@ export const MessageProvider = ({ children }) => {
   // }, [messageType, message]);
 
   const showMessage = (type, text) => {
-    setMessageType(type);
-    setMessage(text);
-
-    setTimeout(() => {
-      successMessage.current?.show();
-    }, 0)
-
-    // setTimeout(() => {
-    //   clearMessage();
-    // }, 3000)
-
+    // First clear any existing toast
+  if (successMessage.current) {
+    successMessage.current.hide();
+  }
+  
+  // Update state
+  setMessageType(type);
+  setMessage(text);
+  
+  // Show new toast
+  setTimeout(() => {
+    successMessage.current?.show();
+  }, 0);
+  
+  // Auto-clear after display
+  setTimeout(() => {
+    clearMessage();
+    successMessage.current?.hide();
+  }, 2000);
   };
 
   const clearMessage = () => {

@@ -16,12 +16,13 @@
 - [React](https://reactjs.org/)
   - CRA
   - React Hook Form
-  - React i18n
+  - React i18n x
 - Bootstrap
-  - Bootstrap Components: Accordion, Tabs
+  - Bootstrap Components: Accordion, Tabs, Toast
   - Bootstrap Icon
 - CKEditor
 - Swiper
+- AOS (Animation on Scroll)
 
 ### What I learned
 
@@ -33,9 +34,12 @@
   - How to manage state and lifecycle via React Hook
   - How to send props through parent / child components
   - How to write JSX to import image, add inline style, comment, write loop and conditional JS inside.
+  - Custom Hooks
+  - useContext, useReducer
 - CKEditor
 - React Hook Form
 - Swiper
+- Bootstrap Toast with React
 
 
 ### Continued development

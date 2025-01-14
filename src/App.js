@@ -21,7 +21,6 @@ import AdminCoupons from './pages/admin/AdminCoupons';
 import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
-
   return (
     <div className='App'>
       <ScrollToTop />

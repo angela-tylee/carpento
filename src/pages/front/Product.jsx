@@ -398,7 +398,7 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={12} // space between slides
+                spaceBetween={24} // space between slides
                 slidesPerView={1} // number of products per slide
                 navigation // enable navigation buttons
                 pagination={{ clickable: true }}
@@ -464,7 +464,7 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={12} // space between slides
+                spaceBetween={24} // space between slides
                 slidesPerView={5} // number of products per slide
                 navigation // enable navigation buttons
                 pagination={{ clickable: true }}
