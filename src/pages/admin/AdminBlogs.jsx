@@ -1,10 +1,12 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ArticleModal from '../../components/ArticleModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
+import Message from '../../components/Message';
+import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const AdminProducts = () => {
@@ -14,6 +16,8 @@ const AdminProducts = () => {
   const [tempArticle, setTempArticle] = useState({});
   const [isLoadingModal, setLoadingModal] = useState(false);
   const [isLoadingArticles, setIsLoadingArticles] = useState(false);
+
+  const { message, messageType, showMessage } = useContext(MessageContext);
 
   const articleModal = useRef(null);
   const deleteModal = useRef(null);
@@ -102,11 +106,11 @@ const AdminProducts = () => {
     <>
       <ArticleModal
         closeArticleModal={closeArticleModal}
-        // getProducts={getProducts}
         getArticles={getArticles}
         type={type}
-        // tempProduct={tempProduct}
         tempArticle={tempArticle}
+        currentPage={pagination.current_page}
+        showMessage={showMessage}
         isLoadingModal={isLoadingModal}
       />
       <DeleteModal
@@ -116,6 +120,7 @@ const AdminProducts = () => {
         id={tempArticle.id}
         handleDelete={deleteArticle}
       />
+      <Message type={messageType} message={message} />
       {isLoadingArticles ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

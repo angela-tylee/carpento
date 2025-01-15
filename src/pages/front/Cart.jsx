@@ -2,11 +2,12 @@ import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { CartContext } from '../../context/CartContext';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import FullPageLoader from '../../components/FullPageLoader';
+import Message from '../../components/Message';
+import { MessageContext } from '../../context/MessageContext';
+
 
 const Cart = () => {
-  // const [cart, setCart] = useState({});
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
   const [coupon, setCoupon] = useState({
     // code: '',
@@ -15,13 +16,7 @@ const Cart = () => {
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
   const { cart, getCart, isLoadingCart } = useContext(CartContext);
 
-  // const getCart = async () => {
-  //   const res = await axios.get(
-  //     `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
-  //   );
-  //   console.log(res.data.data);
-  //   setCart(res.data.data);
-  // };
+  const { showMessage, messageType, message } = useContext(MessageContext);
 
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
@@ -30,12 +25,14 @@ const Cart = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       console.log(res);
-      alert(res.data.message);
+      // alert(res.data.message);
       setIsLoadingDeleteItem(null);
+      showMessage('success', res.data.message);
       getCart();
     } catch (error) {
       console.log(error);
       setIsLoadingDeleteItem(null);
+      showMessage('danger', error.response.data.message);
     }
   };
 
@@ -64,10 +61,6 @@ const Cart = () => {
     console.log(coupon);
   }, [coupon.success]);
 
-  // const handleChange = (e) => {
-  //   setCoupon(e.target.value);
-  // }
-
   const applyCoupon = async () => {
     setIsLoadingCoupon(true);
     try {
@@ -90,11 +83,6 @@ const Cart = () => {
       setIsLoadingCoupon(false);
     }
   };
-  <div>
-    <i className="bi bi-basket2"></i>
-    <p>Your cart is empty</p>
-    <p>Add something to cart</p>
-  </div>;
 
   if (isLoadingCart) {
     return (
@@ -106,6 +94,7 @@ const Cart = () => {
 
   return (
     <>
+      <Message type={messageType} message={message} />
       {/* FIXME: 避免先閃現購物車畫面 */}
       {cart.carts && cart.carts.length === 0 ? (
         <main className="container mb-7 d-flex justify-content-center align-items-center">

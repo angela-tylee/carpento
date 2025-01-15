@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import BlogEditor from './BlogEditor';
-import Message from './Message';
-import useMessage from '../hooks/useMessage';
+// import Message from './Message';
+// import useMessage from '../hooks/useMessage';
 
 function ProductModal({
   closeProductModal,
@@ -204,8 +204,6 @@ function ProductModal({
       getProducts(currentPage);
     } catch (error) {
       console.log(error);
-      console.log(error?.response?.data.message);
-      console.error(error);
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }

@@ -1,17 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import OrderModal from '../../components/OrderModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
 import FullPageLoader from '../../components/FullPageLoader';
+import Message from '../../components/Message';
+import { MessageContext } from '../../context/MessageContext';
 
 const AdminOrder = () => {
   const [orders, setOrders] = useState([]);
   const [pagination, setPagination] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
-
+  const { message, messageType, showMessage } = useContext(MessageContext);
+  
   const orderModal = useRef(null);
   const deleteModal = useRef(null);
 
@@ -26,7 +29,7 @@ const AdminOrder = () => {
     getOrders();
   }, []);
 
-  const getOrders = async (page = 1) => {
+  const getOrders = async (page = pagination.current_page) => {
     setIsLoadingOrders(true);
     try {
       const res = await axios.get(
@@ -88,6 +91,8 @@ const AdminOrder = () => {
         getOrders={getOrders}
         selectedOrder={selectedOrder}
         closeDeleteModal={closeDeleteModal}
+        currentPate={pagination.current_page}
+        showMessage={showMessage}
       />
       <DeleteModal
         closeDeleteModal={closeDeleteModal}
@@ -95,6 +100,7 @@ const AdminOrder = () => {
         id={selectedOrder?.id}
         handleDelete={deleteOrder}
       />
+      <Message type={messageType} message={message} />
       {isLoadingOrders ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

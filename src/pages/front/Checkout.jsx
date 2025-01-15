@@ -437,7 +437,6 @@ const Checkout = () => {
               className="mt-5 btn btn-primary text-uppercase fs-5 fw-normal w-100"
               disabled={isLoading}
             >
-              {/* ${isLoading ? '' : 'd-none'} */}
               <div className="d-flex align-items-center justify-content-center">
                 <div
                   className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${

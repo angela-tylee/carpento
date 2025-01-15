@@ -7,6 +7,7 @@ function CouponModal({
   type,
   tempCoupon,
   currentPage,
+  showMessage,
 }) {
   const [tempData, setTempData] = useState({
     title: '',
@@ -80,12 +81,15 @@ function CouponModal({
       // console.log(tempData);
       setIsLoading(false);
       closeCouponModal();
-      alert(res.data.message);
+      // alert(res.data.message);
+      showMessage('success', `成功：${res.data.message}`);
       getCoupons(currentPage);
     } catch (error) {
       console.log(error.response.message);
       setIsLoading(false);
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      showMessage('danger', `失敗：${error.response.data.message}`);
+
     }
   }
 
@@ -112,7 +116,6 @@ function CouponModal({
             />
           </div>
           <div className="modal-body">
-            <pre className="py-3"> {JSON.stringify(tempData)}</pre>
             <div className="col-sm-12">
               <div className="form-group mb-2">
                 <label className="w-100" htmlFor="code">

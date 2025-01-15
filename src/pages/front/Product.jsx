@@ -10,25 +10,17 @@ import ProductCard2 from '../../components/ProductCard2';
 import { CartContext } from '../../context/CartContext';
 import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import FullPageLoader from '../../components/FullPageLoader';
-// import { useMessage } from '../../context/MessageContext';
-// import useMessage from '../../hooks/useMessage';
-
-// import '../../assets/scss/components/_swiper.scss';
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [products, setProducts] = useState([]);
   const { id } = useParams();
-  // const [cart, setCart] = useState({
-  //   carts: [],
-  // });
+
   const [cartQuantity, setCartQuantity] = useState(1);
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
   const { cart, addToCart, isLoading } = useContext(CartContext);
   const { messageType, message } = useContext(MessageContext);
-  // const { messageType, message } = useMessage();
 
   const getProduct = async (id) => {
     setIsLoadingProduct(true);

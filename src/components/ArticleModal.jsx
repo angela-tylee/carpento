@@ -8,6 +8,8 @@ function ArticleModal({
   getArticles,
   type,
   tempArticle,
+  currentPage,
+  showMessage,
   isLoadingModal,
   openDeleteModal,
 }) {
@@ -119,13 +121,16 @@ function ArticleModal({
       });
       console.log(res);
       setIsLoading(false);
+      // alert(res.data.message);
+      showMessage('success', `成功：${res.data.message}`);
       closeArticleModal();
-      alert(res.data.message);
-      getArticles();
+      getArticles(currentPage);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      showMessage('success', `失敗：${error.response.data.message}`);
+
     }
   }
 

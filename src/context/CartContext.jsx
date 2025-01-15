@@ -1,9 +1,6 @@
 import { createContext, useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
-// import useMessage from '../hooks/useMessage';
 import { MessageContext } from './MessageContext';
-import { set } from 'react-hook-form';
-// import { useMessage } from './MessageContext';
 
 export const CartContext = createContext();
 
@@ -12,8 +9,7 @@ export const CartProvider = ({ children }) => {
   const [isLoadingItem, setIsLoadingItem] = useState(null);
   const [isLoadingCart, setIsLoadingCart] = useState(false);
   const cartDropdownRef = useRef(null);
-  const { showMessage, clearMessage } = useContext(MessageContext);
-  // const { showMessage } = useMessage();
+  const { showMessage } = useContext(MessageContext);
 
   const getCart = async () => {
     setIsLoadingCart(true);

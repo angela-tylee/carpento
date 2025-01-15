@@ -1,13 +1,11 @@
 import { useEffect, useState, useRef, useContext } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import ProductModal from '../../components/ProductModal';
 import DeleteModal from '../../components/DeleteModal';
-import { Modal, Toast } from 'bootstrap';
+import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
 import Message from '../../components/Message';
-// import useMessage from '../../hooks/useMessage';
-// import { useMessage } from '../../context/MessageContext';
 import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
@@ -18,12 +16,12 @@ const AdminProducts = () => {
   const [type, setType] = useState('create');
   const [tempProduct, setTempProduct] = useState({});
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  
+  const { message, messageType, showMessage } = useContext(MessageContext);
 
   const productModal = useRef(null);
   const deleteModal = useRef(null);
 
-  // const { message, messageType, showMessage } = useMessage();
-  const { message, messageType, showMessage } = useContext(MessageContext);
 
   // const successMessage = useRef(null);
 
@@ -69,14 +67,20 @@ const AdminProducts = () => {
   };
 
   async function deleteProduct(id) {
-    const res = await axios.delete(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
-    );
-    console.log(res);
-    alert(res.data.message);
-    // console.log('delete', id);
-    closeDeleteModal();
-    getProducts(pagination.current_page);
+    try {
+      const res = await axios.delete(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
+      );
+      console.log(res);
+      console.log('delete', id);
+      // alert(res.data.message);
+      showMessage('success', `成功：${res.data.message}`);
+      closeDeleteModal();
+      getProducts(pagination.current_page);
+    } catch (error) {
+      console.log(error);
+      showMessage('danger', `失敗：${error.response.data.message}`);
+    }
   }
 
   // const [messageType, setMessageType] = useState('success');
@@ -135,7 +139,7 @@ const AdminProducts = () => {
         getProducts={getProducts}
         type={type}
         tempProduct={tempProduct}
-        currentPate={pagination.current_page}
+        currentPage={pagination.current_page}
         showMessage={showMessage}
       />
       <DeleteModal

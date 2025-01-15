@@ -5,6 +5,8 @@ function OrderModal({
   closeOrderModal,
   getOrders,
   selectedOrder,
+  currentPage,
+  showMessage,
   openDeleteModal,
 }) {
   // const [uploadImageUrl, setUploadImageUrl] = useState(null);
@@ -51,12 +53,14 @@ function OrderModal({
       });
       console.log(res);
       setIsLoading(false);
-      alert(res.data.message);
+      // alert(res.data.message);
+      showMessage('success', `成功：${res.data.message}`);
       closeOrderModal();
-      getOrders();
+      getOrders(currentPage);
     } catch (error) {
       console.log(error.response.message)
       setIsLoading(false);
+      showMessage('danger', `失敗：${error.response.data.message}`);
     }
   }
 
