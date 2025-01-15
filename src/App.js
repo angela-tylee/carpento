@@ -19,6 +19,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminBlogs from './pages/admin/AdminBlogs';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import ScrollToTop from './utils/ScrollToTop';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -49,6 +50,8 @@ function App() {
           <Route path="blogs" element={<AdminBlogs />}></Route>
           <Route path="coupons" element={<AdminCoupons />}></Route>
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
