@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import ReactInputMask from "react-input-mask";
 import axios from 'axios';
 import { CartContext } from '../../context/CartContext';
 import FullPageLoader from '../../components/FullPageLoader';
@@ -334,7 +335,6 @@ const Checkout = () => {
 
             <h2 className="fs-4 mt-4 mb-3">Payment</h2>
             <div className="mb-2">
-              {/* TODO: Validate Card Info */}
               <label htmlFor="cardInfo" className="form-label w-100 d-flex justify-content-between align-items-end">
                 <p>Card Info<span className="text-danger">*</span></p>
                 <div className="d-flex justify-content-end">
@@ -343,14 +343,15 @@ const Checkout = () => {
                   <img src="/images/credit-cards/american-express.png" alt="american-express-card" className="credit-card" width="40px"/>
                 </div>
               </label>
-              <input
+              <ReactInputMask
                 type="text"
                 className={`form-control ${errors.cardInfo && 'is-invalid'}`}
                 id="cardInfo"
                 inputMode="numeric"
-                // pattern="\d{13,19}"
                 placeholder="1234 5678 9012 3456"
                 autoComplete="cc-number"
+                mask="9999 9999 9999 9999"
+                maskChar="●"
                 {...register('cardInfo', {
                   required: {
                     value: true,
@@ -376,17 +377,35 @@ const Checkout = () => {
             <div className="row mb-2">
               <div className="col-6">
                 <label htmlFor="expiryDate" className="d-none"></label>
-                <input
+                <ReactInputMask
                   type="text"
-                  id="expiryDate"
                   className={`form-control ${
                     errors.expiryDate && 'is-invalid'
                   }`}
+                  id="expiryDate"
+                  inputMode="numeric"
                   placeholder="MM/YY"
+                  mask="99/99"
+                  maskChar=""
                   {...register('expiryDate', {
                     required: {
                       value: true,
                       message: 'Card expiry date is required',
+                    },
+                    validate: (value) => {
+                      const [month, year] = value.split('/').map(Number);
+                      const currentYear = new Date().getFullYear() % 100; // Get last two digits of the current year
+                
+                      if (isNaN(month) || isNaN(year)) {
+                        return 'Invalid date format';
+                      }
+                      if (month < 1 || month > 12) {
+                        return 'Please enter valid month';
+                      }
+                      if (year < currentYear || year > 99) {
+                        return `Your card is expired`;
+                      }
+                      return true; // Validation passed
                     },
                   })}
                 />
@@ -398,16 +417,15 @@ const Checkout = () => {
               </div>
               <div className="col-6">
                 <label htmlFor="cvv" className="d-none"></label>
-                <input
+                <ReactInputMask
                   type="text"
                   className={`form-control ${errors.cvv && 'is-invalid'}`}
-                  placeholder="CVV"
                   id="cvv"
-                  name="cvv"
+                  placeholder="CVV"
                   inputMode="numeric"
-                  // pattern="\d{3,4}"
                   autoComplete="cc-csc"
-                  // maxLength="4"
+                  mask="999"
+                  maskChar=""
                   {...register('cvv', {
                     required: {
                       value: true,

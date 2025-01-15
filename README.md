@@ -24,6 +24,7 @@
 - Swiper
 - AOS (Animation on Scroll)
 - React Spinner
+- React Input Mask
 
 ### What I learned
 
