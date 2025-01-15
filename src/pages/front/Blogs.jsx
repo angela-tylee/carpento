@@ -2,22 +2,41 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
+// import PulseLoader from 'react-spinners/PulseLoader';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const Blogs = () => {
   const [articles, setArticles] = useState([]);
   const [pagination, setPagination] = useState([]);
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(false);
 
   const getArticles = async (page = 1) => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/articles?page=${page}`
-    );
-    console.log(res);
-    setArticles(res.data.articles);
+    setIsLoadingBlogs(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/articles?page=${page}`
+      );
+      console.log(res);
+      setArticles(res.data.articles);
+      setPagination(res.data.pagination);
+      setIsLoadingBlogs(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoadingBlogs(false);
+    }
   };
 
   useEffect(() => {
     getArticles();
   }, []);
+
+  if (isLoadingBlogs) {
+    return (
+      <main className="container mb-7">
+        <FullPageLoader />
+      </main>
+    );
+  }
 
   return (
     <main className="container mb-7">
@@ -37,13 +56,25 @@ const Blogs = () => {
           <Link to={`/blog/${article.id}`} className="d-block" key={article.id}>
             <div className="row flex-column flex-sm-row mb-4 ">
               <div className="col-sm-4 col-lg-3 col-xl-3">
-                <img src={article.image} alt="Blog workspace" width="100%" height="156px" className="object-fit-cover"/>
+                <img
+                  src={article.image}
+                  alt="Blog workspace"
+                  width="100%"
+                  height="156px"
+                  className="object-fit-cover"
+                />
               </div>
               <div className="col-sm-8 col-lg-9 col-xl-9">
                 <div className="h-100 d-flex flex-column justify-content-between">
                   <div>
                     <h2 className="mt-2 mt-sm-0 fs-4">{article.title}</h2>
-                    <p className="mt-1 mt-sm-2" dangerouslySetInnerHTML={{ __html: article.description }} style={{ maxHeight: "72px", overflowY: "hidden"}}>
+                    <p
+                      className="mt-1 mt-sm-2"
+                      dangerouslySetInnerHTML={{
+                        __html: article.description,
+                      }}
+                      style={{ maxHeight: '72px', overflowY: 'hidden' }}
+                    >
                       {/* {article.description} */}
                     </p>
                   </div>
@@ -56,7 +87,7 @@ const Blogs = () => {
           </Link>
         ))}
       </section>
-      <Pagination pagination={pagination} changePage={getArticles}/>
+      <Pagination pagination={pagination} changePage={getArticles} />
     </main>
   );
 };

@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { CartContext } from '../../context/CartContext';
+// import PulseLoader from 'react-spinners/PulseLoader';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const Cart = () => {
-  const [cart, setCart] = useState({});
+  // const [cart, setCart] = useState({});
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
   const [coupon, setCoupon] = useState({
     // code: '',
     success: null,
   });
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
+  const { cart, getCart, isLoadingCart } = useContext(CartContext);
 
-  const getCart = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
-    );
-    console.log(res.data.data);
-    setCart(res.data.data);
-  };
+  // const getCart = async () => {
+  //   const res = await axios.get(
+  //     `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
+  //   );
+  //   console.log(res.data.data);
+  //   setCart(res.data.data);
+  // };
 
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
@@ -91,6 +95,14 @@ const Cart = () => {
     <p>Your cart is empty</p>
     <p>Add something to cart</p>
   </div>;
+
+  if (isLoadingCart) {
+    return (
+      <main className="container mb-7">
+        <FullPageLoader />
+      </main>
+    );
+  }
 
   return (
     <>
@@ -327,8 +339,6 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
-
-
             </div>
           </section>
         </main>

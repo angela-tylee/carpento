@@ -13,7 +13,7 @@ const About = () => {
 
       <section className="section-about">
         <div
-          className="about-hero-img mb-7"
+          className="about-hero-img mb-4 mb-sm-5 mb-lg-7"
           style={{ backgroundImage: 'url(/images/about-2-xl.jpeg)' }}
         ></div>
 

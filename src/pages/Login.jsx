@@ -71,10 +71,11 @@ function Login() {
               {/* TODO: Custom Error Message: 請輸入帳號密碼 / 帳號或密碼錯誤 */}
               {loginState.message}
             </div>
-            <div className="mb-2">
+            {/* FIXME: onSubmit 沒有作用 */}
+            <form onSubmit={submit}>
               <label
                 htmlFor="email"
-                className="form-label w-100 text-uppercase"
+                className="form-label w-100 text-uppercase mb-2"
               >
                 Email
                 <input
@@ -86,11 +87,9 @@ function Login() {
                   onChange={handleChange}
                 />
               </label>
-            </div>
-            <div className="mb-2">
               <label
                 htmlFor="password"
-                className="form-label w-100 text-uppercase"
+                className="form-label w-100 text-uppercase mb-2"
               >
                 Password
                 <input
@@ -102,23 +101,23 @@ function Login() {
                   onChange={handleChange}
                 />
               </label>
-            </div>
-            <button
-              type="button"
-              className="btn btn-primary w-100 text-uppercase text-light"
-              onClick={submit}
-              disabled={isLoading}
-            >
-              <div
-                className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
-                  isLoading ? '' : 'd-none'
-                }`}
-                role="status"
+              <button
+                type="button"
+                className="btn btn-primary w-100 text-uppercase text-light mt-2"
+                onClick={submit}
+                disabled={isLoading}
               >
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              Sign in
-            </button>
+                <div
+                  className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                    isLoading ? '' : 'd-none'
+                  }`}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                Sign in
+              </button>
+            </form>
           </div>
         </div>
       </div>

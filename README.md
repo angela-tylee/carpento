@@ -23,6 +23,7 @@
 - CKEditor
 - Swiper
 - AOS (Animation on Scroll)
+- React Spinner
 
 ### What I learned
 

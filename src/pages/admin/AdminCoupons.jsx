@@ -4,12 +4,14 @@ import CouponModal from '../../components/CouponModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const AdminCoupons = () => {
   const [coupons, setCoupons] = useState([]);
   const [pagination, setPagination] = useState({});
   const [type, setType] = useState('create');
   const [tempCoupon, setTempCoupon] = useState({});
+  const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
 
   // QUESTION: useRef()? 2024-12-16
   const couponModal = useRef(null);
@@ -29,12 +31,20 @@ const AdminCoupons = () => {
   }, []);
 
   async function getCoupons(page = pagination.current_page) {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
-    );
-    console.log(res.data);
-    setCoupons(res.data.coupons);
-    setPagination(res.data.pagination);
+    setIsLoadingCoupons(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
+      );
+      console.log(res.data);
+      setCoupons(res.data.coupons);
+      setPagination(res.data.pagination);
+      setIsLoadingCoupons(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoadingCoupons(false);
+    }
+    
   }
 
   async function deleteCoupon(id) {
@@ -67,6 +77,15 @@ const AdminCoupons = () => {
   function closeDeleteModal() {
     deleteModal.current.hide();
   }
+  
+  if (isLoadingCoupons) {
+    return (
+      <main style={{ height: `calc(100% - 151px` }}>
+        <FullPageLoader />
+      </main>
+    )
+  }
+
 
   return (
     <main>

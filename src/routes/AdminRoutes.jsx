@@ -1,5 +1,12 @@
-import { useEffect } from 'react';
-import { Routes, Route, NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import {
+  Routes,
+  Route,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import axios from 'axios';
 // import AdminHeader from '../layout/AdminHeader';
 // import AdminSidebar from '../layout/AdminSidebar';
@@ -11,40 +18,47 @@ import axios from 'axios';
 const AdminRoutes = () => {
   const navigate = useNavigate();
   const params = useParams();
+  // const adminHeaderRef = useRef(null);
+  // const [adminHeaderHeight, setAdminHeaderHeight] = useState(0);
 
-  console.log(params);
+  // useEffect(() => {
+  //   if (adminHeaderRef.current) {
+  //     setAdminHeaderHeight(adminHeaderRef.current.offsetHeight);
+  //   }
+  //   console.log(adminHeaderHeight);
+  // },[])
+
   function logout() {
-    document.cookie = "carpento=;";
+    document.cookie = 'carpento=;';
     navigate('/login');
   }
 
   const token = document.cookie // 取出 token
-  .split('; ')
-  .find((row) => row.startsWith('carpento='))
-  ?.split('=')[1];
+    .split('; ')
+    .find((row) => row.startsWith('carpento='))
+    ?.split('=')[1];
 
   // QUESTION: how to do this with fetchAPI? 2024-12-10
   axios.defaults.headers.common['Authorization'] = token;
 
   useEffect(() => {
-    if(!token){
+    if (!token) {
       navigate('/login');
-      alert("驗證失敗，請重新登入") // TODO: Bootstrap toast & 不要顯示 admin/products 頁面
+      alert('驗證失敗，請重新登入'); // TODO: Bootstrap toast & 不要顯示 admin/products 頁面
       return;
     }
     (async () => {
       try {
         await axios.post('/v2/api/user/check');
-       // FIXME: 有時 post failed 403 會被踢出來 最終挑戰：路由保護 https://courses.hexschool.com/courses/react-video-course/lectures/45741598 08:00 2024-12-15
+        // FIXME: 有時 post failed 403 會被踢出來 最終挑戰：路由保護 https://courses.hexschool.com/courses/react-video-course/lectures/45741598 08:00 2024-12-15
       } catch (error) {
-        if(!error.response.data.success) {
+        if (!error.response.data.success) {
           navigate('/login');
-          // alert("驗證失敗，請重新登入") 
+          // alert("驗證失敗，請重新登入")
         }
       }
-    })()
-  },[navigate, token])
-
+    })();
+  }, [navigate, token]);
 
   return (
     // <div>
@@ -72,12 +86,18 @@ const AdminRoutes = () => {
             </NavLink>
             <p>| Dashboard</p>
           </div>
-          <button className="btn p-1 nav-link" onClick={logout}>登出</button>
+          <button className="btn p-1 nav-link" onClick={logout}>
+            登出
+          </button>
         </nav>
       </header>
       <div className="d-flex">
         {/* QUESTION: how does 'full-height sidebar' work with overflow, position, top? 2024-12-10 https://claude.ai/chat/7943b688-01ec-4cf1-8929-1312cccf45d3*/}
-        <div className="vh-100 overflow-auto position-sticky top-0" style={{ minWidth: '240px' }}>
+        <div
+          className="vh-100 overflow-auto position-sticky top-0"
+          style={{ minWidth: '240px'}}
+          // style={{ minWidth: '240px', height: `calc(100vh - ${headerHeight})` }}
+        >
           <nav className="navbar navbar-expand bg-secondary d-block h-100 w-100">
             <div className="container-fluid flex-column align-items-start h-100 ps-6">
               <div id="navbarNav">
@@ -108,7 +128,8 @@ const AdminRoutes = () => {
                   </li>
                   <li className="nav-item mt-3 pe-2 fw-bold">
                     <NavLink to="/" className="nav-link">
-                      回到前台<i className="bi bi-arrow-return-left ms-1 fs-7"></i>
+                      回到前台
+                      <i className="bi bi-arrow-return-left ms-1 fs-7"></i>
                     </NavLink>
                   </li>
                 </ul>
@@ -117,7 +138,8 @@ const AdminRoutes = () => {
           </nav>
         </div>
         <div className="w-100 py-4 px-5">
-          { token && <Outlet /> }
+          {/* {token && <Outlet context={{ adminHeaderRef, adminHeaderHeight }} />} */}
+          {token && <Outlet />}
           {/* <Routes>
           <Route path="/products" element={<Products />}></Route>
           <Route path="/orders" element={<Orders />}></Route>

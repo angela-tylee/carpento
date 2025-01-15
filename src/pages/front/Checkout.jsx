@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { CartContext } from '../../context/CartContext';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const Checkout = () => {
   // const [cart, setCart] = useState({});
@@ -10,7 +11,7 @@ const Checkout = () => {
 
   let navigate = useNavigate();
 
-  const { cart, getCart } = useContext(CartContext);
+  const { cart, getCart, isLoadingCart } = useContext(CartContext);
 
   // const getCart = async () => {
   //   const res = await axios.get(
@@ -84,6 +85,14 @@ const Checkout = () => {
   useEffect(() => {
     getCart();
   }, []);
+
+  if (isLoadingCart) {
+    return (
+    <main className="container mb-7 checkout">
+      <FullPageLoader />
+    </main>
+    )
+  }
 
   return (
     <main className="container mb-7 checkout">

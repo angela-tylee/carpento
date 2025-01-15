@@ -10,6 +10,8 @@ import ProductCard2 from '../../components/ProductCard2';
 import { CartContext } from '../../context/CartContext';
 import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
+// import PulseLoader from 'react-spinners/PulseLoader';
+import FullPageLoader from '../../components/FullPageLoader';
 // import { useMessage } from '../../context/MessageContext';
 // import useMessage from '../../hooks/useMessage';
 
@@ -23,18 +25,25 @@ const Product = () => {
   //   carts: [],
   // });
   const [cartQuantity, setCartQuantity] = useState(1);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingProduct, setIsLoadingProduct] = useState(false);
   const { cart, addToCart, isLoading } = useContext(CartContext);
   const { messageType, message } = useContext(MessageContext);
   // const { messageType, message } = useMessage();
-  // const { messageType, message } = useContext(MessageContext);
 
   const getProduct = async (id) => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
-    );
-    console.log(res);
-    setProduct(res.data.product);
+    setIsLoadingProduct(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
+      );
+      console.log(res);
+      setProduct(res.data.product);
+
+      setIsLoadingProduct(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoadingProduct(false);
+    }
   };
 
   const getProductsAll = async () => {
@@ -88,6 +97,14 @@ const Product = () => {
     setRecentlySeenProducts(items);
     console.log(items, recentlySeenProducts);
   }, [id]);
+
+  if (isLoadingProduct) {
+    return (
+      <main className="product container mb-6">
+        <FullPageLoader />;
+      </main>
+    );
+  }
 
   return (
     <>
@@ -234,7 +251,7 @@ const Product = () => {
                     type="button"
                     className="btn btn-primary w-25 ms-2"
                     onClick={() => {
-                      addToCart(product.id, cartQuantity)
+                      addToCart(product.id, cartQuantity);
                     }}
                     disabled={isLoading}
                   >
@@ -315,7 +332,9 @@ const Product = () => {
               >
                 <p
                   className="mt-4 mt-md-5 ps-2 product-content"
-                  dangerouslySetInnerHTML={{ __html: product.content?.info }}
+                  dangerouslySetInnerHTML={{
+                    __html: product.content?.info,
+                  }}
                 ></p>
               </div>
               <div
@@ -327,7 +346,9 @@ const Product = () => {
               >
                 <p
                   className="mt-4 mt-md-5 ps-2 product-content"
-                  dangerouslySetInnerHTML={{ __html: product.content?.size }}
+                  dangerouslySetInnerHTML={{
+                    __html: product.content?.size,
+                  }}
                 ></p>
               </div>
               <div

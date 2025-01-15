@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 // import useMessage from '../hooks/useMessage';
 import { MessageContext } from './MessageContext';
+import { set } from 'react-hook-form';
 // import { useMessage } from './MessageContext';
 
 export const CartContext = createContext();
@@ -9,18 +10,22 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ carts: []});
   const [isLoadingItem, setIsLoadingItem] = useState(null);
+  const [isLoadingCart, setIsLoadingCart] = useState(false);
   const cartDropdownRef = useRef(null);
-  const { showMessage, clearMessage } = useContext( MessageContext);
+  const { showMessage, clearMessage } = useContext(MessageContext);
   // const { showMessage } = useMessage();
 
   const getCart = async () => {
+    setIsLoadingCart(true);
     try {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
       );
       setCart(res.data.data);
+      setIsLoadingCart(false);
     } catch (error) {
       console.log(error);
+      setIsLoadingCart(false);
     }
   };
 
@@ -80,7 +85,7 @@ export const CartProvider = ({ children }) => {
 
   // return { cart, isLoading, addToCart, getCart };
   return (
-    <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart, showCartDropdown, cartDropdownRef }}>
+    <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart, isLoadingCart, showCartDropdown, cartDropdownRef }}>
       {children}
     </CartContext.Provider>
   );

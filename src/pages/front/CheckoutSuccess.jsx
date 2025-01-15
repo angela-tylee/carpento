@@ -1,23 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const CheckoutSuccess = () => {
   const [order, setOrder] = useState([]);
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingOrder, setIsLoadingOrder] = useState(false);
 
   const getOrders = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/order/${id}`
-    );
-    console.log('order', res.data);
-    setOrder(res.data.order);
+    setIsLoadingOrder(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/order/${id}`
+      );
+      console.log('order', res.data);
+      setOrder(res.data.order);
+      setIsLoadingOrder(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoadingOrder(false);
+    }
   };
 
   useEffect(() => {
     getOrders();
   }, []);
+
+  if (isLoadingOrder) {
+    return (
+      <main className="checkout-success container mb-7">
+        <FullPageLoader />
+      </main> 
+    )
+  }
 
   return (
     <main className="checkout-success container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
@@ -37,7 +53,7 @@ const CheckoutSuccess = () => {
         </div>
       </section>
       <hr />
-      {/* TODO: Add order summary loading effects.  */}
+
       {order && order.id && (
         <section className="mt-4 col-12 col-md-10 col-xl-8">
           <div className="bg-secondary p-3">
