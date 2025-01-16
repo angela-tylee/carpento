@@ -11,6 +11,7 @@ import { CartContext } from '../../context/CartContext';
 import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
+import CartBadge from '../../components/CartBadge';
 
 const Product = () => {
   const [product, setProduct] = useState({});
@@ -19,7 +20,7 @@ const Product = () => {
 
   const [cartQuantity, setCartQuantity] = useState(1);
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
-  const { cart, addToCart, isLoading } = useContext(CartContext);
+  const { addToCart, isLoading } = useContext(CartContext);
   const { messageType, message } = useContext(MessageContext);
 
   const getProduct = async (id) => {
@@ -28,12 +29,9 @@ const Product = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
       );
-      console.log(res);
       setProduct(res.data.product);
-
       setIsLoadingProduct(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingProduct(false);
     }
   };
@@ -42,7 +40,6 @@ const Product = () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
-    console.log(res);
     setProducts(res.data.products);
   };
 
@@ -50,7 +47,6 @@ const Product = () => {
     // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
     getProduct(id);
     getProductsAll();
-    // getCart();
   }, [id]);
 
   const [recentlySeenProducts, setRecentlySeenProducts] = useState([]);
@@ -62,13 +58,20 @@ const Product = () => {
 
   const addRecentlySeen = (product) => {
     const recentlySeen = getRecentlySeen();
-    // Remove the product if it already exists
     const updatedRecentlySeen = recentlySeen.filter((p) => p.id !== product.id);
-    // Add the product to the beginning of the array
     updatedRecentlySeen.unshift(product);
-    // Store back in localStorage
     localStorage.setItem('recentlySeen', JSON.stringify(updatedRecentlySeen));
   };
+
+  useEffect(() => {
+    const productViewed = products.find((p) => p.id === id);
+    if (productViewed) {
+      addRecentlySeen(productViewed);
+    }
+    const items = getRecentlySeen();
+    setRecentlySeenProducts(items);
+  }, [id]);
+
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -78,22 +81,10 @@ const Product = () => {
     setLightboxOpen(true);
   };
 
-  useEffect(() => {
-    // Find the full product object by ID
-    const productViewed = products.find((p) => p.id === id);
-    if (productViewed) {
-      addRecentlySeen(productViewed);
-    }
-    // addRecentlySeen(id);
-    const items = getRecentlySeen();
-    setRecentlySeenProducts(items);
-    console.log(items, recentlySeenProducts);
-  }, [id]);
-
   if (isLoadingProduct) {
     return (
       <main className="product container mb-6">
-        <FullPageLoader />;
+        <FullPageLoader />
       </main>
     );
   }
@@ -192,14 +183,6 @@ const Product = () => {
               </div>
             )}
 
-            <style>
-              {/* TODO: Separate CSS */}
-              {`
-              .pointer { cursor: pointer; }
-              .opacity-hover:hover { opacity: 0.8; transition: opacity 0.3s; }
-            `}
-            </style>
-
             <div className="col-md-7">
               <div className="ms-md-3 ms-lg-6">
                 <h1 className="fs-2 mt-2 mt-sm-4 mt-md-0">{product.title}</h1>
@@ -265,9 +248,6 @@ const Product = () => {
 
         <section className="section-info pt-2 pb-3 pt-md-5 pb-md-6 border-bottom border-1 border-secondary">
           <div className="col-12 section-info-tabs">
-            {/* <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">Info</h2> */}
-            {/* <p className="mt-5">{product.content}</p> */}
-            {/* <p className="mt-5 product-content" dangerouslySetInnerHTML={{ __html: product.content }}></p> */}
             <ul className="nav nav-tabs" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button
@@ -280,7 +260,7 @@ const Product = () => {
                   aria-controls="info-tab-pane"
                   aria-selected="true"
                 >
-                  <h5 className="text-start text-md-center">Info</h5>
+                  <h5 className="text-start text-md-center text-body">Info</h5>
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -294,7 +274,7 @@ const Product = () => {
                   aria-controls="size-tab-pane"
                   aria-selected="false"
                 >
-                  <h5 className="text-start text-md-center">Size</h5>
+                  <h5 className="text-start text-md-center text-body">Size</h5>
                 </button>
               </li>
               <li className="nav-item" role="presentation">
@@ -308,7 +288,7 @@ const Product = () => {
                   aria-controls="maintenance-tab-pane"
                   aria-selected="false"
                 >
-                  <h5 className="text-start text-md-center">
+                  <h5 className="text-start text-md-center text-body">
                     Care Instructions
                   </h5>
                 </button>
@@ -363,25 +343,8 @@ const Product = () => {
 
         {/* mobile start*/}
         <div className="mt-3 w-100 d-flex justify-content-between sticky-bottom d-md-none py-2 bg-light">
-          {/* TODO: cart icon 元件化 */}
-          <Link to="/cart" className="nav-link me-2" role="button">
-            <div className="position-relative mt-1">
-              <i className="bi bi-bag fs-4"></i>
-              <span
-                className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                style={{
-                  padding: '3px 3px 3px 5px',
-                  fontSize: '10px',
-                  top: '10%',
-                }}
-              >
-                {cart.carts?.reduce(
-                  (total, cartItem) => total + cartItem.qty,
-                  0
-                )}
-                <span className="visually-hidden">New alerts</span>
-              </span>
-            </div>
+          <Link to="/cart" className="nav-link me-2 mt-1" role="button">
+            <CartBadge size="fs-4" />
           </Link>
           <button
             type="button"
@@ -403,21 +366,18 @@ const Product = () => {
         {/* mobile end */}
 
         {recentlySeenProducts.length !== 0 && (
-          // FIXME: FIXED? 資料沒有及時更新
           <section className="section-seen pt-2">
-            <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
+            <h2 className="fs-5 fw-bold border-bottom border-3 border-dark d-inline px-1 py-1">
               Recently Seen
             </h2>
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={24} // space between slides
-                slidesPerView={1} // number of products per slide
-                navigation // enable navigation buttons
+                spaceBetween={24} 
+                slidesPerView={1} 
+                navigation 
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
                 breakpoints={{
                   320: {
                     slidesPerView: 2,
@@ -442,48 +402,22 @@ const Product = () => {
             </div>
           </section>
         )}
-        {/* TODO: Separate CSS */}
-        <style>
-          {`
-          .swiper-wrapper {
-            width: 320px;
-          }
-          
-          @media (min-width: 768px) {
-            .swiper-wrapper {
-              width: 768px;
-            }
-          }
-          @media (min-width: 992px) {
-            .swiper-wrapper {
-              width: 992px;
-            }
-          }
-          @media (min-width: 1200px) {
-            .swiper-wrapper {
-              width: 1200px;
-            }
-          }
-        `}
-        </style>
 
         {products.some(
           (item) => item.category === product.category && item.id !== id
         ) && (
           <section className="section-related pt-2">
-            <h2 className="fs-5 fw-bold border-bottom border-3 border-black d-inline px-1 py-1">
+            <h2 className="fs-5 fw-bold border-bottom border-3 border-dark d-inline px-1 py-1">
               You might also need...
             </h2>
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={24} // space between slides
-                slidesPerView={5} // number of products per slide
-                navigation // enable navigation buttons
+                spaceBetween={24} 
+                slidesPerView={5} 
+                navigation 
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
-                onSlideChange={() => console.log('slide change')}
-                onSwiper={(swiper) => console.log(swiper)}
                 breakpoints={{
                   320: {
                     slidesPerView: 2,

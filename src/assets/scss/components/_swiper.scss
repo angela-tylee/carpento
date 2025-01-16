@@ -6,18 +6,12 @@
 }
 
 .swiper-button-prev{
-  z-index: 1000;
-  position: absolute;
-  left: -100px; /* Position left button outside Swiper */
   &::after {
     color: $dark;
   }
 }
 
 .swiper-button-next{
-  z-index: 1000;
-  position: absolute;
-  right: -100px; /* Position right button outside Swiper */
   &::after {
     color: $dark;
   }
@@ -26,11 +20,36 @@
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background-color: $dark;
 }
-// /* Adjust for small screens */
-// @media (max-width: 768px) {
-//   .swiper-button-prev.custom-nav,
-//   .swiper-button-next.custom-nav {
-//     left: -30px;
-//     right: -30px;
-//   }
+
+.swiper {
+  .swiper-wrapper {
+    width: 320px;
+  }
+  
+  @media (min-width: 768px) {
+    .swiper-wrapper {
+      width: 768px;
+    }
+  }
+  @media (min-width: 992px) {
+    .swiper-wrapper {
+      width: 992px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .swiper-wrapper {
+      width: 1200px;
+    }
+  }
+
+}
+
+// @media (prefers-color-scheme: dark) {
+  :root[data-bs-theme="dark"]{
+    .swiper {
+      .swiper-pagination-bullet {
+        background: var(--bs-dark);
+      }
+    }
+  }
 // }

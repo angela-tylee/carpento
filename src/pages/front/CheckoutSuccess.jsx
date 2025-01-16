@@ -1,12 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import FullPageLoader from '../../components/FullPageLoader';
+import Message from '../../components/Message';
+import { MessageContext } from '../../context/MessageContext';
 
 const CheckoutSuccess = () => {
   const [order, setOrder] = useState([]);
   const { id } = useParams();
   const [isLoadingOrder, setIsLoadingOrder] = useState(false);
+
+  const { messageType, message, showMessage } = useContext(MessageContext);
 
   const getOrders = async () => {
     setIsLoadingOrder(true);
@@ -14,14 +18,22 @@ const CheckoutSuccess = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/order/${id}`
       );
-      console.log('order', res.data);
       setOrder(res.data.order);
       setIsLoadingOrder(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingOrder(false);
     }
   };
+
+    const copyLink = async () => {
+      try {
+        const currentURL = window.location.href;
+        await navigator.clipboard.writeText(currentURL);
+        showMessage('success', 'Link Copied');
+      } catch (error) {
+        showMessage('danger', 'Failed to copy the link. Please try again.');
+      }
+    };
 
   useEffect(() => {
     getOrders();
@@ -35,7 +47,20 @@ const CheckoutSuccess = () => {
     )
   }
 
+  if (!order) {
+    return (
+      <main className="checkout-success container mb-7">
+        <div className="d-flex flex-column justify-content-center align-items-center h-100">
+          <h1>Sorry, Order not found</h1>
+          <p>Please double confirm your order id.</p>
+        </div>
+      </main> 
+    )
+  }
+
   return (
+    <>
+    <Message type={messageType} message={message} />
     <main className="checkout-success container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
       <section className="text-center py-7">
         <h1 className="fs-2">
@@ -62,9 +87,8 @@ const CheckoutSuccess = () => {
               <div className="d-flex align-items-center">
                 <button
                   className="btn p-0 text-decoration-underline d-flex align-items-center"
-                  // onClick={}
+                  onClick={copyLink}
                 >
-                  {/* TODO: add copy link */}
                   <span>Copy link</span>
                   <i className="bi bi-link-45deg fs-5 ms-1"></i>
                 </button>
@@ -134,11 +158,6 @@ const CheckoutSuccess = () => {
                   ))}
               </div>
 
-              {/* <div className="row pt-2">
-                <h6 className="col-6">Subtotal</h6>
-                <p className="col-6 text-end">${order?.products[0]?.total}</p>
-              </div> */}
-
               {Object.values(order.products)[0]?.coupon?.code ? (
                 <div className="row pt-2 py-1">
                   <div className="col-12 d-flex align-items-center justify-content-between">
@@ -147,7 +166,6 @@ const CheckoutSuccess = () => {
                       {Object.values(order.products)[0]?.coupon?.code}
                     </span>
                   </div>
-                  {/* <p className="col-3 text-end">${cart.final_total - cart.total}</p> */}
                 </div>
               ) : (
                 ''
@@ -173,6 +191,7 @@ const CheckoutSuccess = () => {
         </a>
       </p>
     </main>
+    </>
   );
 };
 

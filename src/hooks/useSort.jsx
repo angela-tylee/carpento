@@ -5,17 +5,14 @@ function useSort(items) {
   const [sortLabel, setSortLabel] = useState('');
   const [sortedItems, setSortedItems] = useState(items);
 
-  // Effect to handle both initial items and updates
   useEffect(() => {
     if (!items?.length) return;
     
-    // If no sort criteria, use original items
     if (!sortCriteria) {
       setSortedItems(items);
       return;
     }
 
-    // Re-apply current sort to new items
     const sorted = [...items].sort((a, b) => {
       switch (sortCriteria) {
         case 'name-asc':
@@ -40,8 +37,6 @@ function useSort(items) {
 
   const handleSort = (criteria, e) => {
     setSortCriteria(criteria);
-    // setSortCriteria(e.target.innerText);
-    //   const label = e?.target.innerText;
     setSortLabel(e?.target.innerText);
   };
   

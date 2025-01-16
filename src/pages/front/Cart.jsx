@@ -10,7 +10,6 @@ import { MessageContext } from '../../context/MessageContext';
 const Cart = () => {
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
   const [coupon, setCoupon] = useState({
-    // code: '',
     success: null,
   });
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
@@ -24,13 +23,10 @@ const Cart = () => {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
-      console.log(res);
-      // alert(res.data.message);
       setIsLoadingDeleteItem(null);
       showMessage('success', res.data.message);
       getCart();
     } catch (error) {
-      console.log(error);
       setIsLoadingDeleteItem(null);
       showMessage('danger', error.response.data.message);
     }
@@ -51,14 +47,12 @@ const Cart = () => {
       setIsLoadingDeleteItem(false);
       getCart();
     } catch (error) {
-      console.log(error);
       setIsLoadingDeleteItem(false);
     }
   };
 
   useEffect(() => {
     getCart();
-    console.log(coupon);
   }, [coupon.success]);
 
   const applyCoupon = async () => {
@@ -72,13 +66,11 @@ const Cart = () => {
           },
         }
       );
-      console.log(res);
       coupon.success = res.data.success;
 
       setIsLoadingCoupon(false);
       getCart();
     } catch (error) {
-      console.log(error);
       coupon.success = false;
       setIsLoadingCoupon(false);
     }
@@ -95,7 +87,6 @@ const Cart = () => {
   return (
     <>
       <Message type={messageType} message={message} />
-      {/* FIXME: 避免先閃現購物車畫面 */}
       {cart.carts && cart.carts.length === 0 ? (
         <main className="container mb-7 d-flex justify-content-center align-items-center">
           <div className="text-center">
@@ -218,15 +209,6 @@ const Cart = () => {
                                 }}
                               ></button>
                             )}
-                            {/* <button
-                              className="btn btn-none border-0 p-0 text-end"
-                              aria-label="remove item"
-                              onClick={() => {
-                                deleteCartItem(cartItem.id);
-                              }}
-                            >
-                              <i className="bi bi-x-lg"></i>
-                            </button> */}
                             <p>${cartItem.total.toLocaleString()}</p>
                           </div>
                         </div>
@@ -273,7 +255,6 @@ const Cart = () => {
                           aria-label="Example text with button addon"
                           aria-describedby="button-addon1"
                           value={coupon.code}
-                          // onChange={handleChange}
                           name="code"
                           onChange={(e) => {
                             setCoupon({
@@ -303,7 +284,6 @@ const Cart = () => {
                           )}
                         </button>
                         <div className="valid-feedback">coupon applied!</div>
-                        {/* FIXME: FIXED? feedback not showing immediately. */}
                         <div className="invalid-feedback">
                           cannot find this coupon!
                         </div>
@@ -312,6 +292,7 @@ const Cart = () => {
                     <div className="row py-1 border-top border-1 border-gray">
                       <h6 className="col-6">Total</h6>
                       <p className="col-6 text-end">
+                        {/* FIXME: 結帳有小數點 */}
                         ${cart.final_total?.toLocaleString()}
                       </p>
                     </div>

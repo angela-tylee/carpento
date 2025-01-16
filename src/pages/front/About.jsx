@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-
 const About = () => {
   return (
     <main className="container mb-7">
@@ -43,22 +42,6 @@ const About = () => {
                 <p className="mt-4">
                   Today, Carpento is known for its dedication to excellence and sustainability. Our furniture reflects our commitment to quality and the desire to enhance living spaces with products that are both beautiful and environmentally conscious.
                 </p>
-                {/* <div className="row mt-6">
-                  {[
-                    'employee-1', 'employee-3', 'employee-4', 'employee-6',
-                    'employee-7', 'employee-8', 'employee-9', 'employee-10'
-                  ].map((employee, index) => (
-                    <div className="col-3 mt-3" key={index}>
-                      <div className="employee-img rounded-circle overflow-hidden">
-                        <img
-                          className="employee-img w-100"
-                          src={`/images/${employee}.jpeg`}
-                          alt={`employee-${index + 1}`}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div> */}
               </div>
             </div>
           </div>

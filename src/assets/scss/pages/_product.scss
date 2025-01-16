@@ -1,15 +1,8 @@
 .product {
-  .section-info-tabs .nav-link{
+  .section-info-tabs .nav-link {
     color: $dark;
-    // &.active,
-    // &:active,
-    // &:hover{
-    //   border: 0;
-    // }
-    &.active{
-      // fs-5 fw-bold border-bottom border-3 border-black
+    &.active {
       border-bottom: 3px solid $dark;
-      // color: $primary;
     }
   }
 }

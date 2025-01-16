@@ -28,7 +28,6 @@ function ArticleModal({
   const [isLoadingImg, setIsLoadingImg] = useState(false);
 
   useEffect(() => {
-    console.log(type, tempArticle);
     if (type === 'create') {
       setTempData({
         title: '',
@@ -47,24 +46,13 @@ function ArticleModal({
 
   async function handleChange(e, editorData) {
     const { name, value, checked, files } = e?.target || {};
-    // console.log(e.target);
     if (name === 'isPublic') {
       setTempData({
         ...tempData,
         [name]: checked,
-        // [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
       });
     } else if (name === 'imageUpload') {
       await uploadImage(files[0]);
-      // setTempData({
-      //   ...tempData,
-      //   "image": uploadImageUrl
-      // })
-      // } else if (name === 'create_at') {
-      //   setTempData({
-      //     ...tempData,
-      //     [name]: tempData.create_at,
-      //   })
     } else if (['description', 'content'].includes(name)) {
       setTempData((tempData) => ({
         ...tempData,
@@ -73,14 +61,13 @@ function ArticleModal({
     } else {
       setTempData({
         ...tempData,
-        [name]: value, // Others remain.
+        [name]: value,
       });
     }
   }
 
   async function uploadImage(file) {
     setIsLoadingImg(true);
-    console.log(file);
     if (!file) return;
 
     const formData = new FormData();
@@ -98,17 +85,14 @@ function ArticleModal({
         image: res.data.imageUrl,
       });
 
-      console.log(tempData);
       setIsLoadingImg(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingImg(false);
     }
   }
 
   async function submit() {
     setIsLoading(true);
-    console.log(tempArticle.id);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`;
       let method = 'post';
@@ -119,18 +103,13 @@ function ArticleModal({
       const res = await axios[method](api, {
         data: tempData,
       });
-      console.log(res);
       setIsLoading(false);
-      // alert(res.data.message);
       showMessage('success', `成功：${res.data.message}`);
       closeArticleModal();
       getArticles(currentPage);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
-      // alert(error.response.data.message);
       showMessage('success', `失敗：${error.response.data.message}`);
-
     }
   }
 
@@ -144,42 +123,9 @@ function ArticleModal({
     >
       <div className="modal-dialog modal-xl">
         <div className="modal-content px-2 py-1">
-          {/* TODO: Separate or remove CSS, consider loading-overlay mixin(spinner-border width, color, border, padding-top) */}
-          {/* {!isLoadingModal && (
-            <div className="loading-overlay">
-              <div
-                className="spinner-border text-secondary-emphasis border-5"
-                role="status"
-                style={{ width: '80px', height: '80px' }}
-              >
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )} */}
-          <style>
-            {`.loading-overlay {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background: rgba(255, 255, 255, 0.9);
-              display: flex;
-              justify-content: center;
-              padding-top: 40vh;
-              z-index: 1050; /* Higher than modal content */
-            }`}
-          </style>
           {isLoadingModal ? (
             <div style={{ height: 'calc(100vh - 56px)' }}>
               <FullPageLoader />
-              {/* <div
-                className="spinner-border text-secondary-emphasis"
-                role="status"
-                style={{ width: '80px', height: '80px', borderWidth: '5px' }}
-              >
-                <span className="visually-hidden">Loading...</span>
-              </div> */}
             </div>
           ) : (
             <>
@@ -192,11 +138,10 @@ function ArticleModal({
                   className="btn-close"
                   aria-label="Close"
                   onClick={closeArticleModal}
-                  // bs-data-dismiss='modal'
+                  bs-data-dismiss='modal'
                 />
               </div>
               <div className="modal-body">
-                <pre className="py-3"> {JSON.stringify(tempData)}</pre>
                 <div className="row">
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="title">
@@ -326,7 +271,6 @@ function ArticleModal({
                             name="imageUpload"
                             id="customFile"
                             className="form-control"
-                            // onChange={(e) => uploadImage(e.target.files[0])}
                             onChange={handleChange}
                             disabled={isLoadingImg}
                           />
@@ -361,7 +305,6 @@ function ArticleModal({
                   <div className="row">
                     <div className="form-group mb-2 col-md-12">
                       <label className="w-100" htmlFor="tag">
-                        {/* FIXME: 無法輸入超過 2 個字？？？ */}
                         標籤
                         <input
                           type="text"
@@ -391,7 +334,6 @@ function ArticleModal({
                             className="form-check-input"
                             onChange={handleChange}
                             checked={tempData.isPublic}
-                            // value={tempData.is_enabled}
                           />
                         </label>
                       </div>
@@ -401,7 +343,6 @@ function ArticleModal({
                         <button
                           type="button"
                           className="btn border-0 text-danger btn-md p-0"
-                          // onClick={() => openDeleteModal(tempArticle)}
                           data-bs-target="#deleteModal"
                           data-bs-toggle="modal"
                         >

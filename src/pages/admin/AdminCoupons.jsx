@@ -17,7 +17,6 @@ const AdminCoupons = () => {
 
   const { message, messageType, showMessage } = useContext(MessageContext);
 
-  // QUESTION: useRef()? 2024-12-16
   const couponModal = useRef(null);
   const deleteModal = useRef(null);
 
@@ -39,25 +38,26 @@ const AdminCoupons = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupons?page=${page}`
       );
-      console.log(res.data);
       setCoupons(res.data.coupons);
       setPagination(res.data.pagination);
       setIsLoadingCoupons(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingCoupons(false);
     }
   }
 
   async function deleteCoupon(id) {
-    const res = await axios.delete(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
-    );
-    console.log(res);
-    alert(res.data.message);
-    console.log('delete', id);
-    closeDeleteModal();
-    getCoupons(pagination.current_page);
+    try {
+      const res = await axios.delete(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
+      );
+      showMessage('success', `成功：${res.data.message}`);
+      closeDeleteModal();
+      getCoupons(pagination.current_page);
+    } catch (error) {
+      showMessage('danger', `失敗：${error.response.data.message}`);
+    }
+    
   }
 
   function openCouponModal(type, product) {
@@ -68,25 +68,11 @@ const AdminCoupons = () => {
 
   function closeCouponModal() {
     couponModal.current.hide();
-    console.log('hide');
-  }
-
-  function openDeleteModal(product) {
-    setTempCoupon(product);
-    deleteModal.current.show();
   }
 
   function closeDeleteModal() {
     deleteModal.current.hide();
   }
-
-  // if (isLoadingCoupons) {
-  //   return (
-  //     <main style={{ height: `calc(100% - 151px` }}>
-  //       <FullPageLoader />
-  //     </main>
-  //   );
-  // }
 
   return (
     <>
@@ -153,7 +139,6 @@ const AdminCoupons = () => {
                     <tr key={coupon.id}>
                       <td>{coupon.code}</td>
                       <td>{coupon.title}</td>
-                      {/* <td className="text-center">{100 - coupon.percent}% off</td> */}
                       <td className="text-end">
                         {coupon.percent % 10 === 0
                           ? `${coupon.percent / 10}折`
@@ -185,13 +170,6 @@ const AdminCoupons = () => {
                         >
                           編輯
                         </button>
-                        {/* <button
-            type="button"
-            className="btn btn-outline-danger btn-sm ms-1"
-            onClick={() => openDeleteModal(product)}
-          >
-            刪除
-          </button> */}
                       </td>
                     </tr>
                   );

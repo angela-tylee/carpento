@@ -11,7 +11,6 @@ const ProductCard2 = ({ product, hasFooter, addToCart, isLoading: isLoadingItem 
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           width: '100%',
-          // height: '240px',
         }}
       >
         <span

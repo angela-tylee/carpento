@@ -9,7 +9,6 @@ function OrderModal({
   showMessage,
   openDeleteModal,
 }) {
-  // const [uploadImageUrl, setUploadImageUrl] = useState(null);
   const [tempData, setTempData] = useState({
     create_at: 0,
     is_paid: false,
@@ -24,19 +23,13 @@ function OrderModal({
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // console.log(tempData, selectedOrder);
   useEffect(() => {
-    console.log(selectedOrder);
     setTempData(selectedOrder);
   }, [selectedOrder]);
 
   function handleChange(e) {
-    console.log('typed');
-    console.log(e.target);
     const { name, value } = e.target;
-    // console.log(e.target);
     setTempData({
-      // ...tempData.user,
       ...tempData,
       user: {
         ...tempData.user,
@@ -51,14 +44,11 @@ function OrderModal({
       const res = await axios.put(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${selectedOrder.id}`, {
         data: tempData,
       });
-      console.log(res);
       setIsLoading(false);
-      // alert(res.data.message);
       showMessage('success', `成功：${res.data.message}`);
       closeOrderModal();
       getOrders(currentPage);
     } catch (error) {
-      console.log(error.response.message)
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }
@@ -70,7 +60,7 @@ function OrderModal({
       id="orderModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      // aria-hidden='true'
+      aria-hidden='true'
     >
       <div className="modal-dialog modal-xl">
         <div className="modal-content px-2 py-1">
@@ -83,7 +73,7 @@ function OrderModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeOrderModal}
-              // bs-data-dismiss='modal'
+              bs-data-dismiss='modal'
             />
           </div>
           {tempData && (
@@ -136,9 +126,7 @@ function OrderModal({
                       <p>小計：</p>
                       <span>${Object.values(tempData.products)?.reduce((total, product) => total + product.total , 0)?.toLocaleString()}</span>
                     </div>
-                    {/* TODO: coupon order API 沒有 coupon code */}
                     <div className="d-flex justify-content-between">
-                      {/* <p>折扣碼：</p> <span>{tempData.coupon || '無'}</span> */}
                       <p>折扣碼：</p>
                       <span>{Object.values(tempData.products)[0]?.coupon?.code ||'無'}</span>
                     </div>
@@ -209,7 +197,6 @@ function OrderModal({
                 <button
                   type="button"
                   className="btn border-0 text-danger btn-md p-0"
-                  // onClick={openDeleteModal}
                   data-bs-target="#deleteModal"
                   data-bs-toggle="modal"
                 >

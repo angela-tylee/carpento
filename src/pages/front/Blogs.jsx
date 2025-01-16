@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const Blogs = () => {
@@ -16,12 +15,10 @@ const Blogs = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/articles?page=${page}`
       );
-      console.log(res);
       setArticles(res.data.articles);
       setPagination(res.data.pagination);
       setIsLoadingBlogs(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingBlogs(false);
     }
   };
@@ -75,7 +72,6 @@ const Blogs = () => {
                       }}
                       style={{ maxHeight: '72px', overflowY: 'hidden' }}
                     >
-                      {/* {article.description} */}
                     </p>
                   </div>
                   <p className="text-end text-decoration-underline mt-1 mt-sm-2">

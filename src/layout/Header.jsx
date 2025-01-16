@@ -6,36 +6,43 @@ import { CartContext } from '../context/CartContext';
 import { StickyHeaderContext } from '../context/StickyHeaderContext';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
+import CartBadge from '../components/CartBadge';
 
 const Header = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
   const { cart, getCart, cartDropdownRef } = useContext(CartContext);
 
-  const [searchParams] = useSearchParams();
-  const category = searchParams.get('category');
-
   const { showMessage, messageType, message } = useContext(MessageContext);
+
+  const [theme, setTheme] = useState('light');
 
   const getProductsAll = async () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
 
-    console.log('products', res);
-
     setProducts(res.data.products);
   };
 
   const { headerRef, unstickyDistance } = useContext(StickyHeaderContext);
 
-  // const headerRef = useRef(null); // Create a ref for the header element
-  // const unstickyDistance = 900; // Distance in pixels
 
   useEffect(() => {
     setSearchTerm('');
-    // getCart();
     getProductsAll();
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      return;
+    }
+
+    const initialTheme =
+      document.documentElement.getAttribute('data-bs-theme') || 'light';
+    setTheme(initialTheme);
+    localStorage.setItem('theme', initialTheme);
 
     const handleScroll = () => {
       if (window.scrollY > unstickyDistance) {
@@ -59,13 +66,10 @@ const Header = () => {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
-      console.log(res);
-      // alert(res.data.message);
       setIsLoadingDeleteItem(null);
       showMessage('success', res.data.message);
       getCart();
     } catch (error) {
-      console.log(error);
       setIsLoadingDeleteItem(null);
       showMessage('danger', error.response.data.message);
     }
@@ -74,12 +78,10 @@ const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Filter suggestions based on search term
   const filteredSuggestions = products.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Highlight matching text
   const highlightMatch = (text, query) => {
     if (!query) return text;
 
@@ -93,6 +95,18 @@ const Header = () => {
     );
   };
 
+  const toggleTheme = () => {
+    if (theme === "light") {
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
+      setTheme("dark");
+      localStorage.setItem('theme', "dark");
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', 'light');
+      setTheme("light");
+      localStorage.setItem('theme', "light");
+    }
+  };
+
   return (
     <>
       <Message type={messageType} message={message} />
@@ -103,9 +117,8 @@ const Header = () => {
               {/* Logo */}
               <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
                 <img
-                  src="/images/logo.png"
+                  src={`/images/logo${theme === 'light' ? "" : "-white"}.png`}
                   alt="logo"
-                  // width="154px"
                   className="w-100"
                 />
               </Link>
@@ -114,26 +127,10 @@ const Header = () => {
               <div className="d-flex align-items-center">
                 <Link
                   to="/cart"
-                  className="me-2 d-block d-md-none"
+                  className="me-2 d-block d-md-none mt-1"
                   role="button"
                 >
-                  <div className="position-relative mt-1">
-                    <i className="bi bi-bag fs-4"></i>
-                    <span
-                      className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                      style={{
-                        padding: '3px 3px 3px 5px',
-                        fontSize: '10px',
-                        top: '10%',
-                      }}
-                    >
-                      {cart.carts?.reduce(
-                        (total, cartItem) => total + cartItem.qty,
-                        0
-                      )}
-                      <span className="visually-hidden">New alerts</span>
-                    </span>
-                  </div>
+                  <CartBadge size={'fs-4'} />
                 </Link>
                 <button
                   className="navbar-toggler ms-2"
@@ -200,10 +197,10 @@ const Header = () => {
             </div>
 
             {/* Search */}
-            <div className="position-relative col-12 col-md-4 col-lg-3 me-3">
+            <div className="position-relative col-12 col-md-4 col-lg-3 me-2 flex-grow-1">
               <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
                 <input
-                  className="form-control p-0 border-0 shadow-none flex-grow-1 me-2"
+                  className="form-control p-0 border-0 shadow-none flex-grow-1 me-2 bg-transparent"
                   type="text"
                   placeholder="Search..."
                   value={searchTerm}
@@ -215,7 +212,6 @@ const Header = () => {
                 />
                 <i className="icon-search bi bi-search px-1 flex-shrink-0"></i>
               </div>
-
               {showSuggestions && searchTerm && (
                 <div
                   className="position-absolute start-0 w-100 mt-1 bg-white border shadow-sm"
@@ -243,8 +239,6 @@ const Header = () => {
                           >
                             {/* QUESTION: explain this */}
                             <div>{highlightMatch(item.title, searchTerm)}</div>
-                            {/* <small className="text-muted">{item.category}</small> */}{' '}
-                            {/* text-muted will be deprecated */}
                             <small className="text-body-secondary">
                               {item.category}
                             </small>
@@ -253,37 +247,29 @@ const Header = () => {
                       ))}
                     </ul>
                   ) : (
-                    <div className="p-3 text-muted">No suggestions found</div>
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item list-group-item-action">
+                        <p className="p-2 text-body-secondary">
+                          No suggestions found
+                        </p>
+                      </li>
+                    </ul>
                   )}
                 </div>
               )}
             </div>
-
-            {/* Language Switcher */}
-            {/* <div className="language-dropdown nav-item dropdown me-2">
-            <a
-              className="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+            {/* Theme Switcher */}
+            <button
+              onClick={toggleTheme}
+              className="btn btn-none border-0 p-0 me-2 d-none d-md-block"
+              title="switch theme"
             >
-              <i className="bi bi-globe2"></i>{' '}
-              <span className="fw-normal">EN</span>
-            </a>
-            <ul className="dropdown-menu">
-              <li>
-                <a className="dropdown-item" href="#">
-                  EN
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  ZH
-                </a>
-              </li>
-            </ul>
-          </div> */}
+              {theme === 'light' ? (
+                <i className="bi bi-sun-fill fs-5"></i>
+              ) : (
+                <i className="bi bi-moon-fill fs-5"></i>
+              )}
+            </button>
 
             {/* Cart */}
             <div className="cart-dropdown nav-item dropdown position-static d-none d-md-block">
@@ -294,22 +280,7 @@ const Header = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <div className="position-relative">
-                  <i className="bi bi-bag fs-5"></i>
-                  <span
-                    className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                    style={{
-                      padding: '3px 3px 3px 5px',
-                      fontSize: '10px',
-                      top: '10%',
-                    }}
-                  >
-                    {cart.carts?.reduce(
-                      (total, cartItem) => total + cartItem.qty,
-                      0
-                    )}
-                  </span>
-                </div>
+                <CartBadge size={'fs-5'} />
               </Link>
               <div ref={cartDropdownRef} className="dropdown-menu shadow-sm">
                 <h5 className="px-2 my-2">
@@ -343,10 +314,6 @@ const Header = () => {
                     </div>
                   ) : (
                     cart.carts?.map((cartItem) => (
-                      // <Link
-                      //   className="dropdown-item px-2 py-1"
-                      //   to={`/product/${cartItem.product.id}`}
-                      // >
                       <div
                         className="dropdown-item px-2 py-1"
                         key={cartItem.product.id}
@@ -399,7 +366,6 @@ const Header = () => {
                           </div>
                         </div>
                       </div>
-                      // </Link>
                     ))
                   )}
                 </div>

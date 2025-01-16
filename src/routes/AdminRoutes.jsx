@@ -1,39 +1,26 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import {
-  Routes,
-  Route,
   NavLink,
   Outlet,
   useNavigate,
   useParams,
 } from 'react-router-dom';
 import axios from 'axios';
-// import AdminHeader from '../layout/AdminHeader';
-// import AdminSidebar from '../layout/AdminSidebar';
-// import Products from '../pages/admin/Products';
-// import Orders from '../pages/admin/Orders';
-// import Blogs from '../pages/admin/Blogs';
-// import Coupons from '../pages/admin/Coupons';
+import Message from '../components/Message';
+import { MessageContext } from '../context/MessageContext';
 
 const AdminRoutes = () => {
   const navigate = useNavigate();
-  const params = useParams();
-  // const adminHeaderRef = useRef(null);
-  // const [adminHeaderHeight, setAdminHeaderHeight] = useState(0);
-
-  // useEffect(() => {
-  //   if (adminHeaderRef.current) {
-  //     setAdminHeaderHeight(adminHeaderRef.current.offsetHeight);
-  //   }
-  //   console.log(adminHeaderHeight);
-  // },[])
+  // const params = useParams();
+  const [theme, setTheme] = useState('light');
+  const { messageType, message, showMessage } = useContext(MessageContext);
 
   function logout() {
     document.cookie = 'carpento=;';
     navigate('/login');
   }
 
-  const token = document.cookie // 取出 token
+  const token = document.cookie 
     .split('; ')
     .find((row) => row.startsWith('carpento='))
     ?.split('=')[1];
@@ -41,48 +28,54 @@ const AdminRoutes = () => {
   // QUESTION: how to do this with fetchAPI? 2024-12-10
   axios.defaults.headers.common['Authorization'] = token;
 
+  // QUESTION: Review the logic
   useEffect(() => {
     if (!token) {
       navigate('/login');
-      alert('驗證失敗，請重新登入'); // TODO: Bootstrap toast & 不要顯示 admin/products 頁面
+      // TODO: Bootstrap toast & 不要顯示 admin/products 頁面
+      showMessage('danger', '驗證失敗，請重新登入')
       return;
     }
     (async () => {
       try {
         await axios.post('/v2/api/user/check');
-        // FIXME: 有時 post failed 403 會被踢出來 最終挑戰：路由保護 https://courses.hexschool.com/courses/react-video-course/lectures/45741598 08:00 2024-12-15
       } catch (error) {
         if (!error.response.data.success) {
           navigate('/login');
-          // alert("驗證失敗，請重新登入")
+          showMessage('danger', '驗證失敗，請重新登入')
         }
       }
     })();
   }, [navigate, token]);
 
+  useEffect(() => {
+
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-bs-theme', savedTheme);
+      return;
+    }
+
+    // const initialTheme =
+    //   document.documentElement.getAttribute('data-bs-theme') || 'light';
+    //   setTheme(initialTheme);
+  },[])
+
   return (
-    // <div>
-    //   <AdminHeader />
-    //   <div className="d-flex">
-    //     <div style={{ minWidth: '240px' }}>
-    //       <AdminSidebar />
-    //     </div>
-    //     <div className="w-100 py-4 px-5">
-    //       <Routes>
-    //         <Route path="/products" element={<Products />}></Route>
-    //         <Route path="/orders" element={<Orders />}></Route>
-    //         <Route path="/blogs" element={<Blogs />}></Route>
-    //         <Route path="/coupons" element={<Coupons />}></Route>
-    //       </Routes>
-    //     </div>
-    //   </div>
-    // </div>
+    <>
+    <Message messageType={messageType} message={message} />
     <div className="dashboard">
       <header className="py-3 px-6 bg-secondary">
         <nav className="navbar navbar-expand-lg p-0 fw-normal d-flex justify-content-between">
           <div className="p-0">
             <NavLink to="/" className="navbar-brand" title="Back to homepage">
-              <img src="../images/logo.png" alt="logo" width="154" />
+              <img
+                  src={`/images/logo${theme === 'light' ? "" : "-white"}.png`}
+                  alt="logo"
+                  width="154px"
+                />
             </NavLink>
             <p>| Dashboard</p>
           </div>
@@ -96,7 +89,6 @@ const AdminRoutes = () => {
         <div
           className="vh-100 overflow-auto position-sticky top-0"
           style={{ minWidth: '240px'}}
-          // style={{ minWidth: '240px', height: `calc(100vh - ${headerHeight})` }}
         >
           <nav className="navbar navbar-expand bg-secondary d-block h-100 w-100">
             <div className="container-fluid flex-column align-items-start h-100 ps-6">
@@ -138,17 +130,11 @@ const AdminRoutes = () => {
           </nav>
         </div>
         <div className="w-100 py-4 px-5">
-          {/* {token && <Outlet context={{ adminHeaderRef, adminHeaderHeight }} />} */}
           {token && <Outlet />}
-          {/* <Routes>
-          <Route path="/products" element={<Products />}></Route>
-          <Route path="/orders" element={<Orders />}></Route>
-          <Route path="/blogs" element={<Blogs />}></Route>
-          <Route path="/coupons" element={<Coupons />}></Route>
-        </Routes> */}
         </div>
       </div>
     </div>
+    </>
   );
 };
 

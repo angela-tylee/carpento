@@ -23,11 +23,7 @@ const AdminProducts = () => {
   const deleteModal = useRef(null);
 
 
-  // const successMessage = useRef(null);
-
   useEffect(() => {
-    // successMessage.current = new Toast('#liveToast');
-
     productModal.current = new Modal('#productModal', {
       backdrop: 'static',
       keyboard: true,
@@ -46,12 +42,10 @@ const AdminProducts = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products?page=${page}`
       );
-      console.log(res.data);
       setProducts(res.data.products);
       setPagination(res.data.pagination);
       setIsLoadingProducts(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingProducts(false);
     }
   }
@@ -61,8 +55,6 @@ const AdminProducts = () => {
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
 
-    console.log('allProducts', res);
-
     setAllProducts(res.data.products);
   };
 
@@ -71,26 +63,13 @@ const AdminProducts = () => {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
       );
-      console.log(res);
-      console.log('delete', id);
-      // alert(res.data.message);
       showMessage('success', `成功：${res.data.message}`);
       closeDeleteModal();
       getProducts(pagination.current_page);
     } catch (error) {
-      console.log(error);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }
   }
-
-  // const [messageType, setMessageType] = useState('success');
-  // const [message, setMessage] = useState('');
-
-  // const showToast = (type, text) => {
-  //   setMessageType(type);
-  //   setMessage(text);
-  //   successMessage.current.show();
-  // };
 
   function openProductModal(type, product) {
     setTempProduct(product);
@@ -100,12 +79,6 @@ const AdminProducts = () => {
 
   function closeProductModal() {
     productModal.current.hide();
-    console.log('hide');
-  }
-
-  function openDeleteModal(product) {
-    setTempProduct(product);
-    deleteModal.current.show();
   }
 
   function closeDeleteModal() {
@@ -117,20 +90,6 @@ const AdminProducts = () => {
   const filteredProducts = allProducts.filter((product) => {
     return product.title.toLowerCase().includes(searchTerm.toLowerCase());
   });
-
-  const handleFilter = (e) => {
-    // FIXME: 清空 searchTerm 時，頁碼要恢復正常
-    setPagination({ ...pagination, total_pages: 1, current_page: 1 });
-    e.preventDefault();
-  };
-
-  // if (isLoadingProducts) {
-  //   return (
-  //     <main style={{ height: `calc(100% - 151px` }}>
-  //       <FullPageLoader />
-  //     </main>
-  //   )
-  // }
 
   return (
     <>
@@ -167,8 +126,7 @@ const AdminProducts = () => {
                 <i className="bi bi-plus-lg"></i> 新增產品
               </button>
             </div>
-            <form
-              onSubmit={handleFilter}
+            <div
               className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3"
             >
               <input
@@ -176,13 +134,12 @@ const AdminProducts = () => {
                 type="text"
                 placeholder="Search..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onBlur={handleFilter}
+                onChange={(e) => {setSearchTerm(e.target.value)}}
               />
               <button className="btn btn-none border-0">
                 <i className="icon-search bi bi-search px-1"></i>
               </button>
-            </form>
+            </div>
           </header>
           <hr />
 
@@ -266,13 +223,6 @@ const AdminProducts = () => {
                       >
                         編輯
                       </button>
-                      {/* <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm ms-1"
-                    onClick={() => openDeleteModal(product)}
-                  >
-                    刪除
-                  </button> */}
                     </td>
                   </tr>
                 );
@@ -281,19 +231,19 @@ const AdminProducts = () => {
           </table>
           <footer className="d-flex justify-content-between align-items-end">
             <p className="ps-1">
-              目前有{' '}
+              目前有
               <span>
                 {filteredProducts
                   ? filteredProducts.length
                   : allProducts.length}
-              </span>{' '}
+              </span>
               項產品
             </p>
-            <Pagination
+            {searchTerm === '' && <Pagination
               pagination={pagination}
               paginationTotal={pagination.total_pages}
               changePage={getProducts}
-            />
+            />}
           </footer>
         </main>
       )}

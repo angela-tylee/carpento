@@ -310,20 +310,6 @@ $light:         $white; // !custom $gray-100 !default;
 $dark:          $gray-900 !default;
 // scss-docs-end theme-color-variables
 
-// TODO: Add dark mode
-// Dark mode variables
-// $primary-dark:     #A88041; // Adjusted from #8F6E33 for better visibility
-// $secondary-dark:   #2B2B27; // Darkened contrast for $secondary
-// $success-dark:     #4A8659; // Darkened $success for visibility
-// $info-dark:        #147AD6; // Adjusted $info for contrast
-// $danger-dark:      #93332A; // Darkened $danger for dark mode
-// $warning-dark:     #E5B800; // Adjusted $yellow for dark mode
-// $light-dark:       #2A2A2A; // A very dark gray for light backgrounds
-// $dark-dark:        #F5F5F5; // A light gray for dark mode
-
-// $body-color-dark:  #F5F5F5; // Light text color
-// $body-bg-dark:     #121212; // Typical dark mode background
-
 // scss-docs-start theme-colors-map
 $theme-colors: (
   "primary":    $primary,

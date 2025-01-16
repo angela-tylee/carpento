@@ -1,17 +1,11 @@
 import { Link } from 'react-router-dom';
 
-const ProductCard = ({ product, colNum }) => {
+const ProductCard = ({ product }) => {
   return (
-    // <div className={`col-${12 / colNum}`} key={product.id}>
       <div
         className="card product-card w-100 border-0 h-100 d-flex flex-column"
         style={{ width: '18rem' }}
       >
-        {/* <img
-            src={product.imageUrl}
-            className="card-img-top"
-            alt="..."
-          /> */}
         <div
           className="card-header px-0 border-0"
           style={{
@@ -19,7 +13,6 @@ const ProductCard = ({ product, colNum }) => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             width: '100%',
-            // height: '300px',
           }}
         >
           <span
@@ -51,7 +44,6 @@ const ProductCard = ({ product, colNum }) => {
           </Link>
         </div>
       </div>
-    // </div>
   );
 };
 

@@ -19,13 +19,12 @@ function CouponModal({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log(type, tempCoupon);
     if (type === 'create') {
       setTempData({
         title: '',
         is_enabled: 0,
         percent: 80,
-        due_date: Date.now() + 7 * 24 * 60 * 60 * 1000, // default valid for one week
+        due_date: Date.now() + 7 * 24 * 60 * 60 * 1000,
         code: '',
       });
     } else if (type === 'edit') {
@@ -33,7 +32,7 @@ function CouponModal({
     }
   }, [type, tempCoupon]);
 
-  // Convert timestamp to datetime-local format
+  // QUESTION: Convert timestamp to datetime-local format
   const formatDateForInput = (timestamp) => {
     const date = new Date(timestamp);
     return date.toISOString().slice(0, 16); // Format: "YYYY-MM-DDThh:mm"
@@ -41,11 +40,10 @@ function CouponModal({
 
   async function handleChange(e) {
     const { name, value, checked } = e.target;
-    // console.log(e.target);
     if (name === 'is_enabled') {
       setTempData({
         ...tempData,
-        [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
+        [name]: Number(checked), 
       });
     } else if (name === 'percent') {
       setTempData({
@@ -60,7 +58,7 @@ function CouponModal({
     } else {
       setTempData({
         ...tempData,
-        [name]: value, // Others remain.
+        [name]: value, 
       });
     }
   }
@@ -77,17 +75,12 @@ function CouponModal({
       const res = await axios[method](api, {
         data: tempData,
       });
-      console.log(res);
-      // console.log(tempData);
       setIsLoading(false);
       closeCouponModal();
-      // alert(res.data.message);
       showMessage('success', `成功：${res.data.message}`);
       getCoupons(currentPage);
     } catch (error) {
-      console.log(error.response.message);
       setIsLoading(false);
-      // alert(error.response.data.message);
       showMessage('danger', `失敗：${error.response.data.message}`);
 
     }
@@ -99,7 +92,7 @@ function CouponModal({
       id="couponModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      // aria-hidden='true'
+      aria-hidden='true'
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content px-2 py-1">
@@ -112,7 +105,7 @@ function CouponModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeCouponModal}
-              // bs-data-dismiss='modal'
+              bs-data-dismiss='modal'
             />
           </div>
           <div className="modal-body">
@@ -203,7 +196,6 @@ function CouponModal({
                     <button
                       type="button"
                       className="btn border-0 text-danger btn-md p-0"
-                      // onClick={openDeleteModal}
                       data-bs-target="#deleteModal"
                       data-bs-toggle="modal"
                     >

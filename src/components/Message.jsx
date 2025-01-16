@@ -1,6 +1,4 @@
 const Message = ({ type, message }) => {
-  // FIXME: mobile 沒有顯示通知
-  console.log("Message", type, message);
   return (
     <div className="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
       <div

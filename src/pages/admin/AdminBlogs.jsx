@@ -40,12 +40,10 @@ const AdminProducts = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/articles?page=${page}`
       );
-      console.log(res.data);
       setArticles(res.data.articles);
       setPagination(res.data.pagination);
       setIsLoadingArticles(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingArticles(false);
     }
   }
@@ -56,22 +54,25 @@ const AdminProducts = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
       );
-      console.log(res.data);
       setTempArticle(res.data.article);
       setLoadingModal(false);
     } catch (error) {
-      console.log(error);
+      setLoadingModal(false);
     }
   }
 
   async function deleteArticle(id) {
-    const res = await axios.delete(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
-    );
-    console.log(res);
-    alert(res.data.message);
-    closeDeleteModal();
-    getArticles(pagination.current_page);
+    try {
+      const res = await axios.delete(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
+      );
+      alert(res.data.message);
+      showMessage('success', `成功：${res.data.message}`);
+      closeDeleteModal();
+      getArticles(pagination.current_page);
+    } catch (error) {
+      showMessage('danger', `失敗：${error.response.data.message}`);
+    }
   }
 
   function openArticleModal(type, id) {
@@ -82,25 +83,11 @@ const AdminProducts = () => {
 
   function closeArticleModal() {
     articleModal.current.hide();
-    console.log('hide');
-  }
-
-  function openDeleteModal(article) {
-    setTempArticle(article);
-    deleteModal.current.show();
   }
 
   function closeDeleteModal() {
     deleteModal.current.hide();
   }
-
-  // if (isLoadingArticles) {
-  //   return (
-  //     <main style={{ height: `calc(100% - 151px` }}>
-  //       <FullPageLoader />
-  //     </main>
-  //   );
-  // }
 
   return (
     <>
@@ -115,7 +102,6 @@ const AdminProducts = () => {
       />
       <DeleteModal
         closeDeleteModal={closeDeleteModal}
-        // tempProduct={tempProduct}
         text={tempArticle.title}
         id={tempArticle.id}
         handleDelete={deleteArticle}
@@ -199,13 +185,6 @@ const AdminProducts = () => {
                       >
                         編輯
                       </button>
-                      {/* <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm ms-1"
-                    onClick={() => openDeleteModal(article)}
-                  >
-                    刪除
-                  </button> */}
                     </td>
                   </tr>
                 );

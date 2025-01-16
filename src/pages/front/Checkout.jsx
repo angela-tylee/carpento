@@ -7,25 +7,15 @@ import { CartContext } from '../../context/CartContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const Checkout = () => {
-  // const [cart, setCart] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   let navigate = useNavigate();
 
   const { cart, getCart, isLoadingCart } = useContext(CartContext);
 
-  // const getCart = async () => {
-  //   const res = await axios.get(
-  //     `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
-  //   );
-  //   console.log(res.data.data);
-  //   setCart(res.data.data);
-  // };
-
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -54,7 +44,6 @@ const Checkout = () => {
         message: '',
       },
     };
-    console.log(order);
 
     setIsLoading(true);
 
@@ -63,22 +52,18 @@ const Checkout = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/order`,
         order
       );
-      console.log(res);
 
       if (res.data.orderId) {
-        const paymentRes = await axios.post(
+        await axios.post(
           `/v2/api/${process.env.REACT_APP_API_PATH}/pay/${res.data.orderId}`
         );
-        console.log(paymentRes);
       }
 
       setIsLoading(false);
-
       getCart();
 
       navigate(`/checkout-success/${res.data.orderId}`);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
@@ -392,9 +377,10 @@ const Checkout = () => {
                       value: true,
                       message: 'Card expiry date is required',
                     },
+                    // QUESTION: Review the logic
                     validate: (value) => {
                       const [month, year] = value.split('/').map(Number);
-                      const currentYear = new Date().getFullYear() % 100; // Get last two digits of the current year
+                      const currentYear = new Date().getFullYear() % 100;
                 
                       if (isNaN(month) || isNaN(year)) {
                         return 'Invalid date format';
@@ -405,7 +391,7 @@ const Checkout = () => {
                       if (year < currentYear || year > 99) {
                         return `Your card is expired`;
                       }
-                      return true; // Validation passed
+                      return true;
                     },
                   })}
                 />
@@ -518,13 +504,12 @@ const Checkout = () => {
                     <h6>Discount</h6>
                     {cart.carts && cart.carts[0]?.coupon && (
                       <span className="badge rounded-pill px-1 bg-primary-subtle text-dark fw-normal ms-1">
-                        {/* FIXME: NaN */}
                         {cart.carts[0].coupon.code || ''}
                       </span>
                     )}
                   </div>
                   <p className="col-3 text-end">
-                    ${(cart.final_total - cart.total?.toLocaleString())}
+                    ${(cart.final_total - cart.total)?.toLocaleString()}
                   </p>
                 </div>
 

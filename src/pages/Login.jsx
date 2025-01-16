@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,50 +8,43 @@ function Login() {
     username: '',
     password: '',
   });
-  const [loginState, setLoginState] = useState({})
+  const [loginState, setLoginState] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
-    // console.log(name, value);
     setData({ ...data, [name]: value });
   }
 
-  // QUESTION: Cookie, useEffect 2024-12-10
+  // QUESTION: Cookie, token, useEffect 2024-12-10
 
   async function submit() {
     setIsLoading(true);
     try {
       const res = await axios.post('/v2/admin/signin', data);
-      const { token, expired } = res.data; // 取得 token
-      console.log(res.data);
+      const { token, expired } = res.data; 
       document.cookie = `carpento=${token}; expires=${new Date(expired)}`; // 儲存 token 到 cookie
-    
+
       setIsLoading(false);
-  
+
       if (res.data.success) {
-        navigate('/admin/products'); // 登入成功：畫面轉到 admin/products
+        navigate('/admin/products'); 
       }
     } catch (error) {
+      
+      let loginMessage = '登入失敗'; 
+
+      if (error.response.data.error.code === 'auth/wrong-password') {
+        loginMessage = '帳號或密碼錯誤';
+      } else if (error.response.data.error.code === 'auth/invalid-email') {
+        loginMessage = '請輸入正確的 email';
+      }
+
+      setLoginState(loginMessage);
+
       setIsLoading(false);
-      setLoginState(error.response.data); // 登入失敗
     }
   }
-
-  // useEffect(() => {
-  //   const token = document.cookie
-  //     .split('; ')
-  //     .find((row) => row.startsWith('carpento='))
-  //     ?.split('=')[1];
-  //   console.log(token);
-  //   axios.defaults.headers.common['Authorization'] = token;
-  //   (async () => {
-  //     const productRes = await axios.get(
-  //       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/products/all`
-  //     );
-  //     console.log(productRes);
-  //   })();
-  // }, []);
 
   return (
     <div className="vh-100">
@@ -62,16 +55,18 @@ function Login() {
             background: 'center/cover no-repeat url(/images/banner-9.jpeg)',
           }}
         >
-          {/* <img src="/images/banner-9.jpeg" width="100%" alt="" /> */}
         </div>
         <div className="col-md-5">
           <div className="px-5 d-flex h-100 flex-column justify-content-center">
             <h2 className="mb-4 text-center">Dashboard | Sign in</h2>
-            <div className={`alert alert-danger ${loginState.message ? 'd-block' : 'd-none'}`} role="alert">
-              {/* TODO: Custom Error Message: 請輸入帳號密碼 / 帳號或密碼錯誤 */}
-              {loginState.message}
+            <div
+              className={`alert alert-danger ${
+                loginState ? 'd-block' : 'd-none'
+              }`}
+              role="alert"
+            >
+              {loginState}
             </div>
-            {/* FIXME: onSubmit 沒有作用 */}
             <form onSubmit={submit}>
               <label
                 htmlFor="email"
@@ -102,7 +97,6 @@ function Login() {
                 />
               </label>
               <button
-                type="button"
                 className="btn btn-primary w-100 text-uppercase text-light mt-2"
                 onClick={submit}
                 disabled={isLoading}

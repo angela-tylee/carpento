@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import BlogEditor from './BlogEditor';
-// import Message from './Message';
-// import useMessage from '../hooks/useMessage';
 
 function ProductModal({
   closeProductModal,
@@ -12,7 +10,6 @@ function ProductModal({
   tempProduct,
   currentPage,
   showMessage,
-  // isLoadingModal,
 }) {
   const [tempData, setTempData] = useState({
     title: '',
@@ -58,25 +55,20 @@ function ProductModal({
       setTempData(tempProduct);
     }
 
-    console.log(type, tempProduct);
   }, [type, tempProduct]);
 
   async function handleChange(e, editorData) {
     const { name, value, checked, files } = e.target;
-    // console.log(e.target);
     if (['price', 'origin_price'].includes(name)) {
       setTempData({
         ...tempData,
-        [name]: Number(value), // Ensure prices are number not string types.
+        [name]: Number(value),
       });
     } else if (name === 'is_enabled') {
       setTempData({
         ...tempData,
-        // [name]: +e.target.is_enabled
-        [name]: Number(checked), // Ensure checked is number not boolean to post the right data type.
+        [name]: Number(checked),
       });
-      // } else if (name === 'imageUpload' && files[0]) {
-      //   await uploadImage(files[0]);
     } else if (name === 'imagesUpload') {
       await uploadImages(e);
     } else if (['info', 'size', 'maintenance'].includes(name)) {
@@ -90,43 +82,15 @@ function ProductModal({
     } else {
       setTempData((tempData) => ({
           ...tempData,
-          [name]: value, // Others remain.
+          [name]: value,
         }
       ));
     }
   }
 
-  // async function uploadImage(file) {
-  //   console.log(file);
-  //   if (!file) return;
-
-  //   // QUESTION: How does `FormData()` work? 2024-12-15
-  //   const formData = new FormData();
-  //   formData.append('file-to-upload', file);
-
-  //   try {
-  //     const res = await axios.post(
-  //       `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
-  //       formData
-  //     );
-
-  //     setTempData({
-  //       ...tempData,
-  //       imageUrl: res.data.imageUrl,
-  //     });
-
-  //     console.log(tempData);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   const uploadImages = async (e) => {
     e.preventDefault();
-    console.log(e);
     setIsLoadingImg(true);
-
-    console.log('length', tempData.imagesUrl.length);
 
     if (tempData.imagesUrl.length >= 5) {
       alert('最多上傳 5 張照片');
@@ -134,7 +98,8 @@ function ProductModal({
     }
 
     const { files } = e.target;
-
+    
+    // QUESTION: How does `FormData()` work? 2024-12-15
     if (files?.[0]) {
       const formData = new FormData();
       formData.append('file-to-upload', files[0]);
@@ -150,16 +115,12 @@ function ProductModal({
           imagesUrl: [...prev.imagesUrl, res.data.imageUrl],
         }));
 
-        console.log(tempData);
         setIsLoadingImg(false);
       } catch (error) {
-        console.log(error);
         setIsLoadingImg(false);
       }
     } else {
-      // Get URL from form data instead of state
-      // const formData = new FormData(e.target);
-      // const imageUrl = formData.get('imageUrl').trim();
+
 
       if (uploadImageUrl) {
         setTempData((prev) => ({
@@ -167,7 +128,7 @@ function ProductModal({
           imagesUrl: [...prev.imagesUrl, uploadImageUrl.trim()],
         }));
         setIsLoadingImg(false);
-        setUploadImageUrl(''); // Clear form
+        setUploadImageUrl('');
       }
     }
   };
@@ -181,7 +142,6 @@ function ProductModal({
     }));
   };
 
-  // const { message, messageType, showMessage } = useMessage();
 
   async function submit() {
     setIsLoading(true);
@@ -195,15 +155,11 @@ function ProductModal({
       const res = await axios[method](api, {
         data: tempData,
       });
-      console.log(res);
       setIsLoading(false);
-      // alert(res.data.message);
-      // FIXME: 不穩定，有時有用有時沒用
       showMessage('success', `成功：${res.data.message}`);
       closeProductModal();
       getProducts(currentPage);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }
@@ -215,7 +171,7 @@ function ProductModal({
       id="productModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      // aria-hidden='true'
+      aria-hidden='true'
     >
       <div className="modal-dialog modal-dialog-centered modal-xl">
         <div className="modal-content px-2 py-1">
@@ -228,7 +184,7 @@ function ProductModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeProductModal}
-              // bs-data-dismiss='modal'
+              bs-data-dismiss='modal'
             />
           </div>
           <div className="modal-body">
@@ -333,18 +289,6 @@ function ProductModal({
                     </label>
                   </div>
                   <div className="form-group mb-2 col-md-6">
-                    {/* <label className="w-100" htmlFor="unit">
-                      單位
-                      <input
-                        type="unit"
-                        id="unit"
-                        name="unit"
-                        placeholder="請輸入單位"
-                        className="form-control"
-                        onChange={handleChange}
-                        value={tempData.unit}
-                      />
-                    </label> */}
                     <label className="w-100" htmlFor="tag">
                       標籤
                       <select
@@ -352,11 +296,9 @@ function ProductModal({
                         name="tag"
                         className="form-control"
                         onChange={handleChange}
-                        value={tempData.tag}
+                        value={tempData.tag || ""}
                       >
-                        {/* TODO: 要可以改回空值 */}
-                        {/* FIXME: 如果前一個值不是空值，就會取到前一個值 */}
-                        <option value="" disabled>
+                        <option value="">
                           請選擇標籤
                         </option>
                         <option value="new">new</option>
@@ -423,7 +365,6 @@ function ProductModal({
                       <button
                         type="button"
                         className="btn border-0 text-danger btn-md p-0"
-                        // onClick={openDeleteModal}
                         data-bs-target="#deleteModal"
                         data-bs-toggle="modal"
                       >
@@ -437,7 +378,6 @@ function ProductModal({
                 <div className="col-12 mb-2">
                   <form
                     onSubmit={uploadImages}
-                    // className="d-flex gap-2"
                   >
                     <label htmlFor="imageUrl">輸入圖片網址</label>
                     <div className="d-flex">
@@ -459,8 +399,8 @@ function ProductModal({
                 <div className="col-12 mb-2">
                   <label
                     htmlFor="imageFile"
-                    className="bg-secondary border border-2 border-secondary text-body-tertiary d-flex align-items-center justify-content-center opacity-hover"
-                    style={{ height: '150px', cursor: 'pointer' }}
+                    className="bg-secondary border border-2 border-secondary text-body-tertiary d-flex align-items-center justify-content-center pointer opacity-hover"
+                    style={{ height: '150px'}}
                   >
                     <input
                       type="file"
@@ -474,7 +414,7 @@ function ProductModal({
                   </label>
                 </div>
                 <div className="row g-2 mb-2">
-                  {tempData.imagesUrl.length > 0 || isLoadingImg ? (
+                  {(tempData.imagesUrl.length > 0 || isLoadingImg) && (
                     <>
                       <div className="col-sm-12">
                         {isLoadingImg && tempData.imagesUrl.length === 0 ? (
@@ -498,7 +438,6 @@ function ProductModal({
                               src={tempData.imagesUrl[0]}
                               alt={`${tempData.title}-1`}
                               className="img-fluid w-100"
-                              style={{ objectFit: 'cover' }}
                             />
                             <button
                               onClick={() => deleteImage(0)}
@@ -517,7 +456,6 @@ function ProductModal({
                               src={url}
                               alt={`${tempData.title}-${index + 2}`}
                               className="img-fluid"
-                              style={{ height: '120px', objectFit: 'cover' }}
                             />
                             <button
                               onClick={() => deleteImage(index + 1)}
@@ -529,12 +467,11 @@ function ProductModal({
                           </div>
                         </div>
                       ))}
-                      {/* FIXME: not showing loading effect */}
                       {isLoadingImg && tempData.imagesUrl.length >= 1 && (
                         <div className="col-sm-6">
                           <div
                             className="d-flex justify-content-center align-items-center"
-                            style={{ height: '120px' }}
+                            style={{ height: '150px' }}
                           >
                             <div
                               className={`spinner-border text-secondary`}
@@ -549,57 +486,10 @@ function ProductModal({
                         </div>
                       )}
                     </>
-                  ) : (
-                    ''
                   )}
                 </div>
-                <style>
-                  {/* TODO: Separate CSS */}
-                  {`
-              .opacity-hover:hover { opacity: 0.8; transition: opacity 0.3s; }
-            `}
-                </style>
-
-                <div className="form-group mb-2">
-                  <label className="w-100" htmlFor="image">
-                    輸入圖片網址
-                    <input
-                      type="text"
-                      name="imageUrl"
-                      id="image"
-                      placeholder="請輸入圖片連結"
-                      className="form-control"
-                      onChange={handleChange}
-                      value={tempData.imageUrl}
-                    />
-                  </label>
-                </div>
-                {/* <div className="form-group mb-2">
-                  <label className="w-100" htmlFor="customFile">
-                    或 上傳圖片
-                    <input
-                      type="file"
-                      name="imageUpload"
-                      id="customFile"
-                      className="form-control"
-                      // onChange={(e) => uploadImage(e.target.files[0])}
-                      onChange={handleChange}
-                    />
-                  </label>
-                </div>
-                {tempData.imageUrl ? (
-                  <img
-                    src={tempData.imageUrl}
-                    alt="preview"
-                    className="img-fluid"
-                  />
-                ) : (
-                  'Add image to preview'
-                )} */}
               </div>
             </div>
-            <pre className="py-3"> {JSON.stringify(tempProduct)}</pre>
-            <pre className="py-3"> {JSON.stringify(tempData)}</pre>
           </div>
           <div className="modal-footer flex-nowrap">
             <button

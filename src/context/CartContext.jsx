@@ -20,7 +20,6 @@ export const CartProvider = ({ children }) => {
       setCart(res.data.data);
       setIsLoadingCart(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingCart(false);
     }
   };
@@ -38,20 +37,19 @@ export const CartProvider = ({ children }) => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
         data
       );
+      // QUESTION: Why await?
       await getCart(); // Refresh cart data after adding
       showCartDropdown();
       showMessage("success", "已加入購物車");
       setIsLoadingItem(null);
     } catch (error) {
-      console.log(error);
       setIsLoadingItem(null);
+      showMessage("danger", "請再試一次");
     }
   };
 
 
   const showCartDropdown = () => {
-    console.log("CartContext showCartDropdown()");
-
     if (cartDropdownRef.current) {
       cartDropdownRef.current.classList.add('cart-dropdown-visible');
       
@@ -61,17 +59,6 @@ export const CartProvider = ({ children }) => {
         }
       }, 2000);
     }    
-
-    // if (cartDropdownRef.current) {
-    //   cartDropdownRef.current.style.display = 'block'; // Show dropdown
-    //   cartDropdownRef.current.style.left = 'calc(100% - 500px)'; // Show dropdown
-    //   cartDropdownRef.current.style.top = '100%'; // Show dropdown
-    //   setTimeout(() => {
-    //     if (cartDropdownRef.current) {
-    //       cartDropdownRef.current.style.display = ''; // Hide dropdown after 2 seconds
-    //     }
-    //   }, 2000);
-    // }
   };
 
 
@@ -79,7 +66,6 @@ export const CartProvider = ({ children }) => {
     getCart();
   }, []);
 
-  // return { cart, isLoading, addToCart, getCart };
   return (
     <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart, isLoadingCart, showCartDropdown, cartDropdownRef }}>
       {children}

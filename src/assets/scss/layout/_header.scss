@@ -48,10 +48,9 @@ header {
   .nav-item.dropdown:hover {
     .dropdown-menu {
       display: block;
-      margin-top: 0; /* Optional: Adjust this for better alignment */
+      margin-top: 0; 
     }
     &.cart-dropdown .dropdown-menu {
-      // transform: none; // Remove the default Popper.js positioning?
       top: 100%;
       left: 0;
       right: 0;
@@ -76,3 +75,11 @@ header {
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   }
 }
+
+// @media (prefers-color-scheme: dark) {
+  :root[data-bs-theme='dark']{
+    header {
+      @include nav-hover(var(--bs-dark));
+    }
+  }
+// }

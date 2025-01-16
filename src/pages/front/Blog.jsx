@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const Blog = () => {
@@ -15,11 +14,9 @@ const Blog = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/article/${id}`
       );
-      console.log(res);
       setArticle(res.data.article);
       setIsLoadingBlog(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingBlog(false);
     }
   };
@@ -89,13 +86,11 @@ const Blog = () => {
                   className="mt-4 article-description"
                   dangerouslySetInnerHTML={{ __html: article.description }}
                 >
-                  {/* {article.description} */}
                 </p>
                 <p
                   className="mt-4 article-content"
                   dangerouslySetInnerHTML={{ __html: article.content }}
                 >
-                  {/* {article.content} */}
                 </p>
               </div>
             </div>

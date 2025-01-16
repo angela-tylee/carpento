@@ -1,14 +1,17 @@
 @import "bootstrap/scss/functions";
+@import "bootstrap/scss/mixins";
 @import './utils/variables';
+@import "./utils/theme.scss";
 @import "bootstrap";
 
 @import "./base/base.scss";
 @import "./base/fonts.scss";
 
 @import "./utils/mixin.scss";
+@import "./utils/utilities.scss";
 
-@import './components/_swiper.scss';
-@import './components/_product-card.scss';
+@import './components/swiper.scss';
+@import './components/product-card.scss';
 
 @import './layout/header.scss';
 @import './layout/footer.scss';
@@ -22,3 +25,4 @@
 @import './pages/checkout-success';
 @import './pages/faq.scss';
 @import './pages/dashboard.scss';
+

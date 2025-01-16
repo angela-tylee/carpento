@@ -35,54 +35,37 @@ const AdminOrder = () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/orders?page=${page}`
       );
-      console.log(res);
       setOrders(res.data.orders);
       setPagination(res.data.pagination);
       setIsLoadingOrders(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingOrders(false);
     }
   };
   async function deleteOrder(id) {
-    const res = await axios.delete(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
-    );
-    console.log('delete', id);
-    console.log(res);
-    alert(res.data.message);
-    closeDeleteModal();
-    getOrders(pagination.current_page);
+    try {
+      const res = await axios.delete(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
+      );
+      showMessage('success', `成功：${res.data.message}`);
+      closeDeleteModal();
+      getOrders(pagination.current_page);
+    } catch (error) {
+      showMessage('danger', `失敗：${error.response.data.message}`);
+    }
   }
 
   function openOrderModal(order) {
-    // setType(type);
-    // setTempProduct(product);
-    console.log(order);
     orderModal.current.show();
   }
 
   function closeOrderModal() {
     orderModal.current.hide();
-    console.log('hide');
-  }
-
-  function openDeleteModal(product) {
-    // setTempProduct(product);
-    deleteModal.current.show();
   }
 
   function closeDeleteModal() {
     deleteModal.current.hide();
   }
-
-  // if (isLoadingOrders) {
-  //   return (
-  //     <main style={{ height: `calc(100% - 151px` }}>
-  //       <FullPageLoader />
-  //     </main>
-  //   );
-  // }
 
   return (
     <>
@@ -113,9 +96,6 @@ const AdminOrder = () => {
             <table className="table my-3">
               <thead>
                 <tr>
-                  {/* <th scope="col" width="2%">
-                No
-              </th> */}
                   <th scope="col" width="25%">
                     訂單編號
                   </th>
@@ -139,13 +119,12 @@ const AdminOrder = () => {
               <tbody>
                 {orders.map((order, index) => (
                   <tr key={order.id}>
-                    {/* <td>{index + 1}</td> */}
                     <td>
                       <div className="d-flex justify-content-between">
                         <span>{order.id}</span>
                         <button
                           type="button"
-                          className="btn text-bg-secondary btn-sm rounded-pill fs-7 ms-1"
+                          className="btn text-bg-secondary text-dark btn-sm rounded-pill fs-7 ms-1"
                           onClick={() => setSelectedOrder(order)}
                         >
                           查看
@@ -187,22 +166,6 @@ const AdminOrder = () => {
                         {order.is_paid ? '已付款' : '未付款'}
                       </span>
                     </td>
-                    {/* <td className="text-center">
-                  <button type="button" className="btn btn-primary btn-sm">
-                    編輯
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm"
-                  >
-                    刪除
-                  </button>
-                </td> */}
-                    {/* <td>
-                  <button type="button" className="btn btn-primary btn-sm" onClick={() => setSelectedOrder(order)}>
-                    查看訂單
-                  </button>
-                </td> */}
                   </tr>
                 ))}
               </tbody>

@@ -20,12 +20,10 @@ import REVIEWS from '../../constants/reviews';
 const Home = () => {
   const [products, setProducts] = useState([]);
 
-  const getProductsAll = async (page = 1) => {
+  const getProductsAll = async () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
-
-    console.log('products', res);
     setProducts(res.data.products);
   };
 
@@ -46,9 +44,9 @@ const Home = () => {
         >
           <div className="container section-body section-hero-body">
             <div className="text-light mt-7">
-              <h1 className="display-4">Welcome to Carpento</h1>
-              <p className="fs-2">Special Sales is coming soon!</p>
-              <Link to="/products" className="btn btn-outline-light mt-4">
+              <h1 className="display-4 text-white">Welcome to Carpento</h1>
+              <p className="fs-2 text-white">Special Sales is coming soon!</p>
+              <Link to="/products" className="btn btn-outline-light text-white border-white mt-4">
                 Shop Now
               </Link>
             </div>
@@ -143,7 +141,7 @@ const Home = () => {
                   .filter((product) => product.tag === 'hot')
                   .slice(0, 3)
                   .map((product) => (
-                    <div className="col-4 mt-4" key={product.id}>
+                    <div className="col-4 mt-2 mt-sm-4 mt-lg-0" key={product.id}>
                       <ProductCard
                         product={product}
                         colNum={3}
@@ -265,15 +263,14 @@ const Home = () => {
           data-aos-easing="linear"
           data-aos-duration="1500"
         >
-          {/* TODO: Make scrolling animation?. */}
           <h2 className="fs-4 text-center mb-3 mb-lg-6">
             Recommended by 1000+ Customers
           </h2>
           <Swiper
             className="m-0 w-100"
             modules={[Navigation, Pagination, EffectFade, Scrollbar, Autoplay]}
-            spaceBetween={24} // space between slides
-            slidesPerView={1} // number of products per slide
+            spaceBetween={24} 
+            slidesPerView={1} 
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true, hide: true }}
             loop
@@ -282,22 +279,17 @@ const Home = () => {
               disableOnInteraction: false,
             }}
             breakpoints={{
-              568: {
+              768: {
                 slidesPerView: 2,
               },
-              768: {
+              992: {
                 slidesPerView: 3,
               },
-              992: {
+              1200: {
                 slidesPerView: 4,
               },
             }}
           >
-            {/* {recentlySeenProducts.slice(0, 10).map((item) => (
-                  <SwiperSlide key={item.id} className="mb-5">
-                    <ProductCard2 product={item} hasFooter={false} />
-                  </SwiperSlide>
-                ))} */}
             {REVIEWS.map((review, index) => (
               <SwiperSlide key={index} className="mb-5">
                 <div className="card w-100 border-0">
@@ -312,87 +304,6 @@ const Home = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          {/* TODO: Separate CSS */}
-          <style>
-            {`
-          .swiper-wrapper {
-            width: 320px;
-          }
-          
-          @media (min-width: 768px) {
-            .swiper-wrapper {
-              width: 768px;
-            }
-          }
-          @media (min-width: 992px) {
-            .swiper-wrapper {
-              width: 992px;
-            }
-          }
-        `}
-          </style>
-          {/* <div className="row">
-            <div className="col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0">
-              <div className="card w-100 border-0" style={{ width: '18rem' }}>
-                <div className="card-body p-0">
-                  <h5 className="card-title mb-2 fs-6 fw-normal">★★★★★</h5>
-                  <h6 className="card-subtitle mb-3 fs-6 fw-semibold">
-                    Durable and Stylish!
-                  </h6>
-                  <p className="card-text">
-                    I purchased a coffee table, and it's been a centerpiece in
-                    my living room for years. It’s as sturdy as it is beautiful!
-                    Highly recommend.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0">
-              <div className="card w-100 border-0" style={{ width: '18rem' }}>
-                <div className="card-body p-0">
-                  <h5 className="card-title mb-2 fs-6 fw-normal">★★★★★</h5>
-                  <h6 className="card-subtitle mb-3 fs-6 fw-semibold">
-                    Amazing Craftsmanship!
-                  </h6>
-                  <p className="card-text">
-                    The quality of the dining set is top-notch. You can tell
-                    it’s made with care and precision. It’s the best investment
-                    I’ve made for my home.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0">
-              <div className="card w-100 border-0" style={{ width: '18rem' }}>
-                <div className="card-body p-0">
-                  <h5 className="card-title mb-2 fs-6 fw-normal">★★★★★</h5>
-                  <h6 className="card-subtitle mb-3 fs-6 fw-semibold">
-                    Perfect for Any Home!
-                  </h6>
-                  <p className="card-text">
-                    I got a lift table, and it’s been a game-changer. The design
-                    is sleek, and the functionality is unmatched. Great value
-                    for the price!
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0">
-              <div className="card w-100 border-0" style={{ width: '18rem' }}>
-                <div className="card-body p-0">
-                  <h5 className="card-title mb-2 fs-6 fw-normal">★★★★★</h5>
-                  <h6 className="card-subtitle mb-3 fs-6 fw-semibold">
-                    Exceptional Service!
-                  </h6>
-                  <p className="card-text">
-                    The delivery was quick, and the furniture was packaged
-                    securely. I appreciated the attention to detail from start
-                    to finish.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </section>
 
         <section
@@ -400,14 +311,14 @@ const Home = () => {
           style={{ backgroundImage: 'url(/images/contact-xl.jpeg)' }}
         >
           <div className="container section-body section-hero-body">
-            <div className="text-light mt-7">
+            <div className="text-white mt-7">
               <h1 className="fs-1">Contact Us</h1>
-              <p className="fs-4 fw-light">
+              <p className="fs-4 fw-light text-white">
                 Need interior design advice or customize furniture arrangement?
                 Contact us.
               </p>
               <a
-                className="btn btn-outline-light mt-4"
+                className="btn btn-outline-light text-white border-white mt-4"
                 href="mailto:support@carpento.com"
               >
                 Contact
@@ -416,7 +327,6 @@ const Home = () => {
           </div>
         </section>
       </main>
-      {/* <script type="module" src="../main.js"></script> */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useRef } from 'react';
-import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
+import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
 import PRODUCTS_CATEGORIES from '../../constants/categories';
@@ -8,13 +8,10 @@ import useSort from '../../hooks/useSort';
 import { CartContext } from '../../context/CartContext';
 import { StickyHeaderContext } from '../../context/StickyHeaderContext';
 import Message from '../../components/Message';
-// import { useMessage } from '../../context/MessageContext';
 import { MessageContext } from '../../context/MessageContext';
-// import PulseLoader from 'react-spinners/PulseLoader';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const Products = () => {
-  // const { category } = useParams();
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category') || '';
 
@@ -22,36 +19,19 @@ const Products = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [pagination, setPagination] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  // const [cartQuantity, setCartQuantity] = useState(1);
 
-  // const [sortCriteria, setSortCriteria] = useState(null);
-  // const [sortedProducts, setSortedProducts] = useState(products);
-  const { sortedItems, sortCriteria, sortLabel, handleSort } =
-    useSort(allProducts);
-  // const [isLoading, setIsLoading] = useState(false);
+  const { sortedItems, sortCriteria, sortLabel, handleSort } = useSort(allProducts);
   const { addToCart, isLoading } = useContext(CartContext);
 
   const { unstickyDistance, headerHeight } = useContext(StickyHeaderContext);
 
-  // const { messageType, message } = useMessage();
   const { messageType, message } = useContext(MessageContext);
 
   const sidebarRef = useRef(null);
 
   useEffect(() => {
-    // setProducts([]);
-    // setSortCriteria(null);
-    // console.log(sortCriteria);
     getProducts();
     getProductsAll(category);
-
-    // const fetchProducts = async () => {
-    //   const newProducts = await getProducts();
-    //   setProducts(newProducts);
-    // };
-
-    // fetchProducts();
 
     const handleScroll = () => {
       if (window.scrollY > unstickyDistance) {
@@ -73,8 +53,8 @@ const Products = () => {
     setProducts([]);
     setIsLoadingProducts(true);
 
-    const page1 = page * 2 - 1; // First page in the pair (1, 3, 5, etc.)
-    const page2 = page * 2; // Second page in the pair (2, 4, 6, etc.)
+    const page1 = page * 2 - 1; 
+    const page2 = page * 2; 
 
     try {
       const [res1, res2] = await Promise.all([
@@ -90,23 +70,23 @@ const Products = () => {
         ),
       ]);
 
-      console.log(res1, res2);
       const products =
         res1.data.products.length < 10
           ? res1.data.products
           : [...res1.data.products, ...res2.data.products];
 
       setProducts(products);
-      console.log('products', products);
 
       setPagination({
         ...res1.data.pagination,
+        current_page: Math.ceil(res1.data.pagination.current_page / 2),
+        has_next: Math.ceil(res1.data.pagination.current_page / 2) < Math.ceil(res1.data.pagination.total_pages / 2),
+        has_pre: Math.ceil(res1.data.pagination.current_page / 2) > 1,
         total_pages: Math.ceil(res1.data.pagination.total_pages / 2),
       });
 
       setIsLoadingProducts(false);
     } catch (error) {
-      console.log(error);
       setIsLoadingProducts(false);
     }
   };
@@ -115,7 +95,6 @@ const Products = () => {
     const res = await axios.get(
       `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
     );
-    console.log('allProducts', res);
     const categorizedProducts = res.data.products.filter((product) => {
       if (category === '') {
         return product;
@@ -139,12 +118,11 @@ const Products = () => {
             </li>
           </ol>
         </nav>
-        <div className="row">
+        <div className="row h-100">
           <div className="col-lg-3 d-none d-lg-block">
             <div
               ref={sidebarRef}
               className="list-group pe-3 position-sticky sticky-top z-0"
-              // style={{ top: '128px' }}
             >
               <Link
                 to={`/products`}
@@ -168,10 +146,7 @@ const Products = () => {
             </div>
           </div>
           {isLoadingProducts ? (
-            <div className="col-12 col-lg-9">
-              {/* <div className="d-flex justify-content-center align-items-center h-100">
-                <PulseLoader color="#333333" size={24} />
-              </div> */}
+            <div className="col-12 col-lg-9 h-100 pb-4">
               <FullPageLoader/>
             </div>
           ) : (
@@ -202,7 +177,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="name-asc"
                             onClick={(e) => {
                               handleSort('name-asc', e);
                             }}
@@ -214,7 +188,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="name-desc"
                             onClick={(e) => {
                               handleSort('name-desc', e);
                             }}
@@ -226,7 +199,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="price-high-low"
                             onClick={(e) => {
                               handleSort('price-high-low', e);
                             }}
@@ -238,7 +210,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="price-low-high"
                             onClick={(e) => {
                               handleSort('price-low-high', e);
                             }}
@@ -250,7 +221,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="price-high-low"
                             onClick={(e) => {
                               handleSort('newest', e);
                             }}
@@ -262,7 +232,6 @@ const Products = () => {
                           <button
                             className="dropdown-item"
                             type="button"
-                            // data-criteria="price-low-high"
                             onClick={(e) => {
                               handleSort('oldest', e);
                             }}
@@ -286,14 +255,12 @@ const Products = () => {
                     </div>
                   ))}
                 </div>
-                {/* FIXME: `current_page` is not suitable for this page. */}
                 {!sortCriteria && (
                   <Pagination
                     pagination={pagination}
                     changePage={getProducts}
                   />
                 )}
-                {/* <Pagination pagination={pagination} changePage={getProducts} /> */}
               </div>
             </div>
           )}
