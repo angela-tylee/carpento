@@ -52,7 +52,7 @@ function Login() {
         <div
           className="col-md-7"
           style={{
-            background: 'center/cover no-repeat url(/images/banner-9.jpeg)',
+            background: 'center/cover no-repeat url(./images/banner-9.jpeg)',
           }}
         >
         </div>

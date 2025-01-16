@@ -72,7 +72,7 @@ const AdminRoutes = () => {
           <div className="p-0">
             <NavLink to="/" className="navbar-brand" title="Back to homepage">
               <img
-                  src={`/images/logo${theme === 'light' ? "" : "-white"}.png`}
+                  src={`./images/logo${theme === 'light' ? "" : "-white"}.png`}
                   alt="logo"
                   width="154px"
                 />

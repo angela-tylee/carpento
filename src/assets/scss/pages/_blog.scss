@@ -11,7 +11,7 @@
   h2 {
     margin-top: 32px; // mt-5
     padding-left: 8px; // ps-1
-    border-left: 5px solid $dark; 
+    border-left: 5px solid var(--bs-dark); 
   }
 
   h3 {
@@ -20,6 +20,10 @@
 
   p, ul, li {
     margin-top: 16px; // mt-2
+  }
+
+  ul {
+    padding-left: 16px;
   }
 
   @media (min-width: 568px) {

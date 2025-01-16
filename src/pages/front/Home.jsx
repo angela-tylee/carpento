@@ -37,7 +37,7 @@ const Home = () => {
       <main>
         <section
           className="section-hero py-3 py-sm-5 py-lg-7"
-          style={{ backgroundImage: 'url(/images/banner-6.jpeg)' }}
+          style={{ backgroundImage: 'url(./images/banner-6.jpeg)' }}
           data-aos="fade-down"
           data-aos-easing="linear"
           data-aos-duration="1500"
@@ -118,7 +118,7 @@ const Home = () => {
         <section
           className="section-recycle"
           style={{
-            backgroundImage: 'url(/images/banner-11.jpeg)',
+            backgroundImage: 'url(./images/banner-11.jpeg)',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -162,7 +162,7 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/if-award-2020.png"
+                  src="./images/awards/if-award-2020.png"
                   className="img-grayscale"
                   alt="if-award-2020"
                   width="120px"
@@ -170,7 +170,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/innovation-by-design-2021.png"
+                  src="./images/awards/innovation-by-design-2021.png"
                   className="img-grayscale"
                   alt="innovation-by-design-2021"
                   width="60px"
@@ -178,7 +178,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/reddot-2019.png"
+                  src="./images/awards/reddot-2019.png"
                   className="img-grayscale"
                   alt="reddot-2019"
                   width="170px"
@@ -186,7 +186,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/idea-award.png"
+                  src="./images/awards/idea-award.png"
                   className="img-grayscale"
                   alt="idea-award"
                   width="110px"
@@ -194,7 +194,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/good-design-2023.png"
+                  src="./images/awards/good-design-2023.png"
                   className="img-grayscale"
                   alt="good-design-2023"
                   width="140px"
@@ -202,7 +202,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/greenguard-logo.png"
+                  src="./images/awards/greenguard-logo.png"
                   className="img-grayscale"
                   alt="greenguard-logo"
                   width="90px"
@@ -210,7 +210,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/forest-Stewardship-Council.png"
+                  src="./images/awards/forest-Stewardship-Council.png"
                   className="img-grayscale"
                   alt="forest-Stewardship-Council"
                   width="130px"
@@ -218,7 +218,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="/images/awards/adesign-award.png"
+                  src="./images/awards/adesign-award.png"
                   className="img-grayscale"
                   alt="adesign-award"
                   width="70px"
@@ -308,7 +308,7 @@ const Home = () => {
 
         <section
           className="section-contact py-3 py-sm-5 py-lg-7"
-          style={{ backgroundImage: 'url(/images/contact-xl.jpeg)' }}
+          style={{ backgroundImage: 'url(./images/contact-xl.jpeg)' }}
         >
           <div className="container section-body section-hero-body">
             <div className="text-white mt-7">

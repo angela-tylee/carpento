@@ -323,9 +323,9 @@ const Checkout = () => {
               <label htmlFor="cardInfo" className="form-label w-100 d-flex justify-content-between align-items-end">
                 <p>Card Info<span className="text-danger">*</span></p>
                 <div className="d-flex justify-content-end">
-                  <img src="/images/credit-cards/visa.png" alt="visa-card" className="credit-card" width="40px"/>
-                  <img src="/images/credit-cards/master.png" alt="master-card" className="credit-card" width="40px"/>
-                  <img src="/images/credit-cards/american-express.png" alt="american-express-card" className="credit-card" width="40px"/>
+                  <img src="./images/credit-cards/visa.png" alt="visa-card" className="credit-card" width="40px"/>
+                  <img src="./images/credit-cards/master.png" alt="master-card" className="credit-card" width="40px"/>
+                  <img src="./images/credit-cards/american-express.png" alt="american-express-card" className="credit-card" width="40px"/>
                 </div>
               </label>
               <ReactInputMask

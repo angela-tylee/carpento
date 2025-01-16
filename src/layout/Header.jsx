@@ -117,7 +117,7 @@ const Header = () => {
               {/* Logo */}
               <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
                 <img
-                  src={`/images/logo${theme === 'light' ? "" : "-white"}.png`}
+                  src={`./images/logo${theme === 'light' ? "" : "-white"}.png`}
                   alt="logo"
                   className="w-100"
                 />
