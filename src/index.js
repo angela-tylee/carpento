@@ -16,7 +16,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL; // 預設 axios base URL
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <MessageProvider>
         <StickyHeaderProvider>
           <CartProvider>

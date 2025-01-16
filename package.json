@@ -2,6 +2,7 @@
   "name": "react-final",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://angela-tylee.github.io/carpento",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^44.1.0",
     "@ckeditor/ckeditor5-react": "^9.4.0",
@@ -27,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -46,5 +49,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
