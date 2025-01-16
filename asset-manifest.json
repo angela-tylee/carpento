@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/carpento/static/css/main.21978f42.css",
+    "main.js": "/carpento/static/js/main.9a87a320.js",
+    "static/js/453.22db2aab.chunk.js": "/carpento/static/js/453.22db2aab.chunk.js",
+    "index.html": "/carpento/index.html",
+    "main.21978f42.css.map": "/carpento/static/css/main.21978f42.css.map",
+    "main.9a87a320.js.map": "/carpento/static/js/main.9a87a320.js.map",
+    "453.22db2aab.chunk.js.map": "/carpento/static/js/453.22db2aab.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.21978f42.css",
+    "static/js/main.9a87a320.js"
+  ]
+}
