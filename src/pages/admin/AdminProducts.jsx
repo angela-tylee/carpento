@@ -107,7 +107,7 @@ const AdminProducts = () => {
         id={tempProduct.id}
         handleDelete={deleteProduct}
       />
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       {isLoadingProducts ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

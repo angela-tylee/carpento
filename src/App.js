@@ -22,6 +22,8 @@ import ScrollToTop from './utils/ScrollToTop';
 import NotFound from './pages/NotFound';
 
 function App() {
+  console.log("base", process.env.PUBLIC_URL);
+  
   return (
     <div className='App'>
       <ScrollToTop />

@@ -5,7 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import {
-  BrowserRouter,
+  // BrowserRouter,
+  HashRouter
 } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { StickyHeaderProvider } from './context/StickyHeaderContext';
@@ -13,10 +14,11 @@ import { MessageProvider } from './context/MessageContext';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL; // 預設 axios base URL，之後就不用重複寫
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       <MessageProvider>
         <StickyHeaderProvider>
           <CartProvider>
@@ -24,7 +26,7 @@ root.render(
           </CartProvider>
         </StickyHeaderProvider>
       </MessageProvider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
 

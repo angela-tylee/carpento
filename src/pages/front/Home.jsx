@@ -46,7 +46,10 @@ const Home = () => {
             <div className="text-light mt-7">
               <h1 className="display-4 text-white">Welcome to Carpento</h1>
               <p className="fs-2 text-white">Special Sales is coming soon!</p>
-              <Link to="/products" className="btn btn-outline-light text-white border-white mt-4">
+              <Link
+                to="/products"
+                className="btn btn-outline-light text-white border-white mt-4"
+              >
                 Shop Now
               </Link>
             </div>
@@ -85,8 +88,8 @@ const Home = () => {
 
         <section className="section-feature py-3 py-sm-5 py-lg-7 bg-secondary">
           <div className="container col-md-8">
-            <div className="row">
-              <div className="col-sm-4 mt-4 mt-sm-0">
+            <div className="row g-4 g-sm-0">
+              <div className="col-sm-4">
                 <div className="text-center">
                   <i className={`bi bi-globe-asia-australia display-1`}></i>
                   <h5 className="fs-4 mt-3">Eco-Friendly</h5>
@@ -95,14 +98,14 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-              <div className="col-sm-4 mt-4 mt-sm-0">
+              <div className="col-sm-4">
                 <div className="text-center">
                   <i className={`bi bi-truck-flatbed display-1`}></i>
                   <h5 className="fs-4 mt-3">24-hour delivery</h5>
                   <p className="mt-1">Fast and reliable shipping.</p>
                 </div>
               </div>
-              <div className="col-sm-4 mt-4 mt-sm-0">
+              <div className="col-sm-4">
                 <div className="text-center">
                   <i className={`bi bi-house-door display-1`}></i>
                   <h5 className="fs-4 mt-3">Home Service</h5>
@@ -141,7 +144,10 @@ const Home = () => {
                   .filter((product) => product.tag === 'hot')
                   .slice(0, 3)
                   .map((product) => (
-                    <div className="col-4 mt-2 mt-sm-4 mt-lg-0" key={product.id}>
+                    <div
+                      className="col-4 mt-2 mt-sm-4 mt-lg-0"
+                      key={product.id}
+                    >
                       <ProductCard
                         product={product}
                         colNum={3}
@@ -258,19 +264,15 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-recommendation py-3 py-sm-5 py-lg-7 container"
-          data-aos="fade-up"
-          data-aos-easing="linear"
-          data-aos-duration="1500"
-        >
+        <section className="section-recommendation py-3 py-sm-5 py-lg-7 container">
           <h2 className="fs-4 text-center mb-3 mb-lg-6">
             Recommended by 1000+ Customers
           </h2>
           <Swiper
             className="m-0 w-100"
             modules={[Navigation, Pagination, EffectFade, Scrollbar, Autoplay]}
-            spaceBetween={24} 
-            slidesPerView={1} 
+            spaceBetween={24}
+            slidesPerView={1}
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true, hide: true }}
             loop

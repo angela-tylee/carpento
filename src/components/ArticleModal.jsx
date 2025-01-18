@@ -3,7 +3,7 @@ import axios from 'axios';
 import BlogEditor from './BlogEditor';
 import FullPageLoader from './FullPageLoader';
 
-function ArticleModal({
+function ArticleModal ({
   closeArticleModal,
   getArticles,
   type,

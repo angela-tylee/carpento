@@ -44,6 +44,9 @@ const Header = () => {
     setTheme(initialTheme);
     localStorage.setItem('theme', initialTheme);
 
+  }, []);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > unstickyDistance) {
         headerRef.current?.classList.add('unsticky');
@@ -58,7 +61,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [unstickyDistance, headerRef])
 
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
