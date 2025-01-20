@@ -1,3 +1,14 @@
+:root {
+  font-size: 80%; 
+}
+
+@media (min-width: 567px) {
+  :root {
+    font-size: 100%; 
+  }
+}
+
+
 body,
 button {
   font-family: 'Roboto Condensed', sans-serif;
