@@ -6,17 +6,16 @@
   
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [https://github.com/angela-tylee/carpento/](https://github.com/angela-tylee/carpento/)
+- Live Site URL: [https://angela-tylee.github.io/carpento/](https://angela-tylee.github.io/carpento/)
 
 ## My Process
 
 ### Built with
 
-- [React](https://reactjs.org/)
+- React
   - CRA
   - React Hook Form
-  - React i18n x
 - Bootstrap
   - Bootstrap Components: Accordion, Tabs, Toast
   - Bootstrap Icon
@@ -29,64 +28,43 @@
 ### What I learned
 
 - React
-  - How to scaffold a React project
-  - How to build React component and travel through pages via React Router
-  - How to handle form in React
-  - How to handle event in React
-  - How to manage state and lifecycle via React Hook
-  - How to send props through parent / child components
-  - How to write JSX to import image, add inline style, comment, write loop and conditional JS inside.
+  - Scaffold and deploy React project with CRA
+  - Build React component and travel through pages via React Router
+  - Handle form in React
+  - Handle event in React
+  - Manage state and lifecycle via React Hook
+  - Send props through parent / child components
+  - JSX syntax to import image, add inline style, comment, write loop and conditional JS inside.
+  - Hooks: useState, useEffect, useContext, useRef...etc
   - Custom Hooks
-  - useContext, useReducer
-- CKEditor
-- React Hook Form
-- Swiper
-- Bootstrap Toast with React
-
+- [CKEditor](https://ckeditor.com/ckeditor-5/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Swiper](https://swiperjs.com/)
 
 ### Continued development
 
-- Blog
-  - Bootstrap Scrollspy
-- Front Page Customer Log in
-	- 顯示 / 隱藏密碼
-	- 忘記密碼
-- Account Center
-	- Tabs
-	- 我的帳號
-		- 使用者名稱
-		- 更改 email
-		- 更改密碼
-	- 我的收藏
-	- 我的訂單
-	- 出貨進度
-
+- Customer Log in & Account Center
 
 ### Useful resources
 
+- [React Get Started](https://react.dev/learn) - This is my first major React project. The official document help me a lot through the basic concepts and syntax.
 
-- [React Get Started]() - This is my first major React project. The official document help me a lot through the basic concepts and syntax.
-- [Bootstrap]() - Always a handy resource to grab bootstrap components.
-- [CKEditor]() - Clear instruction to build my personal customized editing tool so that I can enhance the blog dashboard with rich text editing.
+- [Bootstrap](https://getbootstrap.com/) & [Bootstrap Icon](https://icons.getbootstrap.com/)- Always a handy resource to grab UI components and icon.
+
+- [CKEditor](https://ckeditor.com/docs/ckeditor5/latest/getting-started/index.html) - Clear instruction to build my personal customized editing tool so that I can enhance the blog dashboard with rich text editing.
 
 - mdn - Always a reliable source for understanding basic syntax, usage, and compatibility.
+
 - Claude.ai. - Most reliable AI tool and partner when discussing technical problems.
 
 - 《React 思維進化》
 
 - 六角學院 - powerful step-by-step tutorial about how React works through demonstrating the development process of an E-commerce website.
-- The Modern React Bootcamp - course released in 2019 by Colt Steele, can know a bit about how class component works.
-
-- [Example resource 1](https://www.example.com) - This helped me for XYZ reason. I really liked this pattern and will use it going forward.
-
-- [Example resource 2](https://www.example.com) - This is an amazing article which helped me finally understand XYZ. I'd recommend it to anyone still learning this concept.  
+  
+- [The Modern React Bootcamp](https://www.udemy.com/course/modern-react-bootcamp/learn/lecture/14638534#overview) - course released in 2019 by Colt Steele, can know a bit about how class component works.
 
 ### Useful Tools
 
-- VS Code TODO Highlights
+- Visual Studio Code TODO Highlights
 - Codeium & Github Copilot
 - Google DevTool (AI)
-
-## Author
-
-## Acknowledgments
