@@ -22,16 +22,17 @@
 ### Built with
 
 - React
+  - React Router
   - CRA
-  - React Hook Form
+  - [React Hook Form](https://react-hook-form.com/) 
 - Bootstrap
   - Bootstrap Components: Accordion, Tabs, Toast
   - Bootstrap Icon
-- CKEditor
-- Swiper
-- AOS (Animation on Scroll)
-- React Spinner
-- React Input Mask
+- [CKEditor](https://ckeditor.com/ckeditor-5/)
+- [Swiper](https://swiperjs.com/)
+- [AOS (Animation on Scroll)](https://michalsnik.github.io/aos/)
+- [React Spinner](https://www.davidhu.io/react-spinners/)
+- [React Input Mask](https://www.npmjs.com/package/react-input-mask)
 
 ### What I learned
 
@@ -45,13 +46,13 @@
   - JSX syntax to import image, add inline style, comment, write loop and conditional JS inside.
   - Hooks: useState, useEffect, useContext, useRef...etc
   - Custom Hooks
-- [CKEditor](https://ckeditor.com/ckeditor-5/)
-- [React Hook Form](https://react-hook-form.com/)
-- [Swiper](https://swiperjs.com/)
+- CKEditor
+- React Hook Form
+- Swiper
 
 ### Continued development
 
-- Customer Log in & Account Center
+- Customer Log-in & Account Center
 
 ### Useful resources
 
@@ -69,7 +70,7 @@
 
 - 六角學院 - powerful step-by-step tutorial about how React works through demonstrating the development process of an E-commerce website.
   
-- [The Modern React Bootcamp](https://www.udemy.com/course/modern-react-bootcamp/learn/lecture/14638534#overview) - course released in 2019 by Colt Steele, can know a bit about how class component works.
+- [The Modern React Bootcamp](https://www.udemy.com/course/modern-react-bootcamp/learn/lecture/14638534#overview): course released in 2019 by Colt Steele.
 
 ### Useful Tools
 
