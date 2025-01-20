@@ -16,6 +16,7 @@ const AdminProducts = () => {
   const [tempArticle, setTempArticle] = useState({});
   const [isLoadingModal, setLoadingModal] = useState(false);
   const [isLoadingArticles, setIsLoadingArticles] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const { message, messageType, showMessage } = useContext(MessageContext);
 
@@ -34,7 +35,7 @@ const AdminProducts = () => {
     getArticles();
   }, []);
 
-  async function getArticles(page = 1) {
+  const getArticles = async (page = 1) => {
     setIsLoadingArticles(true);
     try {
       const res = await axios.get(
@@ -46,9 +47,9 @@ const AdminProducts = () => {
     } catch (error) {
       setIsLoadingArticles(false);
     }
-  }
+  };
 
-  async function getArticle(id) {
+  const getArticle = async (id) => {
     setLoadingModal(true);
     try {
       const res = await axios.get(
@@ -59,21 +60,24 @@ const AdminProducts = () => {
     } catch (error) {
       setLoadingModal(false);
     }
-  }
+  };
 
-  async function deleteArticle(id) {
+  const deleteArticle = async (id) => {
+    setIsLoadingArticles(true);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
       );
-      alert(res.data.message);
+      setIsLoadingArticles(false);
       showMessage('success', `成功：${res.data.message}`);
       closeDeleteModal();
       getArticles(pagination.current_page);
     } catch (error) {
+      setIsLoadingArticles(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
+      closeDeleteModal();
     }
-  }
+  };
 
   function openArticleModal(type, id) {
     setType(type);
@@ -105,8 +109,9 @@ const AdminProducts = () => {
         text={tempArticle.title}
         id={tempArticle.id}
         handleDelete={deleteArticle}
+        isLoadingDelete={isLoadingDelete}
       />
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       {isLoadingArticles ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

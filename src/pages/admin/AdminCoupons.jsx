@@ -14,6 +14,7 @@ const AdminCoupons = () => {
   const [type, setType] = useState('create');
   const [tempCoupon, setTempCoupon] = useState({});
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const { message, messageType, showMessage } = useContext(MessageContext);
 
@@ -32,7 +33,7 @@ const AdminCoupons = () => {
     getCoupons();
   }, []);
 
-  async function getCoupons(page = pagination.current_page) {
+  const getCoupons = async (page = pagination.current_page) => {
     setIsLoadingCoupons(true);
     try {
       const res = await axios.get(
@@ -44,21 +45,24 @@ const AdminCoupons = () => {
     } catch (error) {
       setIsLoadingCoupons(false);
     }
-  }
+  };
 
-  async function deleteCoupon(id) {
+  const deleteCoupon = async (id) => {
+    setIsLoadingDelete(true);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
       );
+      setIsLoadingDelete(false);
       showMessage('success', `成功：${res.data.message}`);
       closeDeleteModal();
       getCoupons(pagination.current_page);
     } catch (error) {
+      setIsLoadingDelete(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
+      closeDeleteModal();
     }
-    
-  }
+  };
 
   function openCouponModal(type, product) {
     setType(type);
@@ -89,8 +93,9 @@ const AdminCoupons = () => {
         text={tempCoupon.code}
         id={tempCoupon.id}
         handleDelete={deleteCoupon}
+        isLoadingDelete={isLoadingDelete}
       />
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       {isLoadingCoupons ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

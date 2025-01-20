@@ -131,7 +131,6 @@ const Cart = () => {
 
               <div className="row">
                 <div className="col-12 col-md-7 col-xl-8 pe-md-4">
-                  {/* QUESTION: cart.carts is sometimes undefined, leading to `TypeError: .map() is not a function`. But adding `cart.carts &&` resolves it. Why? Why is the time lag of undefined value?*/}
                   {cart.carts &&
                     cart.carts.map((cartItem) => (
                       <div
@@ -292,7 +291,6 @@ const Cart = () => {
                     <div className="row py-1 border-top border-1 border-gray">
                       <h6 className="col-6">Total</h6>
                       <p className="col-6 text-end">
-                        {/* FIXME: 結帳有小數點 */}
                         ${cart.final_total?.toLocaleString()}
                       </p>
                     </div>

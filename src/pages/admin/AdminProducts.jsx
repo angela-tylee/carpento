@@ -16,12 +16,12 @@ const AdminProducts = () => {
   const [type, setType] = useState('create');
   const [tempProduct, setTempProduct] = useState({});
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
-  
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
   const { message, messageType, showMessage } = useContext(MessageContext);
 
   const productModal = useRef(null);
   const deleteModal = useRef(null);
-
 
   useEffect(() => {
     productModal.current = new Modal('#productModal', {
@@ -36,7 +36,7 @@ const AdminProducts = () => {
     getProductsAll();
   }, []);
 
-  async function getProducts(page = pagination.current_page) {
+  const getProducts = async (page = pagination.current_page) => {
     setIsLoadingProducts(true);
     try {
       const res = await axios.get(
@@ -48,7 +48,7 @@ const AdminProducts = () => {
     } catch (error) {
       setIsLoadingProducts(false);
     }
-  }
+  };
 
   const getProductsAll = async () => {
     const res = await axios.get(
@@ -58,18 +58,22 @@ const AdminProducts = () => {
     setAllProducts(res.data.products);
   };
 
-  async function deleteProduct(id) {
+  const deleteProduct = async (id) => {
+    setIsLoadingDelete(true);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
       );
+      setIsLoadingDelete(false);
       showMessage('success', `成功：${res.data.message}`);
       closeDeleteModal();
       getProducts(pagination.current_page);
     } catch (error) {
+      setIsLoadingDelete(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
+      closeDeleteModal();
     }
-  }
+  };
 
   function openProductModal(type, product) {
     setTempProduct(product);
@@ -106,6 +110,7 @@ const AdminProducts = () => {
         text={tempProduct.title}
         id={tempProduct.id}
         handleDelete={deleteProduct}
+        isLoadingDelete={isLoadingDelete}
       />
       {/* <Message type={messageType} message={message} /> */}
       {isLoadingProducts ? (
@@ -120,21 +125,20 @@ const AdminProducts = () => {
               <button
                 type="button"
                 className="btn btn-outline-primary btn-sm ms-2"
-                // QUESTION: Why an arrow function wrapper needed to pass that parameter? (It is the same logic in Vanilla JS, but not in Vue.)
                 onClick={() => openProductModal('create', {})}
               >
                 <i className="bi bi-plus-lg"></i> 新增產品
               </button>
             </div>
-            <div
-              className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3"
-            >
+            <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
               <input
                 className="form-control p-0 border-0 shadow-none"
                 type="text"
                 placeholder="Search..."
                 value={searchTerm}
-                onChange={(e) => {setSearchTerm(e.target.value)}}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                }}
               />
               <button className="btn btn-none border-0">
                 <i className="icon-search bi bi-search px-1"></i>
@@ -173,7 +177,6 @@ const AdminProducts = () => {
               </tr>
             </thead>
             <tbody>
-              {/* FIXME: "Fern & Succulent Artificial Plant" 產品不存在 */}
               {(searchTerm ? filteredProducts : products)?.map((product) => {
                 return (
                   <tr key={product.id}>
@@ -239,11 +242,13 @@ const AdminProducts = () => {
               </span>
               項產品
             </p>
-            {searchTerm === '' && <Pagination
-              pagination={pagination}
-              paginationTotal={pagination.total_pages}
-              changePage={getProducts}
-            />}
+            {searchTerm === '' && (
+              <Pagination
+                pagination={pagination}
+                paginationTotal={pagination.total_pages}
+                changePage={getProducts}
+              />
+            )}
           </footer>
         </main>
       )}

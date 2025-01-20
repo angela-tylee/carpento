@@ -41,15 +41,12 @@
       width: 1200px;
     }
   }
-
 }
 
-// @media (prefers-color-scheme: dark) {
-  :root[data-bs-theme="dark"]{
-    .swiper {
-      .swiper-pagination-bullet {
-        background: var(--bs-dark);
-      }
+:root[data-bs-theme="dark"]{
+  .swiper {
+    .swiper-pagination-bullet {
+      background: var(--bs-dark);
     }
   }
-// }
+}

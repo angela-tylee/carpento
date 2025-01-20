@@ -36,8 +36,8 @@ const Home = () => {
     <div className="home">
       <main>
         <section
-          className="section-hero py-3 py-sm-5 py-lg-7"
-          style={{ backgroundImage: 'url(./images/banner-6.jpeg)' }}
+          className="section-hero py-6 py-lg-7"
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/banner-6.jpeg)` }}
           data-aos="fade-down"
           data-aos-easing="linear"
           data-aos-duration="1500"
@@ -57,12 +57,12 @@ const Home = () => {
         </section>
 
         <section
-          className="section-sale container py-3 py-sm-5 py-lg-7"
+          className="section-sale container py-6 py-lg-7"
           data-aos="fade-up"
           data-aos-easing="linear"
           data-aos-duration="1500"
         >
-          <h2 className="fs-4 text-center mb-0 mb-md- mb-lg-6">
+          <h2 className="fs-4 text-center mb-0 mb-lg-6">
             Special Offer
           </h2>
           <div className="sale-cards d-flex">
@@ -72,21 +72,23 @@ const Home = () => {
                 .slice(0, 4)
                 .map((product) => (
                   <div
-                    className="col-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
+                    className="col-12 col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
                     key={product.id}
                   >
-                    <ProductCard
-                      product={product}
-                      colNum={4}
-                      key={product.id}
-                    />
+                    <div className="mt-4 mt-sm-0">
+                      <ProductCard
+                        product={product}
+                        colNum={4}
+                        key={product.id}
+                      />
+                    </div>
                   </div>
                 ))}
             </div>
           </div>
         </section>
 
-        <section className="section-feature py-3 py-sm-5 py-lg-7 bg-secondary">
+        <section className="section-feature py-6 py-lg-7 bg-secondary">
           <div className="container col-md-8">
             <div className="row g-4 g-sm-0">
               <div className="col-sm-4">
@@ -121,7 +123,7 @@ const Home = () => {
         <section
           className="section-recycle"
           style={{
-            backgroundImage: 'url(./images/banner-11.jpeg)',
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/banner-11.jpeg)`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -129,12 +131,12 @@ const Home = () => {
         ></section>
 
         <section
-          className="section-bestseller py-3 py-sm-5 py-lg-7"
+          className="section-bestseller py-6 py-lg-7"
           data-aos="fade-up"
           data-aos-easing="linear"
           data-aos-duration="1500"
         >
-          <div className="container col-lg-8">
+          <div className="container col-sm-6 col-lg-12 col-xl-8">
             <h2 className="fs-4 text-center mb-0 mb-md-3 mb-lg-6">
               Best Seller
             </h2>
@@ -145,14 +147,16 @@ const Home = () => {
                   .slice(0, 3)
                   .map((product) => (
                     <div
-                      className="col-4 mt-2 mt-sm-4 mt-lg-0"
+                      className="col-12 col-lg-4 mt-2 mt-sm-4 mt-lg-0"
                       key={product.id}
                     >
-                      <ProductCard
-                        product={product}
-                        colNum={3}
-                        key={product.id}
-                      />
+                      <div className="mt-4 mt-sm-0">
+                        <ProductCard
+                          product={product}
+                          colNum={3}
+                          key={product.id}
+                        />
+                      </div>
                     </div>
                   ))}
               </div>
@@ -160,7 +164,7 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="section-award py-3 py-sm-5 py-lg-7 bg-secondary">
+        <section className="section-award py-6 py-lg-7 bg-secondary">
           <div className="container col-10 col-sm-12 col-md-10 col-xl-12">
             <h2 className="fs-4 text-center mb-2 mb-md-3 mb-lg-6">
               Award-winning Design
@@ -168,7 +172,7 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/if-award-2020.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/if-award-2020.png`}
                   className="img-grayscale"
                   alt="if-award-2020"
                   width="120px"
@@ -176,7 +180,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/innovation-by-design-2021.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/innovation-by-design-2021.png`}
                   className="img-grayscale"
                   alt="innovation-by-design-2021"
                   width="60px"
@@ -184,7 +188,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/reddot-2019.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/reddot-2019.png`}
                   className="img-grayscale"
                   alt="reddot-2019"
                   width="170px"
@@ -192,7 +196,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/idea-award.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/idea-award.png`}
                   className="img-grayscale"
                   alt="idea-award"
                   width="110px"
@@ -200,7 +204,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/good-design-2023.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/good-design-2023.png`}
                   className="img-grayscale"
                   alt="good-design-2023"
                   width="140px"
@@ -208,7 +212,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/greenguard-logo.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/greenguard-logo.png`}
                   className="img-grayscale"
                   alt="greenguard-logo"
                   width="90px"
@@ -216,7 +220,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/forest-Stewardship-Council.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/forest-Stewardship-Council.png`}
                   className="img-grayscale"
                   alt="forest-Stewardship-Council"
                   width="130px"
@@ -224,7 +228,7 @@ const Home = () => {
               </div>
               <div className="col-6 col-sm-3 col-xl text-center mt-2 mt-sm-4">
                 <img
-                  src="./images/awards/adesign-award.png"
+                  src={`${process.env.PUBLIC_URL}/images/awards/adesign-award.png`}
                   className="img-grayscale"
                   alt="adesign-award"
                   width="70px"
@@ -235,7 +239,7 @@ const Home = () => {
         </section>
 
         <section
-          className="section-new py-3 py-sm-5 py-lg-7 container"
+          className="section-new py-6 py-lg-7 container"
           data-aos="fade-up"
           data-aos-easing="linear"
           data-aos-duration="1500"
@@ -250,21 +254,23 @@ const Home = () => {
                 .slice(0, 4)
                 .map((product) => (
                   <div
-                    className="col-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
+                    className="col-12 col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
                     key={product.id}
                   >
-                    <ProductCard
-                      product={product}
-                      colNum={4}
-                      key={product.id}
-                    />
+                    <div className="mt-4 mt-sm-0">
+                      <ProductCard
+                        product={product}
+                        colNum={4}
+                        key={product.id}
+                      />
+                    </div>
                   </div>
                 ))}
             </div>
           </div>
         </section>
 
-        <section className="section-recommendation py-3 py-sm-5 py-lg-7 container">
+        <section className="section-recommendation py-6 py-lg-7 container">
           <h2 className="fs-4 text-center mb-3 mb-lg-6">
             Recommended by 1000+ Customers
           </h2>
@@ -309,8 +315,8 @@ const Home = () => {
         </section>
 
         <section
-          className="section-contact py-3 py-sm-5 py-lg-7"
-          style={{ backgroundImage: 'url(./images/contact-xl.jpeg)' }}
+          className="section-contact py-6 py-lg-7"
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/contact-xl.jpeg)` }}
         >
           <div className="container section-body section-hero-body">
             <div className="text-white mt-7">

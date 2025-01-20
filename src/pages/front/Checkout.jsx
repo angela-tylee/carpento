@@ -19,15 +19,15 @@ const Checkout = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: 'example@abc.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      streetAddress: '123 Main St',
-      city: 'New York',
-      country: 'USA',
-      county: 'New York',
-      postCode: '10001',
-      phone: '123-456-7890',
+      email: '',
+      firstName: '',
+      lastName: '',
+      streetAddress: '',
+      city: '',
+      country: '',
+      county: '',
+      postCode: '',
+      phone: '',
     },
     mode: 'onTouched',
   });
@@ -323,9 +323,9 @@ const Checkout = () => {
               <label htmlFor="cardInfo" className="form-label w-100 d-flex justify-content-between align-items-end">
                 <p>Card Info<span className="text-danger">*</span></p>
                 <div className="d-flex justify-content-end">
-                  <img src="./images/credit-cards/visa.png" alt="visa-card" className="credit-card" width="40px"/>
-                  <img src="./images/credit-cards/master.png" alt="master-card" className="credit-card" width="40px"/>
-                  <img src="./images/credit-cards/american-express.png" alt="american-express-card" className="credit-card" width="40px"/>
+                  <img src={`${process.env.PUBLIC_URL}/images/credit-cards/visa.png`} alt="visa-card" className="credit-card" width="40px"/>
+                  <img src={`${process.env.PUBLIC_URL}/images/credit-cards/master.png`} alt="master-card" className="credit-card" width="40px"/>
+                  <img src={`${process.env.PUBLIC_URL}/images/credit-cards/american-express.png`} alt="american-express-card" className="credit-card" width="40px"/>
                 </div>
               </label>
               <ReactInputMask
@@ -377,7 +377,6 @@ const Checkout = () => {
                       value: true,
                       message: 'Card expiry date is required',
                     },
-                    // QUESTION: Review the logic
                     validate: (value) => {
                       const [month, year] = value.split('/').map(Number);
                       const currentYear = new Date().getFullYear() % 100;

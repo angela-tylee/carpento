@@ -13,8 +13,10 @@ const AdminOrder = () => {
   const [pagination, setPagination] = useState({});
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
   const { message, messageType, showMessage } = useContext(MessageContext);
-  
+
   const orderModal = useRef(null);
   const deleteModal = useRef(null);
 
@@ -42,18 +44,22 @@ const AdminOrder = () => {
       setIsLoadingOrders(false);
     }
   };
-  async function deleteOrder(id) {
+  const deleteOrder = async (id) => {
+    setIsLoadingDelete(true);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
       );
+      setIsLoadingDelete(false);
       showMessage('success', `成功：${res.data.message}`);
       closeDeleteModal();
       getOrders(pagination.current_page);
     } catch (error) {
+      setIsLoadingDelete(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
+      closeDeleteModal();
     }
-  }
+  };
 
   function openOrderModal(order) {
     orderModal.current.show();
@@ -82,8 +88,9 @@ const AdminOrder = () => {
         text={selectedOrder?.id}
         id={selectedOrder?.id}
         handleDelete={deleteOrder}
+        isLoadingDelete={isLoadingDelete}
       />
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       {isLoadingOrders ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />
@@ -178,7 +185,6 @@ const AdminOrder = () => {
             </footer>
           </div>
           <div className="col-3">
-            {/* QUESTION: 為什麼舊訂單無法 fetch imagesUrl[0]  */}
             <h2 className="fs-5 mt-1">訂單細節</h2>
             <hr className="mb-4" />
             {selectedOrder ? (

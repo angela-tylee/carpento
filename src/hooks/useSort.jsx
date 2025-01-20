@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-function useSort(items) {
+const useSort = (items) => {
   const [sortCriteria, setSortCriteria] = useState(null);
   const [sortLabel, setSortLabel] = useState('');
   const [sortedItems, setSortedItems] = useState(items);
 
   useEffect(() => {
     if (!items?.length) return;
-    
+
     if (!sortCriteria) {
       setSortedItems(items);
       return;
@@ -39,14 +39,13 @@ function useSort(items) {
     setSortCriteria(criteria);
     setSortLabel(e?.target.innerText);
   };
-  
 
   return {
     sortCriteria,
     sortLabel,
     sortedItems,
-    handleSort
+    handleSort,
   };
-}
+};
 
 export default useSort;

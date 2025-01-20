@@ -13,7 +13,7 @@ const Return = () => {
         <div className="row justify-content-center">
           <div className="col-12 col-md-10 col-xl-8">
             <div className="return-body">
-              <h1 className="return-title fs-2 pb-1 text-center">Return</h1>
+              <h1 className="return-title fs-2 mt-4 mt-lg-0 pb-1 text-center">Return</h1>
               <div className="return-text">
                 <p className="mt-4">
                   At Carpento, your satisfaction is our priority. We take pride in handcrafting high-quality furniture that enhances your home, but we understand that sometimes things don’t work out. If you’re not completely happy with your purchase, we’re here to help.
@@ -36,7 +36,7 @@ const Return = () => {
                     <strong>Receive a Refund</strong>: Once we receive and inspect the returned item, we’ll process your refund. Refunds will be issued to the original form of payment within 7-10 business days.
                   </li>
                 </ol>
-                <img src="./images/return-flowchart-light.svg" alt="return-flowchart" width="100%" />
+                <img src={`${process.env.PUBLIC_URL}/images/return-flowchart-light.svg`} alt="return-flowchart" width="100%" />
                 <h2 className="fs-4 mt-5">Non-Refundable Items</h2>
                 <ul className="mt-2 ps-4">
                   <li className="mt-1">

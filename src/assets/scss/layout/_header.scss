@@ -64,7 +64,7 @@ header {
   &.sticky {
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-index: 1030;
     opacity: 1;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   }
@@ -76,10 +76,8 @@ header {
   }
 }
 
-// @media (prefers-color-scheme: dark) {
-  :root[data-bs-theme='dark']{
-    header {
-      @include nav-hover(var(--bs-dark));
-    }
+:root[data-bs-theme='dark']{
+  header {
+    @include nav-hover(var(--bs-dark));
   }
-// }
+}

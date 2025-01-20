@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext, useRef } from 'react';
-import { NavLink, Link, useSearchParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import { CartContext } from '../context/CartContext';
@@ -57,7 +57,6 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -120,7 +119,7 @@ const Header = () => {
               {/* Logo */}
               <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
                 <img
-                  src={`./images/logo${theme === 'light' ? "" : "-white"}.png`}
+                  src={`${process.env.PUBLIC_URL}/images/logo${theme === 'light' ? "" : "-white"}.png`}
                   alt="logo"
                   className="w-100"
                 />
@@ -159,7 +158,6 @@ const Header = () => {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      {/* FIXME: no active style: active class is added, but no ::after element added like othersP */}
                       Products
                     </NavLink>
                     <ul className="product-dropdown-menu dropdown-menu">
@@ -240,7 +238,6 @@ const Header = () => {
                             to={`/product/${item.id}`}
                             className="d-flex flex-column"
                           >
-                            {/* QUESTION: explain this */}
                             <div>{highlightMatch(item.title, searchTerm)}</div>
                             <small className="text-body-secondary">
                               {item.category}

@@ -5,7 +5,7 @@ const CartBadge = ({ size }) => {
   const { cart } = useContext(CartContext);
 
   return (
-    <div className="position-relative">
+    <div className="card-badge position-relative">
       <i className={`bi bi-bag ${size}`}></i>
       <span
         className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"

@@ -2,10 +2,8 @@
   @include nav-hover;
 }
 
-// @media (prefers-color-scheme: dark) {
-  :root[data-bs-theme='dark']{
-    .dashboard {
-      @include nav-hover(var(--bs-dark));
-    }
+:root[data-bs-theme='dark']{
+  .dashboard {
+    @include nav-hover(var(--bs-dark));
   }
-// }
+}

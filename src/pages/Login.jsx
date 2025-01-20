@@ -2,37 +2,34 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+const Login = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     username: '',
     password: '',
   });
-  const [loginState, setLoginState] = useState("");
+  const [loginState, setLoginState] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  }
+  };
 
-  // QUESTION: Cookie, token, useEffect 2024-12-10
-
-  async function submit() {
+  const submit = async () => {
     setIsLoading(true);
     try {
       const res = await axios.post('/v2/admin/signin', data);
-      const { token, expired } = res.data; 
-      document.cookie = `carpento=${token}; expires=${new Date(expired)}`; // 儲存 token 到 cookie
+      const { token, expired } = res.data;
+      document.cookie = `carpento=${token}; expires=${new Date(expired)}`; 
 
       setIsLoading(false);
 
       if (res.data.success) {
-        navigate('/admin/products'); 
+        navigate('/admin/products');
       }
     } catch (error) {
-      
-      let loginMessage = '登入失敗'; 
+      let loginMessage = '登入失敗';
 
       if (error.response.data.error.code === 'auth/wrong-password') {
         loginMessage = '帳號或密碼錯誤';
@@ -44,7 +41,7 @@ function Login() {
 
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="vh-100">
@@ -52,10 +49,9 @@ function Login() {
         <div
           className="col-md-7"
           style={{
-            background: 'center/cover no-repeat url(./images/banner-9.jpeg)',
+            background: `center/cover no-repeat url(${process.env.PUBLIC_URL}/images/banner-9.jpeg)`,
           }}
-        >
-        </div>
+        ></div>
         <div className="col-md-5">
           <div className="px-5 d-flex h-100 flex-column justify-content-center">
             <h2 className="mb-4 text-center">Dashboard | Sign in</h2>
@@ -117,6 +113,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

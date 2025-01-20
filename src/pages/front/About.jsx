@@ -13,7 +13,7 @@ const About = () => {
       <section className="section-about">
         <div
           className="about-hero-img mb-4 mb-sm-5 mb-lg-7"
-          style={{ backgroundImage: 'url(./images/about-2-xl.jpeg)' }}
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/about-2-xl.jpeg)` }}
         ></div>
 
         <div className="row justify-content-center">
@@ -29,7 +29,7 @@ const About = () => {
                   Our founder, an experienced craftsman with a keen eye for design, wanted to create furniture that combined durability and style with environmental responsibility. Starting with just a few pieces, the goal was to produce furniture that not only met high standards of quality but also respected the planet.
                 </p>
 
-                <img className="mt-4 w-100" src="./images/about-1.jpeg" alt="about-image-1" />
+                <img className="mt-4 w-100" src={`${process.env.PUBLIC_URL}/images/about-1.jpeg`} alt="about-image-1" />
 
                 <p className="mt-4">
                   As the brand developed, we focused on using eco-friendly materials and sustainable practices to minimize our environmental impact. Each piece of furniture is carefully crafted to offer a blend of modern design and warmth, aiming to improve the quality of life for our customers.

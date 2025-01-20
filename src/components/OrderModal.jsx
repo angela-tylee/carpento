@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function OrderModal({
+const OrderModal = ({
   closeOrderModal,
   getOrders,
   selectedOrder,
   currentPage,
   showMessage,
-  openDeleteModal,
-}) {
+}) => {
   const [tempData, setTempData] = useState({
     create_at: 0,
     is_paid: false,
@@ -27,23 +26,26 @@ function OrderModal({
     setTempData(selectedOrder);
   }, [selectedOrder]);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setTempData({
       ...tempData,
       user: {
         ...tempData.user,
         [name]: value,
-      }
+      },
     });
-  }
+  };
 
-  async function submit() {
+  const submit = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.put(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${selectedOrder.id}`, {
-        data: tempData,
-      });
+      const res = await axios.put(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${selectedOrder.id}`,
+        {
+          data: tempData,
+        }
+      );
       setIsLoading(false);
       showMessage('success', `成功：${res.data.message}`);
       closeOrderModal();
@@ -52,7 +54,7 @@ function OrderModal({
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }
-  }
+  };
 
   return (
     <div
@@ -60,7 +62,7 @@ function OrderModal({
       id="orderModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      aria-hidden='true'
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-xl">
         <div className="modal-content px-2 py-1">
@@ -73,12 +75,14 @@ function OrderModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeOrderModal}
-              bs-data-dismiss='modal'
+              bs-data-dismiss="modal"
             />
           </div>
           {tempData && (
             <div className="modal-body">
-              <h2 className="card-title mb-2 fs-5">訂單編號：{selectedOrder?.id}</h2>
+              <h2 className="card-title mb-2 fs-5">
+                訂單編號：{selectedOrder?.id}
+              </h2>
               <div className="row">
                 <div className="col-sm-7 pe-4">
                   <p>
@@ -91,19 +95,19 @@ function OrderModal({
                     </span>
                     訂單日期：
                     {(() => {
-                  const date = new Date(tempData.create_at * 1000);
+                      const date = new Date(tempData.create_at * 1000);
 
-                  const options = {
-                    year: 'numeric',
-                    month: 'numeric',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                  };
+                      const options = {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                      };
 
-                  return date.toLocaleString('zh-TW', options);
-                })()}
+                      return date.toLocaleString('zh-TW', options);
+                    })()}
                   </p>
                   <div className="mt-2">
                     {Object.entries(tempData.products).map(([key, product]) => (
@@ -124,11 +128,19 @@ function OrderModal({
                   <div className="mt-2">
                     <div className="d-flex justify-content-between">
                       <p>小計：</p>
-                      <span>${Object.values(tempData.products)?.reduce((total, product) => total + product.total , 0)?.toLocaleString()}</span>
+                      <span>
+                        $
+                        {Object.values(tempData.products)
+                          ?.reduce((total, product) => total + product.total, 0)
+                          ?.toLocaleString()}
+                      </span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <p>折扣碼：</p>
-                      <span>{Object.values(tempData.products)[0]?.coupon?.code ||'無'}</span>
+                      <span>
+                        {Object.values(tempData.products)[0]?.coupon?.code ||
+                          '無'}
+                      </span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <p>總金額：</p>
@@ -235,6 +247,6 @@ function OrderModal({
       </div>
     </div>
   );
-}
+};
 
 export default OrderModal;

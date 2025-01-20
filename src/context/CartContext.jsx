@@ -37,8 +37,7 @@ export const CartProvider = ({ children }) => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`,
         data
       );
-      // QUESTION: Why await?
-      await getCart(); // Refresh cart data after adding
+      await getCart();
       showCartDropdown();
       showMessage("success", "已加入購物車");
       setIsLoadingItem(null);

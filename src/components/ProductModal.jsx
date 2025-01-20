@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import BlogEditor from './BlogEditor';
 
-function ProductModal({
+const ProductModal = ({
   closeProductModal,
   getProducts,
   type,
   tempProduct,
   currentPage,
   showMessage,
-}) {
+}) => {
   const [tempData, setTempData] = useState({
     title: '',
     category: '',
@@ -54,10 +54,9 @@ function ProductModal({
     } else if (type === 'edit') {
       setTempData(tempProduct);
     }
-
   }, [type, tempProduct]);
 
-  async function handleChange(e, editorData) {
+  const handleChange = async (e, editorData) => {
     const { name, value, checked, files } = e.target;
     if (['price', 'origin_price'].includes(name)) {
       setTempData({
@@ -81,12 +80,11 @@ function ProductModal({
       }));
     } else {
       setTempData((tempData) => ({
-          ...tempData,
-          [name]: value,
-        }
-      ));
+        ...tempData,
+        [name]: value,
+      }));
     }
-  }
+  };
 
   const uploadImages = async (e) => {
     e.preventDefault();
@@ -98,8 +96,7 @@ function ProductModal({
     }
 
     const { files } = e.target;
-    
-    // QUESTION: How does `FormData()` work? 2024-12-15
+
     if (files?.[0]) {
       const formData = new FormData();
       formData.append('file-to-upload', files[0]);
@@ -120,8 +117,6 @@ function ProductModal({
         setIsLoadingImg(false);
       }
     } else {
-
-
       if (uploadImageUrl) {
         setTempData((prev) => ({
           ...prev,
@@ -142,8 +137,7 @@ function ProductModal({
     }));
   };
 
-
-  async function submit() {
+  const submit = async () => {
     setIsLoading(true);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product`;
@@ -163,7 +157,7 @@ function ProductModal({
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
     }
-  }
+  };
 
   return (
     <div
@@ -171,7 +165,7 @@ function ProductModal({
       id="productModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      aria-hidden='true'
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered modal-xl">
         <div className="modal-content px-2 py-1">
@@ -184,7 +178,7 @@ function ProductModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeProductModal}
-              bs-data-dismiss='modal'
+              bs-data-dismiss="modal"
             />
           </div>
           <div className="modal-body">
@@ -296,11 +290,9 @@ function ProductModal({
                         name="tag"
                         className="form-control"
                         onChange={handleChange}
-                        value={tempData.tag || ""}
+                        value={tempData.tag || ''}
                       >
-                        <option value="">
-                          請選擇標籤
-                        </option>
+                        <option value="">請選擇標籤</option>
                         <option value="new">new</option>
                         <option value="sale">sale</option>
                         <option value="hot">hot</option>
@@ -345,7 +337,6 @@ function ProductModal({
                         className="w-100 form-check-label"
                         htmlFor="is_enabled"
                       >
-                        {/* QUESTION: 預設值為 is_enabled: 1，即使畫面上沒有勾？ 2024-12-09 https://courses.hexschool.com/courses/react-video-course/lectures/45741586 Ans: https://courses.hexschool.com/courses/react-video-course/lectures/45741610*/}
                         是否啟用
                         <input
                           type="checkbox"
@@ -355,7 +346,6 @@ function ProductModal({
                           className="form-check-input"
                           onChange={handleChange}
                           checked={tempData.is_enabled}
-                          // value={tempData.is_enabled}
                         />
                       </label>
                     </div>
@@ -376,9 +366,7 @@ function ProductModal({
               </div>
               <div className="col-sm-4">
                 <div className="col-12 mb-2">
-                  <form
-                    onSubmit={uploadImages}
-                  >
+                  <form onSubmit={uploadImages}>
                     <label htmlFor="imageUrl">輸入圖片網址</label>
                     <div className="d-flex">
                       <input
@@ -400,7 +388,7 @@ function ProductModal({
                   <label
                     htmlFor="imageFile"
                     className="bg-secondary border border-2 border-secondary text-body-tertiary d-flex align-items-center justify-content-center pointer opacity-hover"
-                    style={{ height: '150px'}}
+                    style={{ height: '150px' }}
                   >
                     <input
                       type="file"
@@ -521,6 +509,6 @@ function ProductModal({
       </div>
     </div>
   );
-}
+};
 
 export default ProductModal;

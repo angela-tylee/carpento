@@ -22,7 +22,6 @@ const Blog = () => {
   };
 
   useEffect(() => {
-    // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
     getArticle(id);
   }, [id]);
 

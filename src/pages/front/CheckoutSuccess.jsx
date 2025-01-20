@@ -86,10 +86,10 @@ const CheckoutSuccess = () => {
               <h5>Order Summary</h5>
               <div className="d-flex align-items-center">
                 <button
-                  className="btn p-0 text-decoration-underline d-flex align-items-center"
+                  className="btn p-0"
                   onClick={copyLink}
                 >
-                  <span>Copy link</span>
+                  <span className="d-none d-sm-inline">Copy link</span>
                   <i className="bi bi-link-45deg fs-5 ms-1"></i>
                 </button>
                 <span className="mx-1">or</span>
@@ -98,7 +98,8 @@ const CheckoutSuccess = () => {
                   onClick={() => window.print()}
                   title="print this page"
                 >
-                  <i className="bi bi-printer-fill fs-5"></i>
+                  <span className="d-none d-sm-inline">Print this page</span>
+                  <i className="bi bi-printer-fill fs-5 ms-1"></i>
                 </button>
               </div>
             </div>
@@ -177,6 +178,24 @@ const CheckoutSuccess = () => {
                   ${order.total.toLocaleString()}
                 </p>
               </div>
+            </div>
+            <div>
+            {/* <div className="d-flex justify-content-center align-items-center pt-4">
+                <button
+                  className="btn p-0 text-decoration-underline"
+                  onClick={copyLink}
+                >
+                  <p>Copy link<i className="bi bi-link-45deg fs-5 ms-1"></i></p>
+                  
+                </button>
+                <span className="mx-1">or</span>
+                <button
+                  className="btn p-0 text-decoration-underline"
+                  onClick={() => window.print()}
+                >
+                  <p>Print this page<i className="bi bi-printer-fill fs-5 ms-1"></i></p>
+                </button>
+              </div> */}
             </div>
           </div>
         </section>

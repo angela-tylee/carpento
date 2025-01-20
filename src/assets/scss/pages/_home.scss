@@ -1,45 +1,47 @@
-// TODO: move to utilities or base
+// utils/layout.scss
 
-.container {
-  max-width: 1336px;
-  padding-inline: 20px;
-}
+// .container {
+//   max-width: 1336px;
+//   padding-inline: 20px;
+// }
 
-@media (min-width: 576px) {
-  .container {
-    max-width: 1420px;
-    padding-inline: 15px;
-  }
-}
+// @media (min-width: 576px) {
+//   .container {
+//     max-width: 1420px;
+//     padding-inline: 15px;
+//   }
+// }
 
 
-// sticky footer
-html,
-body {
-  height: 100%;
-}
+// // sticky footer
+// html,
+// body {
+//   height: 100%;
+// }
 
-.front-layout {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-//
+// .front-layout {
+//   min-height: 100vh;
+//   display: grid;
+//   grid-template-rows: auto 1fr auto;
+// }
+// //
 
-body,
-button {
-  font-family: 'Roboto Condensed', sans-serif;
-  letter-spacing: 1.5px;
-}
+// base/font.scss
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  text-transform: uppercase;
-}
+// body,
+// button {
+//   font-family: 'Roboto Condensed', sans-serif;
+//   letter-spacing: 1.5px;
+// }
+
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   text-transform: uppercase;
+// }
 
 .home {
   section {

@@ -44,7 +44,6 @@ const Product = () => {
   };
 
   useEffect(() => {
-    // QUESTION: React Hook useEffect has a missing dependency...https://courses.hexschool.com/courses/react-video-course/lectures/45744008 07:00
     getProduct(id);
     getProductsAll();
   }, [id]);
@@ -224,7 +223,7 @@ const Product = () => {
                   </div>
                   <button
                     type="button"
-                    className="btn btn-primary w-25 ms-2"
+                    className="btn btn-primary ms-2"
                     onClick={() => {
                       addToCart(product.id, cartQuantity);
                     }}
@@ -382,10 +381,7 @@ const Product = () => {
                   320: {
                     slidesPerView: 2,
                   },
-                  768: {
-                    slidesPerView: 3,
-                  },
-                  992: {
+                  576: {
                     slidesPerView: 4,
                   },
                   1200: {
@@ -414,7 +410,7 @@ const Product = () => {
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
                 spaceBetween={24} 
-                slidesPerView={5} 
+                slidesPerView={1} 
                 navigation 
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
@@ -422,10 +418,7 @@ const Product = () => {
                   320: {
                     slidesPerView: 2,
                   },
-                  768: {
-                    slidesPerView: 3,
-                  },
-                  992: {
+                  576: {
                     slidesPerView: 4,
                   },
                   1200: {

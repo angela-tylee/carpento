@@ -13,7 +13,7 @@ const Warranty = () => {
         <div className="row justify-content-center">
           <div className="col-12 col-md-10 col-xl-8">
             <div className="warranty-body">
-              <h1 className="warranty-title fs-2 pb-1 text-center">Warranty</h1>
+              <h1 className="warranty-title fs-2 mt-4 mt-lg-0 pb-1 text-center">Warranty</h1>
               <div className="warranty-text">
                 <p className="mt-4">
                   At Carpento, we take pride in the craftsmanship and quality of our furniture. Each piece is thoughtfully designed and carefully built to ensure durability and long-lasting performance. We are committed to delivering products that enhance your living spaces and stand the test of time. To support our commitment, we offer the following warranty to give you peace of mind with your purchase.

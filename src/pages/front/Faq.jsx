@@ -14,7 +14,7 @@ const FAQ = () => {
       <section className="section-faq">
         <div
           className="faq-hero-img mb-4 mb-sm-5 mb-lg-7"
-          style={{ backgroundImage: 'url(./images/banner-8.jpeg)' }}
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/banner-8.jpeg)` }}
         ></div>
         <div className="row justify-content-center">
           <div className="col-12 col-md-10 col-xl-8">

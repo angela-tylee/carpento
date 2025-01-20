@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
-import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 
 const AdminRoutes = () => {
   const navigate = useNavigate();
-  // const params = useParams();
+
   const [theme, setTheme] = useState('light');
   const { messageType, message, showMessage } = useContext(MessageContext);
 
@@ -20,14 +20,11 @@ const AdminRoutes = () => {
     .find((row) => row.startsWith('carpento='))
     ?.split('=')[1];
 
-  // QUESTION: how to do this with fetchAPI? 2024-12-10
   axios.defaults.headers.common['Authorization'] = token;
 
-  // QUESTION: Review the logic
   useEffect(() => {
     if (!token) {
       navigate('/login');
-      // TODO: Bootstrap toast & 不要顯示 admin/products 頁面
       showMessage('danger', '驗證失敗，請重新登入');
       return;
     }
@@ -51,15 +48,10 @@ const AdminRoutes = () => {
       document.documentElement.setAttribute('data-bs-theme', savedTheme);
       return;
     }
-    
-    // const initialTheme =
-    //   document.documentElement.getAttribute('data-bs-theme') || 'light';
-    //   setTheme(initialTheme);
   }, []);
 
   return (
     <>
-      {/* FIXME: 會跟 AdminPages 的 Message 重疊*/}
       <Message type={messageType} message={message} />
       <div className="dashboard">
         <header className="py-3 px-6 bg-secondary">
@@ -67,7 +59,7 @@ const AdminRoutes = () => {
             <div className="p-0">
               <NavLink to="/" className="navbar-brand" title="Back to homepage">
                 <img
-                  src={`./images/logo${theme === 'light' ? '' : '-white'}.png`}
+                  src={`${process.env.PUBLIC_URL}/images/logo${theme === 'light' ? '' : '-white'}.png`}
                   alt="logo"
                   width="154px"
                 />
@@ -80,7 +72,6 @@ const AdminRoutes = () => {
           </nav>
         </header>
         <div className="d-flex">
-          {/* QUESTION: how does 'full-height sidebar' work with overflow, position, top? 2024-12-10 https://claude.ai/chat/7943b688-01ec-4cf1-8929-1312cccf45d3*/}
           <div
             className="vh-100 overflow-auto position-sticky top-0"
             style={{ minWidth: '240px' }}

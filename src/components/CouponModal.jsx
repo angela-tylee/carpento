@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function CouponModal({
+const CouponModal = ({
   closeCouponModal,
   getCoupons,
   type,
   tempCoupon,
   currentPage,
   showMessage,
-}) {
+}) => {
   const [tempData, setTempData] = useState({
     title: '',
     is_enabled: 0,
@@ -32,18 +32,17 @@ function CouponModal({
     }
   }, [type, tempCoupon]);
 
-  // QUESTION: Convert timestamp to datetime-local format
   const formatDateForInput = (timestamp) => {
     const date = new Date(timestamp);
-    return date.toISOString().slice(0, 16); // Format: "YYYY-MM-DDThh:mm"
+    return date.toISOString().slice(0, 16); 
   };
 
-  async function handleChange(e) {
+  const handleChange = async (e) => {
     const { name, value, checked } = e.target;
     if (name === 'is_enabled') {
       setTempData({
         ...tempData,
-        [name]: Number(checked), 
+        [name]: Number(checked),
       });
     } else if (name === 'percent') {
       setTempData({
@@ -58,12 +57,12 @@ function CouponModal({
     } else {
       setTempData({
         ...tempData,
-        [name]: value, 
+        [name]: value,
       });
     }
-  }
+  };
 
-  async function submit() {
+  const submit = async () => {
     setIsLoading(true);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon`;
@@ -82,9 +81,8 @@ function CouponModal({
     } catch (error) {
       setIsLoading(false);
       showMessage('danger', `失敗：${error.response.data.message}`);
-
     }
-  }
+  };
 
   return (
     <div
@@ -92,7 +90,7 @@ function CouponModal({
       id="couponModal"
       tabIndex="-1"
       aria-labelledby="exampleModalLabel"
-      aria-hidden='true'
+      aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content px-2 py-1">
@@ -105,7 +103,7 @@ function CouponModal({
               className="btn-close"
               aria-label="Close"
               onClick={closeCouponModal}
-              bs-data-dismiss='modal'
+              bs-data-dismiss="modal"
             />
           </div>
           <div className="modal-body">
@@ -176,7 +174,6 @@ function CouponModal({
                       className="w-100 form-check-label"
                       htmlFor="is_enabled"
                     >
-                      {/* QUESTION: 預設值為 is_enabled: 1，即使畫面上沒有勾？ 2024-12-09 https://courses.hexschool.com/courses/react-video-course/lectures/45741586 Ans: https://courses.hexschool.com/courses/react-video-course/lectures/45741610*/}
                       是否啟用
                       <input
                         type="checkbox"
@@ -186,7 +183,6 @@ function CouponModal({
                         className="form-check-input"
                         onChange={handleChange}
                         checked={tempData.is_enabled}
-                        // value={tempData.is_enabled}
                       />
                     </label>
                   </div>
@@ -236,6 +232,6 @@ function CouponModal({
       </div>
     </div>
   );
-}
+};
 
 export default CouponModal;

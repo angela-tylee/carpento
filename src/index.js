@@ -5,15 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import {
-  // BrowserRouter,
   HashRouter
 } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { StickyHeaderProvider } from './context/StickyHeaderContext';
 import { MessageProvider } from './context/MessageContext';
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL; // 預設 axios base URL，之後就不用重複寫
-
+axios.defaults.baseURL = process.env.REACT_APP_API_URL; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

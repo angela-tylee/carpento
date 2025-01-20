@@ -3,7 +3,7 @@ import axios from 'axios';
 import BlogEditor from './BlogEditor';
 import FullPageLoader from './FullPageLoader';
 
-function ArticleModal ({
+const ArticleModal = ({
   closeArticleModal,
   getArticles,
   type,
@@ -11,9 +11,7 @@ function ArticleModal ({
   currentPage,
   showMessage,
   isLoadingModal,
-  openDeleteModal,
-}) {
-  // const [uploadImageUrl, setUploadImageUrl] = useState(null);
+}) => {
   const [tempData, setTempData] = useState({
     title: '',
     description: '',
@@ -44,7 +42,7 @@ function ArticleModal ({
     }
   }, [type, tempArticle]);
 
-  async function handleChange(e, editorData) {
+  const handleChange = async(e, editorData) => {
     const { name, value, checked, files } = e?.target || {};
     if (name === 'isPublic') {
       setTempData({
@@ -66,7 +64,7 @@ function ArticleModal ({
     }
   }
 
-  async function uploadImage(file) {
+  const uploadImage = async (file) => {
     setIsLoadingImg(true);
     if (!file) return;
 
@@ -78,8 +76,6 @@ function ArticleModal ({
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/upload`,
         formData
       );
-      // QUESTION: 用 setUploadImageUrl 設定預覽圖片的話，總是要再上傳一次 file 才可以顯示新的預覽圖片，否則會卡在前一張 Why? 2024-12-15 什麼都沒做又可以了？ 2024-12-16 Cause: Synchronous https://claude.ai/chat/4719c032-6f41-4292-9cec-9d6a25d622c7 2024-12-20
-      // setUploadImageUrl(res.data.imageUrl);
       setTempData({
         ...tempData,
         image: res.data.imageUrl,
@@ -91,7 +87,7 @@ function ArticleModal ({
     }
   }
 
-  async function submit() {
+  const submit = async () => {
     setIsLoading(true);
     try {
       let api = `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article`;
@@ -174,7 +170,6 @@ function ArticleModal ({
                     </div>
                     <div className="form-group mb-2 col-md-6">
                       <label className="w-100" htmlFor="create_at">
-                        {/* QUESTION: input type="date" doesn't match API Date.now() data type, 再順一次 */}
                         建立日期
                         <input
                           type="text"

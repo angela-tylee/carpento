@@ -9,7 +9,7 @@ const Footer = () => {
             <div>
               <Link to="/" className="navbar-brand">
                 <img
-                  src="./images/logo-white.png"
+                  src={`${process.env.PUBLIC_URL}/images/logo-white.png`}
                   alt="logo-white"
                   width="154px"
                 />
