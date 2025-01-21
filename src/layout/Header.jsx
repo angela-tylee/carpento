@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
@@ -7,6 +7,7 @@ import { StickyHeaderContext } from '../context/StickyHeaderContext';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 import CartBadge from '../components/CartBadge';
+import Collapse from 'bootstrap/js/dist/collapse';
 
 const Header = () => {
   const [products, setProducts] = useState([]);
@@ -27,7 +28,6 @@ const Header = () => {
 
   const { headerRef, unstickyDistance } = useContext(StickyHeaderContext);
 
-
   useEffect(() => {
     setSearchTerm('');
     getProductsAll();
@@ -43,7 +43,6 @@ const Header = () => {
       document.documentElement.getAttribute('data-bs-theme') || 'light';
     setTheme(initialTheme);
     localStorage.setItem('theme', initialTheme);
-
   }, []);
 
   useEffect(() => {
@@ -60,7 +59,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [unstickyDistance, headerRef])
+  }, [unstickyDistance, headerRef]);
 
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
@@ -98,14 +97,52 @@ const Header = () => {
   };
 
   const toggleTheme = () => {
-    if (theme === "light") {
+    if (theme === 'light') {
       document.documentElement.setAttribute('data-bs-theme', 'dark');
-      setTheme("dark");
-      localStorage.setItem('theme', "dark");
+      setTheme('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.setAttribute('data-bs-theme', 'light');
-      setTheme("light");
-      localStorage.setItem('theme', "light");
+      setTheme('light');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  // const navbar = document.getElementById('navbarNav');
+  // // const toggler = document.querySelector('.navbar-toggler');
+
+  // const handleNavClick = () => {
+  //   if (navbar) {
+  //     const bsCollapse = Collapse.getInstance(navbar);
+  //     // bsCollapse.hide();
+  //     if (navbar.classList?.contains('show')) {
+  //       console.log("contains show")
+  //       bsCollapse.hide(); // Hide the navbar
+  //     } else {
+  //       bsCollapse.show(); // Show the navbar
+  //     }
+  //   }
+  // };
+
+  const navbarRef = useRef(null); // Ref for the navbar element
+
+  useEffect(() => {
+    // Initialize the Bootstrap Collapse on component mount
+    if (navbarRef.current) {
+      new Collapse(navbarRef.current, { toggle: false }); // Instantiate without auto-toggle
+    }
+  }, []);
+
+  const handleNavClick = () => {
+    if (navbarRef.current) {
+      const bsCollapse = Collapse.getInstance(navbarRef.current);
+      if (bsCollapse) {
+        if (navbarRef.current.classList.contains('show')) {
+          bsCollapse.hide();
+        } else {
+          bsCollapse.show();
+        }
+      }
     }
   };
 
@@ -119,7 +156,9 @@ const Header = () => {
               {/* Logo */}
               <Link to="/" className="navbar-brand col-4 col-sm-3 col-lg-2">
                 <img
-                  src={`${process.env.PUBLIC_URL}/images/logo${theme === 'light' ? "" : "-white"}.png`}
+                  src={`${process.env.PUBLIC_URL}/images/logo${
+                    theme === 'light' ? '' : '-white'
+                  }.png`}
                   alt="logo"
                   className="w-100"
                 />
@@ -137,18 +176,23 @@ const Header = () => {
                 <button
                   className="navbar-toggler ms-2"
                   type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarNav"
+                  // data-bs-toggle="collapse"
+                  // data-bs-target="#navbarNav"
                   aria-controls="navbarNav"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
+                  onClick={handleNavClick}
                 >
                   <span className="navbar-toggler-icon"></span>
                 </button>
               </div>
 
               {/* Nav Items */}
-              <div className="collapse navbar-collapse" id="navbarNav">
+              <div
+                className="collapse navbar-collapse"
+                id="navbarNav"
+                ref={navbarRef}
+              >
                 <ul className="navbar-nav">
                   <li className="nav-item text-center text-md-start py-1 py-md-0 dropdown">
                     <NavLink
@@ -162,7 +206,11 @@ const Header = () => {
                     </NavLink>
                     <ul className="product-dropdown-menu dropdown-menu">
                       <li className="text-center text-md-start">
-                        <Link to="/products" className="w-100 dropdown-item">
+                        <Link
+                          to="/products"
+                          className="w-100 dropdown-item"
+                          onClick={handleNavClick}
+                        >
                           All
                         </Link>
                       </li>
@@ -176,6 +224,7 @@ const Header = () => {
                               tempCategory
                             )}`}
                             className="w-100 dropdown-item"
+                            onClick={handleNavClick}
                           >
                             {tempCategory}
                           </Link>
@@ -184,12 +233,20 @@ const Header = () => {
                     </ul>
                   </li>
                   <li className="nav-item text-center text-md-start py-1 py-md-0">
-                    <NavLink to="/blogs" className="nav-link">
+                    <NavLink
+                      to="/blogs"
+                      className="nav-link"
+                      onClick={handleNavClick}
+                    >
                       Blog
                     </NavLink>
                   </li>
                   <li className="nav-item text-center text-md-start py-1 py-md-0">
-                    <NavLink to="/about" className="nav-link">
+                    <NavLink
+                      to="/about"
+                      className="nav-link"
+                      onClick={handleNavClick}
+                    >
                       About
                     </NavLink>
                   </li>

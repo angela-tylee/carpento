@@ -346,7 +346,7 @@ const ProductModal = ({
                           className="form-check-input"
                           onChange={handleChange}
                           checked={tempData.is_enabled}
-                        />
+                      />
                       </label>
                     </div>
                   </div>

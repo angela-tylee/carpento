@@ -372,7 +372,7 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={24} 
+                spaceBetween={16} 
                 slidesPerView={1} 
                 navigation 
                 pagination={{ clickable: true }}
@@ -409,7 +409,7 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={24} 
+                spaceBetween={16} 
                 slidesPerView={1} 
                 navigation 
                 pagination={{ clickable: true }}

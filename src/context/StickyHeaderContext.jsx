@@ -7,10 +7,10 @@ export const StickyHeaderProvider = ({ children }) => {
   const unstickyDistance = 900; 
   const headerRef = useRef(null); 
 
-
   useEffect(() => {
     if (headerRef.current) {
       setHeaderHeight(headerRef.current.offsetHeight); 
+      console.log(headerRef.current.offsetHeight);
     }
   }, []);
 

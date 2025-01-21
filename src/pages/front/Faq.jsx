@@ -255,7 +255,7 @@ const FAQ = () => {
                     >
                       <div className="accordion-body">
                         Yes, you can visit our showroom at <strong>No. 123, Xinyi Road, Da’an District, Taipei, Taiwan</strong>. We are open Monday to Saturday from 10 AM to 6 PM. Please stop by to see our furniture in person and speak with our team about any questions or custom requests.
-                        <img src="/images/showroom-1.jpeg" alt="showroom" className="w-100 mt-2" />
+                        <img src={`${process.env.PUBLIC_URL}/images/showroom-1.jpeg`} alt="showroom" className="w-100 mt-2" />
                       </div>
                     </div>
                   </div>

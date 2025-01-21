@@ -1,6 +1,11 @@
 import { NavLink } from 'react-router-dom';
 
-const ProductCard2 = ({ product, hasFooter, addToCart, isLoading: isLoadingItem }) => {
+const ProductCard2 = ({
+  product,
+  hasFooter,
+  addToCart,
+  isLoading: isLoadingItem,
+}) => {
   return (
     <div className="card product-card-2 w-100 border-0 d-flex flex-column h-100 justify-content-between">
       <NavLink

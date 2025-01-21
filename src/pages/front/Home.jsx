@@ -16,21 +16,37 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import ProductCard from '../../components/ProductCard';
 import REVIEWS from '../../constants/reviews';
+import FullPageLoader from '../../components/FullPageLoader';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
 
   const getProductsAll = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
-    );
-    setProducts(res.data.products);
+    setIsLoadingProducts(true);
+    try {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+      );
+      setProducts(res.data.products);
+      setIsLoadingProducts(false);
+    } catch (error) {
+      setIsLoadingProducts(false);
+    }
   };
 
   useEffect(() => {
     AOS.init();
     getProductsAll();
   }, []);
+
+  if (isLoadingProducts) {
+    return (
+      // <main className="product container mb-6">
+        <FullPageLoader />
+      // </main>
+    );
+  }
 
   return (
     <div className="home">
@@ -75,7 +91,7 @@ const Home = () => {
                     className="col-12 col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
                     key={product.id}
                   >
-                    <div className="mt-4 mt-sm-0">
+                    <div className="mt-4 mt-sm-0 h-100">
                       <ProductCard
                         product={product}
                         colNum={4}
@@ -150,7 +166,7 @@ const Home = () => {
                       className="col-12 col-lg-4 mt-2 mt-sm-4 mt-lg-0"
                       key={product.id}
                     >
-                      <div className="mt-4 mt-sm-0">
+                      <div className="mt-4 mt-sm-0 h-100">
                         <ProductCard
                           product={product}
                           colNum={3}
@@ -257,7 +273,7 @@ const Home = () => {
                     className="col-12 col-sm-6 col-lg-3 mt-2 mt-sm-4 mt-lg-0"
                     key={product.id}
                   >
-                    <div className="mt-4 mt-sm-0">
+                    <div className="mt-4 mt-sm-0 h-100">
                       <ProductCard
                         product={product}
                         colNum={4}

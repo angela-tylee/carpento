@@ -29,9 +29,9 @@ const ProductCard = ({ product }) => {
         </span>
       </div>
       <div className="card-body p-0 mt-3 flex-grow-1">
-        <div className="d-flex flex-column h-100 justify-content-between">
+        <div className="d-flex flex-column h-100 justify-content-sm-between">
           <h5 className="card-title">{product.title}</h5>
-          <p className="card-text overflow-hidden" style={{ height: '50px' }}>
+          <p className="card-text overflow-hidden">
             {product.description}
           </p>
         </div>

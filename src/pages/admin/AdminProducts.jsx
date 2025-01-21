@@ -76,6 +76,7 @@ const AdminProducts = () => {
   };
 
   function openProductModal(type, product) {
+    console.log(product);
     setTempProduct(product);
     setType(type);
     productModal.current.show();
