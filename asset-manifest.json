@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/carpento/static/css/main.cec912ce.css",
-    "main.js": "/carpento/static/js/main.24e8bd72.js",
+    "main.css": "/carpento/static/css/main.db593a0e.css",
+    "main.js": "/carpento/static/js/main.3b5fa0c9.js",
     "static/js/453.22db2aab.chunk.js": "/carpento/static/js/453.22db2aab.chunk.js",
     "index.html": "/carpento/index.html",
-    "main.cec912ce.css.map": "/carpento/static/css/main.cec912ce.css.map",
-    "main.24e8bd72.js.map": "/carpento/static/js/main.24e8bd72.js.map",
+    "main.db593a0e.css.map": "/carpento/static/css/main.db593a0e.css.map",
+    "main.3b5fa0c9.js.map": "/carpento/static/js/main.3b5fa0c9.js.map",
     "453.22db2aab.chunk.js.map": "/carpento/static/js/453.22db2aab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.cec912ce.css",
-    "static/js/main.24e8bd72.js"
+    "static/css/main.db593a0e.css",
+    "static/js/main.3b5fa0c9.js"
   ]
 }
