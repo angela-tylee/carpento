@@ -18,13 +18,14 @@ const Product = () => {
   const [products, setProducts] = useState([]);
   const { id } = useParams();
 
-  const [cartQuantity, setCartQuantity] = useState(1);
+  const [cartQty, setCartQty] = useState(1);
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
   const { addToCart, isLoading } = useContext(CartContext);
   const { messageType, message } = useContext(MessageContext);
 
   const getProduct = async (id) => {
     setIsLoadingProduct(true);
+    setCartQty(1);
     try {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/product/${id}`
@@ -199,7 +200,7 @@ const Product = () => {
                       type="button"
                       id="button-addon1"
                       onClick={() =>
-                        setCartQuantity((pre) => (pre === 1 ? pre : pre - 1))
+                        setCartQty((pre) => (pre === 1 ? pre : pre - 1))
                       }
                     >
                       <i className="bi bi-dash-lg "></i>
@@ -209,14 +210,14 @@ const Product = () => {
                       className="form-control text-center"
                       placeholder=""
                       aria-label=""
-                      value={cartQuantity}
+                      value={cartQty}
                       readOnly
                     />
                     <button
                       className="btn btn-outline-secondary text-dark"
                       type="button"
                       id="button-addon1"
-                      onClick={() => setCartQuantity((pre) => pre + 1)}
+                      onClick={() => setCartQty((pre) => pre + 1)}
                     >
                       <i className="bi bi-plus-lg"></i>
                     </button>
@@ -225,7 +226,7 @@ const Product = () => {
                     type="button"
                     className="btn btn-primary ms-2"
                     onClick={() => {
-                      addToCart(product.id, cartQuantity);
+                      addToCart(product.id, cartQty);
                     }}
                     disabled={isLoading}
                   >
@@ -348,7 +349,7 @@ const Product = () => {
           <button
             type="button"
             className="btn btn-primary w-100"
-            onClick={() => addToCart(product.id, cartQuantity)}
+            onClick={() => addToCart(product.id, cartQty)}
             disabled={isLoading}
           >
             <div

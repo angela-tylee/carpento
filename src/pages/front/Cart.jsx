@@ -6,9 +6,12 @@ import FullPageLoader from '../../components/FullPageLoader';
 import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 
-
 const Cart = () => {
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
+  const [isLoadingQty, setIsLoadingQty] = useState({
+    id: null,
+    action: null,
+  });
   const [coupon, setCoupon] = useState({
     success: null,
   });
@@ -32,8 +35,8 @@ const Cart = () => {
     }
   };
 
-  const updateQty = async (cartItem, newQty) => {
-    setIsLoadingDeleteItem(true);
+  const updateQty = async (cartItem, newQty, action) => {
+    setIsLoadingQty({ id: cartItem.id, action });
     try {
       await axios.put(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${cartItem.id}`,
@@ -44,10 +47,10 @@ const Cart = () => {
           },
         }
       );
-      setIsLoadingDeleteItem(false);
+      setIsLoadingQty({ id: null, action: null });
       getCart();
     } catch (error) {
-      setIsLoadingDeleteItem(false);
+      setIsLoadingQty({ id: null, action: null });
     }
   };
 
@@ -158,13 +161,26 @@ const Cart = () => {
                                   type="button"
                                   id="button-addon1"
                                   onClick={() =>
-                                    updateQty(cartItem, cartItem.qty - 1)
+                                    updateQty(
+                                      cartItem,
+                                      cartItem.qty - 1,
+                                      'decrement'
+                                    )
                                   }
-                                  disabled={
-                                    isLoadingDeleteItem || cartItem.qty === 1
-                                  }
+                                  disabled={isLoadingQty.id === cartItem.id || cartItem.qty === 1}
                                 >
-                                  <i className="bi bi-dash"></i>
+                                  {isLoadingQty.id === cartItem.id && isLoadingQty.action === "decrement" ? (
+                                    <div
+                                      className={`spinner-border spinner-border-sm text-dark opacity-50`}
+                                      role="status"
+                                    >
+                                      <span className="visually-hidden">
+                                        Loading...
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <i className="bi bi-dash"></i>
+                                  )}
                                 </button>
                                 <input
                                   type="text"
@@ -179,11 +195,26 @@ const Cart = () => {
                                   type="button"
                                   id="button-addon1"
                                   onClick={() =>
-                                    updateQty(cartItem, cartItem.qty + 1)
+                                    updateQty(
+                                      cartItem,
+                                      cartItem.qty + 1,
+                                      'increment'
+                                    )
                                   }
-                                  disabled={isLoadingDeleteItem}
+                                  disabled={isLoadingQty.id === cartItem.id}
                                 >
-                                  <i className="bi bi-plus"></i>
+                                  {isLoadingQty.id === cartItem.id && isLoadingQty.action === "increment" ? (
+                                    <div
+                                      className={`spinner-border spinner-border-sm text-dark opacity-50`}
+                                      role="status"
+                                    >
+                                      <span className="visually-hidden">
+                                        Loading...
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <i className="bi bi-plus"></i>
+                                  )}
                                 </button>
                               </div>
                             </div>

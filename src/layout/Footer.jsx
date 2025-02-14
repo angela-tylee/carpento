@@ -50,7 +50,7 @@ const Footer = () => {
           </p>
         </div>
         <div className="mt-2 mt-sm-5 text-center fw-light">
-          <p>© 2024 Angela Lee. All Rights Reserved.</p>
+          <p>© 2025 Angela Lee. All Rights Reserved.</p>
           <p>For personal learning purposes only, not for commercial use.</p>
         </div>
       </div>

@@ -11,8 +11,8 @@ export const CartProvider = ({ children }) => {
   const cartDropdownRef = useRef(null);
   const { showMessage } = useContext(MessageContext);
 
-  const getCart = async () => {
-    setIsLoadingCart(true);
+  const getCart = async (showLoading = false) => {
+    if (showLoading) setIsLoadingCart(true);
     try {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart`
@@ -39,11 +39,11 @@ export const CartProvider = ({ children }) => {
       );
       await getCart();
       showCartDropdown();
-      showMessage("success", "已加入購物車");
+      showMessage("success", "Successfully added to Cart!");
       setIsLoadingItem(null);
     } catch (error) {
       setIsLoadingItem(null);
-      showMessage("danger", "請再試一次");
+      showMessage("danger", "Failed. Please try again.");
     }
   };
 
@@ -62,7 +62,7 @@ export const CartProvider = ({ children }) => {
 
 
   useEffect(() => {
-    getCart();
+    getCart(true);
   }, []);
 
   return (

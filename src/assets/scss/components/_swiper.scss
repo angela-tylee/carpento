@@ -31,17 +31,17 @@
   
   @media (min-width: 768px) {
     .swiper-wrapper {
-      width: 768px;
+      width: calc(768px - 30px);
     }
   }
   @media (min-width: 992px) {
     .swiper-wrapper {
-      width: 992px;
+      width: calc(992px - 30px);
     }
   }
   @media (min-width: 1200px) {
     .swiper-wrapper {
-      width: 1200px;
+      width: calc(1200px - 30px);
     }
   }
 

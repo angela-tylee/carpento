@@ -30,7 +30,7 @@ const AdminRoutes = () => {
     }
     (async () => {
       try {
-        await axios.post('/v2/api/user/check');
+        await axios.post('/api/user/check');
       } catch (error) {
         if (!error.response.data.success) {
           navigate('/login');

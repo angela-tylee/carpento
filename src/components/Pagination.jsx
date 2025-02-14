@@ -1,8 +1,8 @@
 const Pagination = ({ pagination, changePage }) => {
   return (
-    <nav aria-label="..." className="mt-4">
+    <nav aria-label="Pagination" className="mt-4">
       <ul className="pagination fw-bold justify-content-end">
-        <li className={`page-item disabled=${!pagination.has_pre}`}>
+        <li className={`page-item ${!pagination.has_pre ? "disabled" : ''}`}>
           <a
             className="page-link"
             href="/"
@@ -36,7 +36,7 @@ const Pagination = ({ pagination, changePage }) => {
             </a>
           </li>
         ))}
-        <li className={`page-item disabled=${!pagination.has_next}`}>
+        <li className={`page-item ${!pagination.has_pre ? "disabled" : ''}`}>
           <a
             className="page-link"
             href="/"

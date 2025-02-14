@@ -157,8 +157,7 @@ const FAQ = () => {
                       className="accordion-collapse collapse"
                     >
                       <div className="accordion-body">
-                        Yes, we offer custom furniture designs! Our team can collaborate with you to create a unique piece that fits your space and style. Contact our design team at 
-                        <a href="mailto:support@carpento.com" className="text-info">support@carpento.com</a> to get started on your custom project.
+                        Yes, we offer custom furniture designs! Our team can collaborate with you to create a unique piece that fits your space and style. Contact our design team at <a href="mailto:support@carpento.com" className="text-info">support@carpento.com</a> to get started on your custom project.
                       </div>
                     </div>
                   </div>

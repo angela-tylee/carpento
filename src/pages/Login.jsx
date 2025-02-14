@@ -21,7 +21,7 @@ const Login = () => {
     try {
       const res = await axios.post('/v2/admin/signin', data);
       const { token, expired } = res.data;
-      document.cookie = `carpento=${token}; expires=${new Date(expired)}`; 
+      document.cookie = `carpento=${token}; expires=${new Date(expired)}`;
 
       setIsLoading(false);
 
