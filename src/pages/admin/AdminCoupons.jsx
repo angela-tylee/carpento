@@ -26,8 +26,25 @@ const AdminCoupons = () => {
       backdrop: 'static',
       keyboard: true,
     });
+
     deleteModal.current = new Modal('#deleteModal', {
       keyboard: true,
+    });
+
+    const couponModalElement = document.getElementById("couponModal");
+
+    couponModalElement.addEventListener('hide.bs.modal', () => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    });
+
+    const deleteModalElement = document.getElementById("deleteModal");
+
+    deleteModalElement.addEventListener('hide.bs.modal', () => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
     });
 
     getCoupons();
