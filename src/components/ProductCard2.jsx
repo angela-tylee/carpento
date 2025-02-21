@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 const ProductCard2 = ({
   product,
@@ -10,7 +10,7 @@ const ProductCard2 = ({
     <div className="card product-card-2 w-100 border-0 d-flex flex-column h-100 justify-content-between">
       <NavLink
         to={`/product/${product.id}`}
-        className="card-header px-0 border-0"
+        className="card-header px-0 border-0 position-relative"
         style={{
           backgroundImage: `url(${product.imagesUrl[0]})`,
           backgroundSize: 'cover',
@@ -36,7 +36,7 @@ const ProductCard2 = ({
       >
         <div className="d-flex flex-column h-100 justify-content-between">
           <h5 className="card-title fs-6 fw-bold">{product.title}</h5>
-          <div className="card-text">
+          <div className="card-text d-flex align-items-center">
             <span className="text-primary me-1">
               ${product.price.toLocaleString()}
             </span>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import ReactInputMask from "react-input-mask";
 import axios from 'axios';
@@ -19,15 +19,15 @@ const Checkout = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
-      firstName: '',
-      lastName: '',
-      streetAddress: '',
-      city: '',
-      country: '',
+      email: 'example@gmail.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      streetAddress: '123 Sesame Street',
+      city: 'Sesame City',
+      country: 'Sesame',
       county: '',
-      postCode: '',
-      phone: '',
+      postCode: '123456',
+      phone: '0123456789',
     },
     mode: 'onTouched',
   });

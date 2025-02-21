@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import FullPageLoader from '../../components/FullPageLoader';

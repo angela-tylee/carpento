@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import { CartContext } from '../context/CartContext';
@@ -8,6 +8,7 @@ import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 import CartBadge from '../components/CartBadge';
 import Collapse from 'bootstrap/js/dist/collapse';
+import Countdown from '../components/Countdown';
 
 const Header = () => {
   const [products, setProducts] = useState([]);
@@ -134,6 +135,9 @@ const Header = () => {
   }, []);
 
   const handleNavClick = () => {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    if (!isMobile) return;
+
     if (navbarRef.current) {
       const bsCollapse = Collapse.getInstance(navbarRef.current);
       if (bsCollapse) {
@@ -150,6 +154,7 @@ const Header = () => {
     <>
       <Message type={messageType} message={message} />
       <header ref={headerRef} className="bg-light sticky">
+        <Countdown />
         <div className="container py-1 py-sm-2 py-lg-3">
           <nav className="navbar navbar-expand-md p-0 fw-semibold">
             <div className="container-fluid p-0">
@@ -197,7 +202,10 @@ const Header = () => {
                   <li className="nav-item text-center text-md-start py-1 py-md-0 dropdown">
                     <NavLink
                       to="/products"
-                      className="nav-link dropdown-toggle"
+                      className={`${({ location }) =>
+                        location.pathname.startsWith('/products')
+                          ? 'active nav-link dropdown-toggle'
+                          : 'nav-link dropdown-toggle'}`}
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"

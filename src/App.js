@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import FrontRoutes from './routes/FrontRoutes';
 import AdminRoutes from './routes/AdminRoutes';
 import Login from './pages/Login';

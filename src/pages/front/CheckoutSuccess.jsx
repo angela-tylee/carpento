@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import FullPageLoader from '../../components/FullPageLoader';
 import Message from '../../components/Message';

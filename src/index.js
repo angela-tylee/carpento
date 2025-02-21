@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 import {
   HashRouter
-} from 'react-router-dom';
+} from 'react-router';
 import { CartProvider } from './context/CartContext';
 import { StickyHeaderProvider } from './context/StickyHeaderContext';
 import { MessageProvider } from './context/MessageContext';

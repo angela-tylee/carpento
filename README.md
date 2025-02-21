@@ -2,6 +2,13 @@
 
 ## Overview
 
+### Links
+
+- Solution URL: [https://github.com/angela-tylee/carpento/](https://github.com/angela-tylee/carpento/)
+- Live Site URL: 
+  - Home Page:[https://angela-tylee.github.io/carpento/](https://angela-tylee.github.io/carpento/)
+  - Admin Page: [https://angela-tylee.github.io/carpento/#/admin](https://angela-tylee.github.io/carpento/#/admin)
+
 ### Screenshot
 
 <img width="512" alt="Screenshot 2025-01-21 at 12 42 24 AM" src="https://github.com/user-attachments/assets/d26b6b9c-6bbd-44dd-8473-3a87abeca965" />
@@ -11,12 +18,6 @@
 <img width="512" alt="Screenshot 2025-01-21 at 12 43 37 AM" src="https://github.com/user-attachments/assets/f84abfa0-88e1-4b71-9afd-bd9f81eee877" />
 
 <img width="512" alt="image" src="https://github.com/user-attachments/assets/e2c158a6-558b-4a34-a3bd-33b4c489fa6f" />
-
-  
-### Links
-
-- Solution URL: [https://github.com/angela-tylee/carpento/](https://github.com/angela-tylee/carpento/)
-- Live Site URL: [https://angela-tylee.github.io/carpento/](https://angela-tylee.github.io/carpento/)
 
 ## My Process
 
@@ -54,6 +55,7 @@
 ### Continued development
 
 - Customer Log-in & Account Center
+- Add to favorite
 
 ### Useful resources
 
@@ -65,7 +67,7 @@
 
 - mdn - Always a reliable source for understanding basic syntax, usage, and compatibility.
 
-- Claude.ai. - Most reliable AI tool and partner when discussing technical problems.
+- Claude.ai. - One of the most reliable AI tools and a great partner when discussing technical problems.
 
 - 《React 思維進化》
 

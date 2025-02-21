@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import axios from 'axios';
 import ArticleModal from '../../components/ArticleModal';
 import DeleteModal from '../../components/DeleteModal';

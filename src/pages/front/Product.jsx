@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -71,7 +71,6 @@ const Product = () => {
     const items = getRecentlySeen();
     setRecentlySeenProducts(items);
   }, [id]);
-
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
@@ -185,7 +184,22 @@ const Product = () => {
 
             <div className="col-md-7">
               <div className="ms-md-3 ms-lg-6">
-                <h1 className="fs-2 mt-2 mt-sm-4 mt-md-0">{product.title}</h1>
+                <div className="d-flex flex-wrap gap-1 align-items-center mt-2 mt-sm-4 mt-md-0 ">
+                  <span
+                    className={`badge badge-blinking fs-6 ${
+                      product.tag === 'sale' || product.tag === 'hot'
+                        ? 'bg-danger'
+                        : product.tag === 'new'
+                        ? 'bg-warning'
+                        : ''
+                    }`}
+                  >
+                    {product.tag}
+                  </span>
+                  <h1 className="fs-2">
+                    {product.title}
+                  </h1>
+                </div>
                 <p className="fs-5 mt-1">
                   <span className="text-primary me-1">
                     ${product.price?.toLocaleString()}{' '}
@@ -193,7 +207,7 @@ const Product = () => {
                   <del> ${product.origin_price?.toLocaleString()}</del>
                 </p>
                 <p className="mt-2">{product.description}</p>
-                <div className="mt-3 w-100 d-flex align-items-center d-none d-md-flex">
+                <div className="mt-3 w-100 d-flex flex-nowrap align-items-center d-none d-md-flex">
                   <div className="input-group w-25">
                     <button
                       className="btn btn-outline-secondary text-dark"
@@ -212,6 +226,7 @@ const Product = () => {
                       aria-label=""
                       value={cartQty}
                       readOnly
+                      style={{ minWidth: '42px' }}
                     />
                     <button
                       className="btn btn-outline-secondary text-dark"
@@ -342,9 +357,9 @@ const Product = () => {
         </section>
 
         {/* mobile start*/}
-        <div className="mt-3 w-100 d-flex justify-content-between sticky-bottom d-md-none py-2 bg-light">
-          <Link to="/cart" className="nav-link me-2 mt-1" role="button">
-            <CartBadge size="fs-4" />
+        <div className="mt-3 w-100 d-flex gap-2 align-items-center justify-content-between sticky-bottom d-md-none py-2 bg-light">
+          <Link to="/cart" className="nav-link mt-1" role="button">
+            <CartBadge size="fs-4"/>
           </Link>
           <button
             type="button"
@@ -373,9 +388,9 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={16} 
-                slidesPerView={1} 
-                navigation 
+                spaceBetween={16}
+                slidesPerView={1}
+                navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
                 breakpoints={{
@@ -410,9 +425,9 @@ const Product = () => {
             <div className="mt-5">
               <Swiper
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
-                spaceBetween={16} 
-                slidesPerView={1} 
-                navigation 
+                spaceBetween={16}
+                slidesPerView={1}
+                navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
                 breakpoints={{

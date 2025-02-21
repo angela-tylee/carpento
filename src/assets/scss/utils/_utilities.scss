@@ -6,3 +6,30 @@
   opacity: 0.8;
   transition: opacity 0.3s;
 }
+
+@keyframes blink {
+  0% {
+    background-position: -200%;
+  }
+  40% {
+    background-position: 200%; 
+  }
+  60% {
+    background-position: 200%;
+  }
+  100% {
+    background-position: -200%;
+  }
+}
+
+.badge-blinking {
+  background: linear-gradient(120deg, transparent 70%, #ffffff80 30%);
+  background-size: 200% 100%;
+  position: relative;
+  animation: blink 2.5s;
+  
+  &:hover {
+    animation: blink 3s infinite;
+  }
+}
+
