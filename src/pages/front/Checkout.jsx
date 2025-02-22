@@ -19,15 +19,15 @@ const Checkout = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: 'example@gmail.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      streetAddress: '123 Sesame Street',
-      city: 'Sesame City',
-      country: 'Sesame',
+      email: '',
+      firstName: '',
+      lastName: '',
+      streetAddress: '',
+      city: '',
+      country: '',
       county: '',
-      postCode: '123456',
-      phone: '0123456789',
+      postCode: '',
+      phone: '',
     },
     mode: 'onTouched',
   });

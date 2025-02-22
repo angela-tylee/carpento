@@ -7,7 +7,7 @@ const ProductCard2 = ({
   isLoading: isLoadingItem,
 }) => {
   return (
-    <div className="card product-card-2 w-100 border-0 d-flex flex-column h-100 justify-content-between">
+    <div className="card product-card-2 w-100 border-0 d-flex flex-column justify-content-between">
       <NavLink
         to={`/product/${product.id}`}
         className="card-header px-0 border-0 position-relative"
@@ -32,7 +32,7 @@ const ProductCard2 = ({
       </NavLink>
       <NavLink
         to={`/product/${product.id}`}
-        className="card-body p-0 mt-2 flex-grow-1"
+        className="card-body p-0 mt-2"
       >
         <div className="d-flex flex-column h-100 justify-content-between">
           <h5 className="card-title fs-6 fw-bold">{product.title}</h5>

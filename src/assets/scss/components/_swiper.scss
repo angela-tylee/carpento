@@ -1,24 +1,42 @@
 .swiper {
   width: 100%;
-  // padding-inline: 50px;
-  // margin-inline: 10%;
-  // position: relative;
-  @media (min-width: 568px) {
-    width: calc(100% - 32px);
+  margin: 0;
+
+  @media (min-width: 768px) {
+    width: calc(100% - 96px);
+    margin: 0;
+  }
+  @media (min-width: 1200px) {
+    width: calc(100% - 116px);
+    margin: 0;
   }
 }
 
-.swiper-button-prev{
-  &::after {
-    color: $dark;
+.swiper-custom-prev,
+.swiper-custom-next {
+  display: none;
+  font-size: 56px;
+
+  &:disabled {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    display: block;
   }
 }
 
-.swiper-button-next{
-  &::after {
-    color: $dark;
-  }
-}
+// .swiper-button-prev{
+//   &::after {
+//     color: $dark;
+//   }
+// }
+
+// .swiper-button-next{
+//   &::after {
+//     color: $dark;
+//   }
+// }
+
 
 .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background-color: $dark;
@@ -27,6 +45,7 @@
 .swiper {
   .swiper-wrapper {
     width: 320px;
+    margin-bottom: 48px;
   }
   
   @media (min-width: 768px) {

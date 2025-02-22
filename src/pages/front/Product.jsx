@@ -1,11 +1,15 @@
 import { Link, useParams } from 'react-router';
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { Navigation, Pagination, EffectFade, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import {
+  SwiperPrevButton,
+  SwiperNextButton,
+} from '../../components/SwiperNavButton';
 import ProductCard2 from '../../components/ProductCard2';
 import { CartContext } from '../../context/CartContext';
 import Message from '../../components/Message';
@@ -196,9 +200,7 @@ const Product = () => {
                   >
                     {product.tag}
                   </span>
-                  <h1 className="fs-2">
-                    {product.title}
-                  </h1>
+                  <h1 className="fs-2">{product.title}</h1>
                 </div>
                 <p className="fs-5 mt-1">
                   <span className="text-primary me-1">
@@ -207,54 +209,60 @@ const Product = () => {
                   <del> ${product.origin_price?.toLocaleString()}</del>
                 </p>
                 <p className="mt-2">{product.description}</p>
-                <div className="mt-3 w-100 d-flex flex-nowrap align-items-center d-none d-md-flex">
-                  <div className="input-group w-25">
-                    <button
-                      className="btn btn-outline-secondary text-dark"
-                      type="button"
-                      id="button-addon1"
-                      onClick={() =>
-                        setCartQty((pre) => (pre === 1 ? pre : pre - 1))
-                      }
-                    >
-                      <i className="bi bi-dash-lg "></i>
-                    </button>
-                    <input
-                      type="text"
-                      className="form-control text-center"
-                      placeholder=""
-                      aria-label=""
-                      value={cartQty}
-                      readOnly
-                      style={{ minWidth: '42px' }}
-                    />
-                    <button
-                      className="btn btn-outline-secondary text-dark"
-                      type="button"
-                      id="button-addon1"
-                      onClick={() => setCartQty((pre) => pre + 1)}
-                    >
-                      <i className="bi bi-plus-lg"></i>
-                    </button>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary ms-2"
-                    onClick={() => {
-                      addToCart(product.id, cartQty);
-                    }}
-                    disabled={isLoading}
-                  >
-                    <div
-                      className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
-                        isLoading ? '' : 'd-none'
-                      }`}
-                      role="status"
-                    >
-                      <span className="visually-hidden">Loading...</span>
+                <div className="mt-3 d-none d-md-block">
+                  <div className="row">
+                    <div className="col-6 col-lg-4">
+                      <div className="input-group">
+                        <button
+                          className="btn btn-outline-secondary text-dark"
+                          type="button"
+                          id="button-addon1"
+                          onClick={() =>
+                            setCartQty((pre) => (pre === 1 ? pre : pre - 1))
+                          }
+                        >
+                          <i className="bi bi-dash-lg "></i>
+                        </button>
+                        <input
+                          type="text"
+                          className="form-control text-center"
+                          placeholder=""
+                          aria-label=""
+                          value={cartQty}
+                          readOnly
+                          style={{ minWidth: '40px' }}
+                        />
+                        <button
+                          className="btn btn-outline-secondary text-dark"
+                          type="button"
+                          id="button-addon1"
+                          onClick={() => setCartQty((pre) => pre + 1)}
+                        >
+                          <i className="bi bi-plus-lg"></i>
+                        </button>
+                      </div>
                     </div>
-                    Add to Cart
-                  </button>
+                    <div className="col-6 col-lg-8">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => {
+                          addToCart(product.id, cartQty);
+                        }}
+                        disabled={isLoading}
+                      >
+                        <div
+                          className={`spinner-border spinner-border-sm text-light opacity-50 me-1 ${
+                            isLoading ? '' : 'd-none'
+                          }`}
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -359,7 +367,7 @@ const Product = () => {
         {/* mobile start*/}
         <div className="mt-3 w-100 d-flex gap-2 align-items-center justify-content-between sticky-bottom d-md-none py-2 bg-light">
           <Link to="/cart" className="nav-link mt-1" role="button">
-            <CartBadge size="fs-4"/>
+            <CartBadge size="fs-4" />
           </Link>
           <button
             type="button"
@@ -385,12 +393,16 @@ const Product = () => {
             <h2 className="fs-5 fw-bold border-bottom border-3 border-dark d-inline px-1 py-1">
               Recently Seen
             </h2>
-            <div className="mt-5">
+            <div className="mt-5 d-flex justify-content-center position-relative">
               <Swiper
+                className="m-0"
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
                 spaceBetween={16}
                 slidesPerView={1}
-                navigation
+                navigation={{
+                  nextEl: '.swiper-recently-seen.swiper-custom-next',
+                  prevEl: '.swiper-recently-seen.swiper-custom-prev',
+                }}
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
                 breakpoints={{
@@ -406,11 +418,13 @@ const Product = () => {
                 }}
               >
                 {recentlySeenProducts.slice(0, 10).map((item) => (
-                  <SwiperSlide key={item.id} className="mb-5">
+                  <SwiperSlide key={item.id}>
                     <ProductCard2 product={item} hasFooter={false} />
                   </SwiperSlide>
                 ))}
               </Swiper>
+              <SwiperPrevButton section={"swiper-recently-seen"}/>
+              <SwiperNextButton section={"swiper-recently-seen"}/>
             </div>
           </section>
         )}
@@ -422,12 +436,16 @@ const Product = () => {
             <h2 className="fs-5 fw-bold border-bottom border-3 border-dark d-inline px-1 py-1">
               You might also need...
             </h2>
-            <div className="mt-5">
+            <div className="mt-5 d-flex justify-content-center position-relative">
               <Swiper
+                className="m-0"
                 modules={[Navigation, Pagination, EffectFade, Scrollbar]}
                 spaceBetween={16}
                 slidesPerView={1}
-                navigation
+                navigation={{
+                  nextEl: '.swiper-related.swiper-custom-next',
+                  prevEl: '.swiper-related.swiper-custom-prev',
+                }}
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true, hide: true }}
                 breakpoints={{
@@ -448,11 +466,13 @@ const Product = () => {
                       item.category === product.category && item.id !== id
                   )
                   .map((item) => (
-                    <SwiperSlide key={item.id} className="mb-5">
+                    <SwiperSlide key={item.id}>
                       <ProductCard2 product={item} hasFooter={false} />
                     </SwiperSlide>
                   ))}
               </Swiper>
+              <SwiperPrevButton section={"swiper-related"}/>
+              <SwiperNextButton section={"swiper-related"}/>
             </div>
           </section>
         )}

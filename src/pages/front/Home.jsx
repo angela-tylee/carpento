@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import AOS from 'aos';
@@ -17,10 +17,15 @@ import 'swiper/css/pagination';
 import ProductCard from '../../components/ProductCard';
 import REVIEWS from '../../constants/reviews';
 import FullPageLoader from '../../components/FullPageLoader';
+import Message from '../../components/Message';
+import { MessageContext } from '../../context/MessageContext';
+// import { useForm } from 'react-hook-form';
+import SignupModal from '../../components/SignupModal';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const { showMessage, messageType, message } = useContext(MessageContext);
 
   const getProductsAll = async () => {
     setIsLoadingProducts(true);
@@ -40,30 +45,16 @@ const Home = () => {
     getProductsAll();
   }, []);
 
-  const [lightboxOpen, setLightboxOpen] = useState(true);
-
-  // const openLightbox = () => {
-  //   setLightboxOpen(true);
-  // };
-
-  const [email, setEmail] = useState("");
-
-  function submitEmail(e) {
-    e.preventDefault();
-    setLightboxOpen(false);
-    setEmail(""); // Clear input using state
-  }
-
   if (isLoadingProducts) {
     return (
-      // <main className="product container mb-6">
       <FullPageLoader />
-      // </main>
     );
   }
 
   return (
     <div className="home">
+      <Message type={messageType} message={message} />
+      <SignupModal />
       <main>
         <section
           className="section-hero py-6 py-lg-7"
@@ -87,56 +78,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
-        {lightboxOpen && (
-          <div
-            className="position-fixed top-0 start-0 bottom-0 end-0 bg-dark bg-opacity-25 d-flex align-items-center justify-content-center"
-            style={{ zIndex: 1050 }}
-            // onClick={() => setLightboxOpen(false)}
-          >
-            <div className="position-relative col-10 col-md-8 col-xl-6 mx-3 shadow">
-              {/* <img
-                    src={`${process.env.PUBLIC_URL}/images/banner-3.jpeg`}
-                    className="w-100 h-auto"
-                    alt="Lightbox view"
-                  /> */}
-              <div className="bg-light p-4 p-md-6">
-                <h2><span className="pe-1">Join Us for Exclusive Deals!</span><i className="bi bi-tags-fill"></i></h2>
-                <p className="mt-2 mt-md-4">Be the first to access:</p>
-                <ul className="ps-2">
-                  <li className="mt-md-1">Special discounts & early access to sales</li>
-                  <li className="mt-md-1">Exciting new product launches</li>
-                </ul>
-                <form className="input-group mt-2 mt-md-5 mb-1" onSubmit={submitEmail}>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter Your Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    aria-label="Enter your email"
-                    aria-describedby="basic-addon2"
-                  />
-                  <button className="input-group-text" id="basic-addon2">
-                    Enter
-                  </button>
-                </form>
-                <small className="text-body-secondary">We respect your privacy. No spam, just great content.</small>
-              </div>
-              <button
-                className="btn btn-transparent position-absolute top-0 end-0 m-1 m-md-2"
-                style={{
-                  width: '30px',
-                  height: '30px',
-                  padding: '1px 0px 0px 2px',
-                }}
-                onClick={() => setLightboxOpen(false)}
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-            </div>
-          </div>
-        )}
 
         <section
           className="section-sale container py-6 py-lg-7"

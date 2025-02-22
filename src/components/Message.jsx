@@ -1,7 +1,7 @@
 const Message = ({ type, message }) => {
   console.log(type, message)
   return (
-    <div className="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+    <div className="toast-container position-fixed start-50 translate-middle-x p-3" style={{ top: "5%" }}>
       <div
         id="myToast"
         className={`toast bg-${type}-subtle text-${type} shadow-sm align-items-center text-bg-primary border-0`}
