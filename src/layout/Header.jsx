@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext, useRef } from 'react';
-import { NavLink, Link } from 'react-router';
+import { useState, useEffect, useContext } from 'react';
+import { NavLink, Link, useLocation } from 'react-router';
 import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import { CartContext } from '../context/CartContext';
@@ -7,7 +7,6 @@ import { StickyHeaderContext } from '../context/StickyHeaderContext';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 import CartBadge from '../components/CartBadge';
-// import Collapse from 'bootstrap/js/dist/collapse';
 import Countdown from '../components/Countdown';
 
 const Header = () => {
@@ -16,6 +15,9 @@ const Header = () => {
   const { cart, getCart, cartDropdownRef } = useContext(CartContext);
   const { showMessage, messageType, message } = useContext(MessageContext);
   const [theme, setTheme] = useState('light');
+
+  const location = useLocation();
+  const isActive = location.pathname.startsWith("/products") || location.pathname.startsWith("/product/");
 
   const getProductsAll = async () => {
     const res = await axios.get(
@@ -107,59 +109,6 @@ const Header = () => {
     }
   };
 
-  // const navbarRef = useRef(null); // Ref for the navbar element
-  // const navCollapseInstance = useRef(null);
-
-  // useEffect(() => {
-  //   // Initialize the Bootstrap Collapse on component mount
-  //   // if (navbarRef.current) {
-  //   //   new Collapse(navbarRef.current, { toggle: false }); // Instantiate without auto-toggle
-  //   // }
-
-  //   if (navbarRef.current) {
-  //     navCollapseInstance.current = new Collapse(navbarRef.current, {
-  //       toggle: false,
-  //       parent: navbarRef.current
-  //     });
-  //   }
-  //       // Cleanup on unmount
-  //       return () => {
-  //         if (navCollapseInstance.current) {
-  //           navCollapseInstance.current.dispose();
-  //         }
-  //       };
-  // }, []);
-
-  // const handleNavClick = () => {
-  //   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  //   if (!isMobile) return;
-
-  //   if (navbarRef.current) {
-  //     const bsCollapse = Collapse.getInstance(navbarRef.current);
-  //     if (bsCollapse) {
-  //       if (navbarRef.current.classList.contains('show')) {
-  //         bsCollapse.hide();
-  //       } else {
-  //         bsCollapse.show();
-  //       }
-  //     }
-  //   }
-  // };
-
-  // const handleNavClick = (e) => {
-  //   e.stopPropagation(); // Prevent event bubbling
-
-  //   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  //   if (!isMobile) return;
-
-  //   if (navCollapseInstance.current && navbarRef.current) {
-  //     if (navbarRef.current.classList.contains('show')) {
-  //       navCollapseInstance.current.hide();
-  //     } else {
-  //       navCollapseInstance.current.show();
-  //     }
-  //   }
-  // };
 
   return (
     <>
@@ -197,7 +146,6 @@ const Header = () => {
                   aria-controls="navbarNav"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
-                  // onClick={handleNavClick}
                 >
                   <span className="navbar-toggler-icon"></span>
                 </button>
@@ -207,19 +155,15 @@ const Header = () => {
               <div
                 className="collapse navbar-collapse"
                 id="navbarNav"
-                // ref={navbarRef}
               >
-                <ul className="navbar-nav">
-                  <li className="nav-item text-center text-md-start py-1 py-md-0 dropdown">
+                <ul className="navbar-nav mb-2">
+                  <li className="nav-item text-center text-md-start py-2 py-md-0 dropdown">
                     <NavLink
                       to="/products"
-                      className={`${({ location }) =>
-                        location.pathname.startsWith('/products')
-                          ? 'active dropdown-toggle'
-                          : 'dropdown-toggle'}`}
+                      className={isActive ? "active nav-link d-inline d-md-block" : "nav-link d-inline d-md-block"}
                     >
                       <span
-                        className="nav-link"
+                        className="dropdown-toggle"
                         role="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -227,12 +171,11 @@ const Header = () => {
                         Products
                       </span>
                     </NavLink>
-                    <ul className="product-dropdown-menu dropdown-menu">
+                    <ul className="product-dropdown-menu dropdown-menu mt-1 mt-md-0">
                       <li className="text-center text-md-start">
                         <Link
                           to="/products"
                           className="w-100 dropdown-item"
-                          // onClick={handleNavClick}
                         >
                           All
                         </Link>
@@ -247,7 +190,6 @@ const Header = () => {
                               tempCategory
                             )}`}
                             className="w-100 dropdown-item"
-                            // onClick={handleNavClick}
                           >
                             <span className="d-none d-md-block">
                               {tempCategory}
@@ -264,15 +206,14 @@ const Header = () => {
                       ))}
                     </ul>
                   </li>
-                  <li className="nav-item text-center text-md-start py-1 py-md-0">
+                  <li className="nav-item text-center text-md-start py-2 py-md-0">
                     <NavLink
                       to="/blogs"
-                      // className="nav-link"
-                      // onClick={handleNavClick}
+                      className="nav-link d-inline d-md-block"
                     >
-                      <span className="nav-link d-none d-md-block">Blog</span>
+                      <span className="d-none d-md-block">Blog</span>
                       <span
-                        className="nav-link d-md-none"
+                        className="d-md-none"
                         data-bs-toggle="collapse"
                         data-bs-target="#navbarNav"
                       >
@@ -280,15 +221,14 @@ const Header = () => {
                       </span>
                     </NavLink>
                   </li>
-                  <li className="nav-item text-center text-md-start py-1 py-md-0">
+                  <li className="nav-item text-center text-md-start py-2 py-md-0">
                     <NavLink
                       to="/about"
-                      // className="nav-link"
-                      // onClick={handleNavClick}
+                      className="nav-link d-inline d-md-block"
                     >
-                      <span className="nav-link d-none d-md-block">About</span>
+                      <span className="d-none d-md-block">About</span>
                       <span
-                        className="nav-link d-md-none"
+                        className="d-md-none"
                         data-bs-toggle="collapse"
                         data-bs-target="#navbarNav"
                       >

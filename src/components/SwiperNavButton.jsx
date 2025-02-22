@@ -19,7 +19,7 @@ export const SwiperNextButton = ({ section }) => {
   // const swiper = useSwiper();
   return (
     <button
-      className={`position-absolute swiper-recently-seen swiper-custom-next btn border-0 bg-transparent p-0 bottom-50 end-0 ${section}`}
+      className={`position-absolute swiper-custom-next btn border-0 bg-transparent p-0 bottom-50 end-0 ${section}`}
       // onClick={() => {
       //   swiper.slideNext();
       //   console.log('next');
