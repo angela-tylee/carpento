@@ -90,7 +90,7 @@ const ProductModal = ({
     e.preventDefault();
     setIsLoadingImg(true);
 
-    if (tempData.imagesUrl.length >= 5) {
+    if (tempData.imagesUrl?.length >= 5) {
       alert('最多上傳 5 張照片');
       return;
     }
@@ -109,7 +109,7 @@ const ProductModal = ({
 
         setTempData((prev) => ({
           ...prev,
-          imagesUrl: [...prev.imagesUrl, res.data.imageUrl],
+          imagesUrl: [...(prev.imagesUrl || []), res.data.imageUrl],
         }));
 
         setIsLoadingImg(false);
@@ -120,7 +120,7 @@ const ProductModal = ({
       if (uploadImageUrl) {
         setTempData((prev) => ({
           ...prev,
-          imagesUrl: [...prev.imagesUrl, uploadImageUrl.trim()],
+          imagesUrl: [...(prev.imagesUrl || []), uploadImageUrl.trim()],
         }));
         setIsLoadingImg(false);
         setUploadImageUrl('');
@@ -346,7 +346,7 @@ const ProductModal = ({
                           className="form-check-input"
                           onChange={handleChange}
                           checked={tempData.is_enabled}
-                      />
+                        />
                       </label>
                     </div>
                   </div>
@@ -402,10 +402,10 @@ const ProductModal = ({
                   </label>
                 </div>
                 <div className="row g-2 mb-2">
-                  {(tempData.imagesUrl.length > 0 || isLoadingImg) && (
+                  {(tempData.imagesUrl?.length > 0 || isLoadingImg) && (
                     <>
                       <div className="col-sm-12">
-                        {isLoadingImg && tempData.imagesUrl.length === 0 ? (
+                        {isLoadingImg && tempData.imagesUrl?.length === 0 ? (
                           <div
                             className="d-flex justify-content-center align-items-center"
                             style={{ height: '150px' }}
@@ -423,7 +423,7 @@ const ProductModal = ({
                         ) : (
                           <div className="position-relative opacity-hover">
                             <img
-                              src={tempData.imagesUrl[0]}
+                              src={tempData.imagesUrl?.[0]}
                               alt={`${tempData.title}-1`}
                               className="img-fluid w-100"
                             />
@@ -455,7 +455,7 @@ const ProductModal = ({
                           </div>
                         </div>
                       ))}
-                      {isLoadingImg && tempData.imagesUrl.length >= 1 && (
+                      {isLoadingImg && tempData.imagesUr?.length >= 1 && (
                         <div className="col-sm-6">
                           <div
                             className="d-flex justify-content-center align-items-center"

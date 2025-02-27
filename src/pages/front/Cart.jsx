@@ -89,7 +89,7 @@ const Cart = () => {
 
   return (
     <>
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       {cart.carts && cart.carts.length === 0 ? (
         <main className="container mb-7 d-flex justify-content-center align-items-center">
           <div className="text-center">

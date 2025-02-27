@@ -199,7 +199,7 @@ const AdminProducts = () => {
                   <tr key={product.id}>
                     <td>
                       <img
-                        src={product.imagesUrl[0] || ''}
+                        src={product.imagesUrl?.[0] || ''}
                         alt={product.title}
                         width="100%"
                       />

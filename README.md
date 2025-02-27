@@ -56,6 +56,7 @@
 
 - Customer Log-in & Account Center
 - Add to favorite
+- Email integration for sign-up and order confirmation.
 
 ### Useful resources
 

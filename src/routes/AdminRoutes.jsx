@@ -22,22 +22,35 @@ const AdminRoutes = () => {
 
   axios.defaults.headers.common['Authorization'] = token;
 
+  async function checkAdmin() {
+    try {
+      await axios.post('/api/user/check');
+    } catch (error) {
+      if (!error.response.data.success) {
+        navigate('/login');
+        showMessage('danger', '驗證失敗，請重新登入');
+      }
+    }
+  }
+
   useEffect(() => {
     if (!token) {
       navigate('/login');
       showMessage('danger', '驗證失敗，請重新登入');
       return;
     }
-    (async () => {
-      try {
-        await axios.post('/api/user/check');
-      } catch (error) {
-        if (!error.response.data.success) {
-          navigate('/login');
-          showMessage('danger', '驗證失敗，請重新登入');
-        }
-      }
-    })();
+
+    checkAdmin();
+    // (async () => {
+    //   try {
+    //     await axios.post('/api/user/check');
+    //   } catch (error) {
+    //     if (!error.response.data.success) {
+    //       navigate('/login');
+    //       showMessage('danger', '驗證失敗，請重新登入');
+    //     }
+    //   }
+    // })();
   }, [navigate, token]);
 
   useEffect(() => {
@@ -52,7 +65,8 @@ const AdminRoutes = () => {
 
   return (
     <>
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
+      <Message />
       <div className="dashboard">
         <header className="py-3 px-6 bg-secondary">
           <nav className="navbar navbar-expand-lg p-0 fw-normal d-flex justify-content-between">

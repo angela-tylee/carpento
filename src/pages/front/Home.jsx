@@ -18,14 +18,14 @@ import ProductCard from '../../components/ProductCard';
 import REVIEWS from '../../constants/reviews';
 import FullPageLoader from '../../components/FullPageLoader';
 import Message from '../../components/Message';
-import { MessageContext } from '../../context/MessageContext';
+// import { MessageContext } from '../../context/MessageContext';
 // import { useForm } from 'react-hook-form';
 import SignupModal from '../../components/SignupModal';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
-  const { showMessage, messageType, message } = useContext(MessageContext);
+  // const { showMessage, messageType, message } = useContext(MessageContext);
 
   const getProductsAll = async () => {
     setIsLoadingProducts(true);
@@ -53,7 +53,8 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
+      {/* <Message /> */}
       <SignupModal />
       <main>
         <section

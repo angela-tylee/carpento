@@ -25,7 +25,7 @@ export const SwiperNextButton = ({ section }) => {
       //   console.log('next');
       // }}
     >
-      <i class="bi bi-chevron-compact-right"></i>
+      <i className="bi bi-chevron-compact-right"></i>
     </button>
   );
 };

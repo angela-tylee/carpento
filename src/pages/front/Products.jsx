@@ -106,7 +106,7 @@ const Products = () => {
 
   return (
     <>
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       <main className="container mb-6">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">

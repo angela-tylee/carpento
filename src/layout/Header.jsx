@@ -112,7 +112,7 @@ const Header = () => {
 
   return (
     <>
-      <Message type={messageType} message={message} />
+      {/* <Message type={messageType} message={message} /> */}
       <header ref={headerRef} className="bg-light sticky">
         <Countdown />
         <div className="container py-1 py-sm-2 py-lg-3">

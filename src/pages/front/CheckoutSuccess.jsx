@@ -60,7 +60,7 @@ const CheckoutSuccess = () => {
 
   return (
     <>
-    <Message type={messageType} message={message} />
+    {/* <Message type={messageType} message={message} /> */}
     <main className="checkout-success container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
       <section className="text-center py-7">
         <h1 className="fs-2">
