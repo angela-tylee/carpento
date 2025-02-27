@@ -4,7 +4,7 @@ import axios from 'axios';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 
-const AdminRoutes = () => {
+const AdminLayout = () => {
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState('light');
@@ -81,7 +81,8 @@ const AdminRoutes = () => {
               <p>| Dashboard</p>
             </div>
             <button className="btn p-1 nav-link" onClick={logout}>
-              登出
+              {/* 登出 */}
+              Sign out
             </button>
           </nav>
         </header>
@@ -93,34 +94,39 @@ const AdminRoutes = () => {
             <nav className="navbar navbar-expand bg-secondary d-block h-100 w-100">
               <div className="container-fluid flex-column align-items-start h-100 ps-6">
                 <div id="navbarNav">
-                  <ul className="navbar-nav flex-column">
-                    <li className="nav-item mt-3 pe-2 fw-bold">
+                  <ul className="navbar-nav flex-column gap-5 mt-4">
+                    <li className="nav-item pe-2 fw-bold">
                       <NavLink
                         to="/admin/products"
-                        className="nav-link"
+                        className="nav-link d-inline"
                         aria-current="page"
                       >
-                        產品列表
+                        {/* 產品列表 */}
+                        Products
                       </NavLink>
                     </li>
-                    <li className="nav-item mt-3 pe-2 fw-bold">
-                      <NavLink to="/admin/orders" className="nav-link">
-                        訂單列表
+                    <li className="nav-item pe-2 fw-bold">
+                      <NavLink to="/admin/orders" className="nav-link d-inline">
+                        {/* 訂單列表 */}
+                        Orders
                       </NavLink>
                     </li>
-                    <li className="nav-item mt-3 pe-2 fw-bold">
-                      <NavLink to="/admin/blogs" className="nav-link">
-                        文章列表
+                    <li className="nav-item pe-2 fw-bold">
+                      <NavLink to="/admin/blogs" className="nav-link d-inline">
+                        {/* 文章列表 */}
+                        Blog
                       </NavLink>
                     </li>
-                    <li className="nav-item mt-3 pe-2 fw-bold">
-                      <NavLink to="/admin/coupons" className="nav-link">
-                        折扣碼列表
+                    <li className="nav-item pe-2 fw-bold">
+                      <NavLink to="/admin/coupons" className="nav-link d-inline">
+                        {/* 折扣碼列表 */}
+                        Coupons
                       </NavLink>
                     </li>
-                    <li className="nav-item mt-3 pe-2 fw-bold">
+                    <li className="nav-item pe-2 fw-bold">
                       <NavLink to="/" className="nav-link">
-                        回到前台
+                        {/* 回到前台 */}
+                        Home
                         <i className="bi bi-arrow-return-left ms-1 fs-7"></i>
                       </NavLink>
                     </li>
@@ -136,4 +142,4 @@ const AdminRoutes = () => {
   );
 };
 
-export default AdminRoutes;
+export default AdminLayout;

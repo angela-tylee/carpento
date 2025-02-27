@@ -100,12 +100,14 @@ const ArticleModal = ({
         data: tempData,
       });
       setIsLoading(false);
-      showMessage('success', `成功：${res.data.message}`);
+      // showMessage('success', `成功：${res.data.message}`);
+      showMessage('success', `Success: ${res.data.message}`);
       closeArticleModal();
       getArticles(currentPage);
     } catch (error) {
       setIsLoading(false);
-      showMessage('success', `失敗：${error.response.data.message}`);
+      // showMessage('success', `失敗：${error.response.data.message}`);
+      showMessage('success', `Error: ${error.response.data.message}`);
     }
   }
 
@@ -127,7 +129,8 @@ const ArticleModal = ({
             <>
               <div className="modal-header">
                 <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  {type === 'create' ? '建立新文章' : `編輯：${tempData.title}`}
+                  {/* {type === 'create' ? '建立新文章' : `編輯：${tempData.title}`} */}
+                  {type === 'create' ? 'Create New Article' : `Edit: ${tempData.title}`}
                 </h1>
                 <button
                   type="button"
@@ -141,12 +144,14 @@ const ArticleModal = ({
                 <div className="row">
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="title">
-                      文章標題
+                      {/* 文章標題 */}
+                      Title
                       <input
                         type="text"
                         id="title"
                         name="title"
-                        placeholder="請輸入標題"
+                        // placeholder="請輸入標題"
+                        placeholder="Enter title"
                         className="form-control"
                         onChange={handleChange}
                         value={tempData.title}
@@ -156,12 +161,14 @@ const ArticleModal = ({
                   <div className="row">
                     <div className="form-group mb-2 col-md-6">
                       <label className="w-100" htmlFor="author">
-                        作者
+                        {/* 作者 */}
+                        Author
                         <input
                           type="text"
                           id="author"
                           name="author"
-                          placeholder="請輸入作者"
+                          // placeholder="請輸入作者"
+                          placeholder="Enter author name"
                           className="form-control"
                           onChange={handleChange}
                           value={tempData.author}
@@ -199,7 +206,8 @@ const ArticleModal = ({
                   </div>
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="description">
-                      文章描述
+                      {/* 文章描述 */}
+                      Description
                       {/* <textarea
                       type='text'
                       id='description'
@@ -222,7 +230,8 @@ const ArticleModal = ({
                   </div>
                   <div className="form-group mb-2">
                     <label className="w-100" htmlFor="content">
-                      文章內容
+                      {/* 文章內容 */}
+                      Content
                       {/* <textarea
                       type='text'
                       id='content'
@@ -244,12 +253,14 @@ const ArticleModal = ({
                     <div className="col-6">
                       <div className="form-group mb-2">
                         <label className="w-100" htmlFor="image">
-                          輸入圖片網址
+                          {/* 輸入圖片網址 */}
+                          Add image URL
                           <input
                             type="text"
                             name="image"
                             id="image"
-                            placeholder="請輸入圖片連結"
+                            // placeholder="請輸入圖片連結"
+                            placeholder="Enter image URL"
                             className="form-control"
                             onChange={handleChange}
                             value={tempData.image}
@@ -260,7 +271,8 @@ const ArticleModal = ({
                     <div className="col-6">
                       <div className="form-group mb-2">
                         <label className="w-100" htmlFor="customFile">
-                          或 上傳圖片
+                          {/* 或 上傳圖片 */}
+                          Or upload file
                           <input
                             type="file"
                             name="imageUpload"
@@ -300,12 +312,14 @@ const ArticleModal = ({
                   <div className="row">
                     <div className="form-group mb-2 col-md-12">
                       <label className="w-100" htmlFor="tag">
-                        標籤
+                        {/* 標籤 */}
+                        Tags
                         <input
                           type="text"
                           id="tag"
                           name="tag"
-                          placeholder="請輸入標籤"
+                          // placeholder="請輸入標籤"
+                          placeholder="Enter tags"
                           className="form-control"
                           onChange={handleChange}
                           value={tempData.tag}
@@ -321,7 +335,8 @@ const ArticleModal = ({
                           className="w-100 form-check-label"
                           htmlFor="isPublic"
                         >
-                          是否發布
+                          {/* 是否發布 */}
+                          Publish the article?
                           <input
                             type="checkbox"
                             id="isPublic"
@@ -341,7 +356,8 @@ const ArticleModal = ({
                           data-bs-target="#deleteModal"
                           data-bs-toggle="modal"
                         >
-                          <i className="bi bi-trash3"></i> 刪除文章
+                          {/* <i className="bi bi-trash3"></i> 刪除文章 */}
+                          <i className="bi bi-trash3"></i> Delete
                         </button>
                       </div>
                     )}
@@ -355,7 +371,8 @@ const ArticleModal = ({
                   data-bs-dismiss="modal"
                   onClick={closeArticleModal}
                 >
-                  取消
+                  {/* 取消 */}
+                  Cancel
                 </button>
                 <button
                   type="button"
@@ -371,7 +388,8 @@ const ArticleModal = ({
                   >
                     <span className="visually-hidden">Loading...</span>
                   </div>
-                  儲存
+                  {/* 儲存 */}
+                  Save
                 </button>
               </div>
             </>

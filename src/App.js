@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router';
-import FrontRoutes from './routes/FrontRoutes';
-import AdminRoutes from './routes/AdminRoutes';
+import FrontLayout from './layout/FrontLayout';
+import AdminLayout from './layout/AdminLayout';
 import Login from './pages/Login';
 import Home from './pages/front/Home';
 import Products from './pages/front/Products';
@@ -21,16 +21,15 @@ import AdminCoupons from './pages/admin/AdminCoupons';
 import ScrollToTop from './utils/ScrollToTop';
 import NotFound from './pages/NotFound';
 
+
 function App() {
-  console.log("base", process.env.PUBLIC_URL);
-  
   return (
     <div className='App'>
       <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />}></Route>
         {/* Front Pages Routes */}
-        <Route path="/" element={<FrontRoutes />}>
+        <Route path="/" element={<FrontLayout />}>
           <Route path="" element={<Home />}></Route>
           <Route path="products" element={<Products />}></Route>
           <Route path="product/:id" element={<Product />}></Route>
@@ -46,7 +45,7 @@ function App() {
         </Route>
 
         {/* Admin Pages Routes */}
-        <Route path="/admin" element={<AdminRoutes />}>
+        <Route path="/admin" element={<AdminLayout />}>
           <Route path="products" element={<AdminProducts />}></Route>
           <Route path="orders" element={<AdminOrders />}></Route>
           <Route path="blogs" element={<AdminBlogs />}></Route>

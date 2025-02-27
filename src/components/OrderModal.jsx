@@ -47,12 +47,14 @@ const OrderModal = ({
         }
       );
       setIsLoading(false);
-      showMessage('success', `成功：${res.data.message}`);
+      // showMessage('success', `成功：${res.data.message}`);
+      showMessage('success', `Success: ${res.data.message}`);
       closeOrderModal();
       getOrders(currentPage);
     } catch (error) {
       setIsLoading(false);
-      showMessage('danger', `失敗：${error.response.data.message}`);
+      // showMessage('danger', `失敗：${error.response.data.message}`);
+      showMessage('danger', `Error: ${error.response.data.message}`);
     }
   };
 
@@ -68,7 +70,8 @@ const OrderModal = ({
         <div className="modal-content px-2 py-1">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              編輯訂單
+              {/* 編輯訂單 */}
+              Edit
             </h1>
             <button
               type="button"
@@ -81,7 +84,8 @@ const OrderModal = ({
           {tempData && (
             <div className="modal-body">
               <h2 className="card-title mb-2 fs-5">
-                訂單編號：{selectedOrder?.id}
+                {/* 訂單編號：{selectedOrder?.id} */}
+                Order ID：{selectedOrder?.id}
               </h2>
               <div className="row">
                 <div className="col-sm-7 pe-4">
@@ -91,9 +95,11 @@ const OrderModal = ({
                         tempData.is_paid ? 'text-bg-success' : 'text-bg-danger'
                       }`}
                     >
-                      {tempData.is_paid ? '已付款' : '未付款'}
+                      {/* {tempData.is_paid ? '已付款' : '未付款'} */}
+                      {tempData.is_paid ? 'Paid' : 'Unpaid'}
                     </span>
-                    訂單日期：
+                    {/* 訂單日期： */}
+                    Order Date:
                     {(() => {
                       const date = new Date(tempData.create_at * 1000);
 
@@ -136,14 +142,18 @@ const OrderModal = ({
                       </span>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p>折扣碼：</p>
+                      {/* <p>折扣碼：</p> */}
+                      <p>Coupon Code：</p>
                       <span>
+                        {/* {Object.values(tempData.products)[0]?.coupon?.code ||
+                          '無'} */}
                         {Object.values(tempData.products)[0]?.coupon?.code ||
-                          '無'}
+                          'none'}
                       </span>
                     </div>
                     <div className="d-flex justify-content-between">
-                      <p>總金額：</p>
+                      {/* <p>總金額：</p> */}
+                      <p>Total：</p>
                       <span>${tempData?.total?.toLocaleString()} </span>
                     </div>
                   </div>
@@ -152,7 +162,8 @@ const OrderModal = ({
                   <div>
                     <div className="form-group mb-2">
                       <label className="w-100" htmlFor="name">
-                        姓名：
+                        {/* 姓名： */}
+                        Name: 
                         <input
                           type="text"
                           name="name"
@@ -165,7 +176,8 @@ const OrderModal = ({
                     </div>
                     <div className="form-group mb-2">
                       <label className="w-100" htmlFor="email">
-                        電子郵件：
+                        {/* 電子郵件： */}
+                        Email：
                         <input
                           type="email"
                           name="email"
@@ -178,7 +190,8 @@ const OrderModal = ({
                     </div>
                     <div className="form-group mb-2">
                       <label className="w-100" htmlFor="phone">
-                        電話：
+                        {/* 電話： */}
+                        Phone Number：
                         <input
                           type="tel"
                           name="tel"
@@ -190,7 +203,8 @@ const OrderModal = ({
                       </label>
                     </div>
                     <div className="form-group mb-2">
-                      地址：
+                      {/* 地址： */}
+                      Shipping Address：
                       <label className="w-100" htmlFor="address">
                         <input
                           type="text"
@@ -212,7 +226,8 @@ const OrderModal = ({
                   data-bs-target="#deleteModal"
                   data-bs-toggle="modal"
                 >
-                  <i className="bi bi-trash3"></i> 刪除訂單
+                  {/* <i className="bi bi-trash3"></i> 刪除訂單 */}
+                  <i className="bi bi-trash3"></i> Delete
                 </button>
               </div>
             </div>
@@ -224,7 +239,8 @@ const OrderModal = ({
               data-bs-dismiss="modal"
               onClick={closeOrderModal}
             >
-              取消
+              {/* 取消 */}
+              Cancel
             </button>
             <button
               type="button"
@@ -240,7 +256,8 @@ const OrderModal = ({
               >
                 <span className="visually-hidden">Loading...</span>
               </div>
-              儲存
+              {/* 儲存 */}
+              Save
             </button>
           </div>
         </div>

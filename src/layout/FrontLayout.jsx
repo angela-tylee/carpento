@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router';
-import Header from '../layout/Header';
-import Footer from '../layout/Footer';
+import Header from './Header';
+import Footer from './Footer';
 import Message from '../components/Message';
 
-const FrontRoutes = () => {
+const FrontLayout = () => {
   return (
     <div className="front-layout">
       <Message />
@@ -14,4 +14,4 @@ const FrontRoutes = () => {
   );
 };
 
-export default FrontRoutes;
+export default FrontLayout;

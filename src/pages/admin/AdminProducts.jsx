@@ -28,12 +28,12 @@ const AdminProducts = () => {
       backdrop: 'static',
       keyboard: true,
     });
-    
+
     deleteModal.current = new Modal('#deleteModal', {
       keyboard: true,
     });
 
-    const produceModalElement = document.getElementById("productModal");
+    const produceModalElement = document.getElementById('productModal');
 
     produceModalElement.addEventListener('hide.bs.modal', () => {
       if (document.activeElement instanceof HTMLElement) {
@@ -41,7 +41,7 @@ const AdminProducts = () => {
       }
     });
 
-    const deleteModalElement = document.getElementById("deleteModal");
+    const deleteModalElement = document.getElementById('deleteModal');
 
     deleteModalElement.addEventListener('hide.bs.modal', () => {
       if (document.activeElement instanceof HTMLElement) {
@@ -82,12 +82,14 @@ const AdminProducts = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/product/${id}`
       );
       setIsLoadingDelete(false);
-      showMessage('success', `成功：${res.data.message}`);
+      // showMessage('success', `成功：${res.data.message}`);
+      showMessage('success', `Success: ${res.data.message}`);
       closeDeleteModal();
       getProducts(pagination.current_page);
     } catch (error) {
       setIsLoadingDelete(false);
-      showMessage('danger', `失敗：${error.response.data.message}`);
+      // showMessage('danger', `失敗：${error.response.data.message}`);
+      showMessage('danger', `Error: ${error.response.data.message}`);
       closeDeleteModal();
     }
   };
@@ -138,13 +140,15 @@ const AdminProducts = () => {
         <main>
           <header className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
-              <h1 className="fs-5">產品列表</h1>
+              {/* <h1 className="fs-5">產品列表</h1> */}
+              <h1 className="fs-5">Products</h1>
               <button
                 type="button"
                 className="btn btn-outline-primary btn-sm ms-2"
                 onClick={() => openProductModal('create', {})}
               >
-                <i className="bi bi-plus-lg"></i> 新增產品
+                {/* <i className="bi bi-plus-lg"></i> 新增產品 */}
+                <i className="bi bi-plus-lg"></i> Add Product
               </button>
             </div>
             <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
@@ -168,28 +172,34 @@ const AdminProducts = () => {
             <thead>
               <tr>
                 <th scope="col" width="10%">
-                  圖片
+                  {/* 圖片 */}
                 </th>
                 <th scope="col" width="30%">
-                  產品名稱
+                  {/* 產品名稱 */}
+                  Title
                 </th>
                 <th scope="col" width="10%">
-                  分類
+                  {/* 分類 */}
+                  Category
                 </th>
                 <th scope="col" width="10%" className="text-end">
-                  售價
+                  {/* 售價 */}
+                  Price
                 </th>
                 <th scope="col" width="10%" className="text-end">
-                  原價
+                  {/* 原價 */}
+                  Original Price
                 </th>
                 <th scope="col" width="10%" className="text-center">
-                  標籤
+                  {/* 標籤 */}
+                  Tags
                 </th>
                 <th scope="col" width="10%" className="text-center">
-                  啟用狀態
+                  {/* 啟用狀態 */}
+                  Enabled
                 </th>
                 <th scope="col" width="15%" className="text-center">
-                  編輯
+                  {/* 編輯 */}
                 </th>
               </tr>
             </thead>
@@ -233,7 +243,12 @@ const AdminProducts = () => {
                       </span>
                     </td>
                     <td className="text-center">
-                      {product.is_enabled ? '已啟用' : '未啟用'}
+                      {/* {product.is_enabled ? '已啟用' : '未啟用'} */}
+                      {product.is_enabled ? (
+                        <span>enabled</span>
+                      ) : (
+                        <span className="text-body-tertiary">disabled</span>
+                      )}
                     </td>
                     <td className="text-center">
                       <button
@@ -241,7 +256,8 @@ const AdminProducts = () => {
                         className="btn btn-primary btn-sm"
                         onClick={() => openProductModal('edit', product)}
                       >
-                        編輯
+                        {/* 編輯 */}
+                        Edit
                       </button>
                     </td>
                   </tr>
@@ -251,13 +267,20 @@ const AdminProducts = () => {
           </table>
           <footer className="d-flex justify-content-between align-items-end">
             <p className="ps-1">
-              目前有
+              {/* 目前有
               <span>
                 {filteredProducts
                   ? filteredProducts.length
                   : allProducts.length}
               </span>
-              項產品
+              項產品 */}
+              Total{' '}
+              <span>
+                {filteredProducts
+                  ? filteredProducts.length
+                  : allProducts.length}
+              </span>{' '}
+              products
             </p>
             {searchTerm === '' && (
               <Pagination
