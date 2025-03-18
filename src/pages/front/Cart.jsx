@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import axios from 'axios';
 import { CartContext } from '../../context/CartContext';
 import FullPageLoader from '../../components/FullPageLoader';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 
 const Cart = () => {
@@ -18,7 +17,7 @@ const Cart = () => {
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
   const { cart, getCart, isLoadingCart } = useContext(CartContext);
 
-  const { showMessage, messageType, message } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
@@ -283,6 +282,7 @@ const Cart = () => {
                               ? 'is-valid'
                               : 'is-invalid'
                           }`}
+                          placeholder="Enter coupon code"
                           aria-label="Example text with button addon"
                           aria-describedby="button-addon1"
                           value={coupon.code}

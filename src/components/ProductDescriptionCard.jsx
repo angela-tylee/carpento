@@ -27,7 +27,7 @@ const ProductDescriptionCard = ({ product }) => {
           {product.tag}
         </span>
       </div>
-      <div className="card-body p-0 mt-3 flex-grow-1">
+      <div className="card-body p-0 mt-3 flex-grow-0 flex-sm-grow-1">
         <div className="d-flex flex-column h-100 justify-content-sm-between">
           <h5 className="card-title">{product.title}</h5>
           <p className="card-text overflow-hidden">
@@ -36,12 +36,7 @@ const ProductDescriptionCard = ({ product }) => {
         </div>
       </div>
       <div className="card-footer bg-transparent p-0 border-0">
-        {/* <Link
-            to={`/product/${product.id}`}
-            className="text-decoration-underline mt-1"
-          > */}
-        <div className="text-decoration-underline mt-1">Shop Now</div>
-        {/* </Link> */}
+        <div className="text-decoration-underline mt-2 mt-sm-1">Shop Now</div>
       </div>
     </Link>
   );

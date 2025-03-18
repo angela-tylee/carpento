@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-// import Message from '../../components/Message';
 import { MessageContext } from '../context/MessageContext';
 import { useForm } from 'react-hook-form';
 
@@ -7,7 +6,6 @@ const SignupModal = () => {
   const { showMessage } = useContext(MessageContext);
   
   const [lightboxOpen, setLightboxOpen] = useState(true);
-  // const [email, setEmail] = useState('');
   const [isLoadingEmail, setIsLoadingEmail] = useState(false);
 
   const {
@@ -26,7 +24,6 @@ const SignupModal = () => {
     setIsLoadingEmail(true);
     setTimeout(() => {
       setLightboxOpen(false);
-      // setEmail('');
       reset();
       setIsLoadingEmail(false);
       showMessage('success', "We've received your Email!");
@@ -62,8 +59,6 @@ const SignupModal = () => {
                   className={`form-control ${errors.email && 'is-invalid'}`}
                   id="email"
                   placeholder="Enter Your Email"
-                  // value={email}
-                  // onChange={(e) => setEmail(e.target.value)}
                   aria-label="Enter your email"
                   aria-describedby="basic-addon2"
                   {...register('email', {

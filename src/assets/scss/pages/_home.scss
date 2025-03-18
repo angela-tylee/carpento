@@ -26,8 +26,7 @@
   }
 
   .section-contact {
-
-    @include banner;
+    @include banner(30vh, 40vh, 360px, 100%);
 
     @include mask(#000000, 0.5);
 
@@ -38,7 +37,6 @@
   }
 }
 
-// @media (prefers-color-scheme: dark) {
   :root[data-bs-theme="dark"]{
     .home {
       .img-grayscale {
@@ -46,4 +44,3 @@
       }
     }
   }
-// }

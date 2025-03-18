@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import ReactInputMask from "react-input-mask";
@@ -67,10 +67,6 @@ const Checkout = () => {
       setIsLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   getCart();
-  // }, []);
 
   if (isLoadingCart) {
     return (

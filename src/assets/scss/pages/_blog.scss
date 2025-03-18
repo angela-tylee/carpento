@@ -1,3 +1,13 @@
+.section-blogs {
+  .article-description {
+    height: 78px;
+
+    @media (min-width: 768px) {
+      height: 132px;
+    }
+  }
+}
+
 .blog-hero-img {
   @include banner (25vh, 40vh, 454px);
 }

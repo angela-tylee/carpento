@@ -57,7 +57,7 @@ const ProductModal = ({
   }, [type, tempProduct]);
 
   const handleChange = async (e, editorData) => {
-    const { name, value, checked, files } = e.target;
+    const { name, value, checked } = e.target;
     if (['price', 'origin_price'].includes(name)) {
       setTempData({
         ...tempData,

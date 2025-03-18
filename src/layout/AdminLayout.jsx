@@ -8,7 +8,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState('light');
-  const { messageType, message, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
 
   const token = document.cookie
@@ -19,16 +19,9 @@ const AdminLayout = () => {
   axios.defaults.headers.common['Authorization'] = token;
 
 
-
-  // function logout() {
-  //   document.cookie = 'carpento=;';
-  //   navigate('/login');
-  // }
-
   async function logout() {
   try {
     await axios.post(`/logout`);
-    console.log('post /logout')
     
     document.cookie = "carpento=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import AOS from 'aos';
@@ -53,7 +53,7 @@ const Home = () => {
       <SignupModal />
       <main>
         <section
-          className="section-hero py-6 py-lg-7"
+          className="section-hero py-6 py-lg-7 d-flex flex-column justify-content-center"
           style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/images/banner-6.jpeg)`,
           }}
@@ -62,7 +62,7 @@ const Home = () => {
           data-aos-duration="1000"
         >
           <div className="container section-body section-hero-body">
-            <div className="text-light mt-7">
+            <div className="text-light">
               <h1 className="display-4 text-white">Welcome to Carpento</h1>
               <p className="fs-2 text-white">Special Sales is coming soon!</p>
               <Link
@@ -332,13 +332,13 @@ const Home = () => {
         </section>
 
         <section
-          className="section-contact py-6 py-lg-7"
+          className="section-contact py-6 py-lg-7 d-flex flex-column justify-content-center"
           style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/images/contact-xl.jpeg)`,
           }}
         >
           <div className="container section-body section-hero-body">
-            <div className="text-white mt-7">
+            <div className="text-white">
               <h1 className="fs-1">Contact Us</h1>
               <p className="fs-4 fw-light text-white">
                 Need interior design advice or customize furniture arrangement?

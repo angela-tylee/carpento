@@ -51,30 +51,29 @@ const Blogs = () => {
       <section className="section-blogs mt-3 mt-sm-5">
         {articles.map((article) => (
           <Link to={`/blog/${article.id}`} className="d-block" key={article.id}>
-            <div className="row flex-column flex-sm-row mb-4 ">
-              <div className="col-sm-4 col-lg-3 col-xl-3">
+            <div className="row flex-column flex-md-row mb-4">
+              <div className="col-md-4">
                 <img
                   src={article.image}
-                  alt="Blog workspace"
+                  alt={article.title}
                   width="100%"
                   height="156px"
                   className="object-fit-cover"
                 />
               </div>
-              <div className="col-sm-8 col-lg-9 col-xl-9">
+              <div className="col-md-8">
                 <div className="h-100 d-flex flex-column justify-content-between">
                   <div>
                     <h2 className="mt-2 mt-sm-0 fs-4">{article.title}</h2>
                     <p
-                      className="mt-1 mt-sm-2"
+                      className="article-description mt-1 mt-sm-2 overflow-y-hidden"
                       dangerouslySetInnerHTML={{
                         __html: article.description,
                       }}
-                      style={{ maxHeight: '72px', overflowY: 'hidden' }}
                     >
                     </p>
                   </div>
-                  <p className="text-end text-decoration-underline mt-1 mt-sm-2">
+                  <p className="text-end text-decoration-underline mt-2">
                     Read More
                   </p>
                 </div>

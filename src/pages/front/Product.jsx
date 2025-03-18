@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router';
 import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, EffectFade, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
