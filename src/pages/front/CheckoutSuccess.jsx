@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router';
 import axios from 'axios';
 import FullPageLoader from '../../components/FullPageLoader';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 
 const CheckoutSuccess = () => {
@@ -10,7 +9,7 @@ const CheckoutSuccess = () => {
   const { id } = useParams();
   const [isLoadingOrder, setIsLoadingOrder] = useState(false);
 
-  const { messageType, message, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const getOrders = async () => {
     setIsLoadingOrder(true);
@@ -60,7 +59,6 @@ const CheckoutSuccess = () => {
 
   return (
     <>
-    {/* <Message type={messageType} message={message} /> */}
     <main className="checkout-success container pb-7 mb-7 d-flex flex-column justify-content-center align-items-center h-100">
       <section className="text-center py-7">
         <h1 className="fs-2">

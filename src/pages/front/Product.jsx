@@ -10,10 +10,8 @@ import {
   SwiperPrevButton,
   SwiperNextButton,
 } from '../../components/SwiperNavButton';
-import ProductCard2 from '../../components/ProductCard2';
+import ProductPriceCard from '../../components/ProductPriceCard';
 import { CartContext } from '../../context/CartContext';
-import Message from '../../components/Message';
-import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 import CartBadge from '../../components/CartBadge';
 
@@ -25,7 +23,6 @@ const Product = () => {
   const [cartQty, setCartQty] = useState(1);
   const [isLoadingProduct, setIsLoadingProduct] = useState(false);
   const { addToCart, isLoading } = useContext(CartContext);
-  const { messageType, message } = useContext(MessageContext);
 
   const getProduct = async (id) => {
     setIsLoadingProduct(true);
@@ -94,7 +91,6 @@ const Product = () => {
 
   return (
     <>
-      {/* <Message type={messageType} message={message} /> */}
       <main className="product container mb-6">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -419,7 +415,7 @@ const Product = () => {
               >
                 {recentlySeenProducts.slice(0, 10).map((item) => (
                   <SwiperSlide key={item.id}>
-                    <ProductCard2 product={item} hasFooter={false} />
+                    <ProductPriceCard product={item} hasFooter={false} />
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -467,7 +463,7 @@ const Product = () => {
                   )
                   .map((item) => (
                     <SwiperSlide key={item.id}>
-                      <ProductCard2 product={item} hasFooter={false} />
+                      <ProductPriceCard product={item} hasFooter={false} />
                     </SwiperSlide>
                   ))}
               </Swiper>

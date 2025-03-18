@@ -8,20 +8,20 @@ const Blog = () => {
   const { id } = useParams();
   const [isLoadingBlog, setIsLoadingBlog] = useState(false);
 
-  const getArticle = async (id) => {
-    setIsLoadingBlog(true);
-    try {
-      const res = await axios.get(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/article/${id}`
-      );
-      setArticle(res.data.article);
-      setIsLoadingBlog(false);
-    } catch (error) {
-      setIsLoadingBlog(false);
-    }
-  };
-
   useEffect(() => {
+    const getArticle = async (id) => {
+      setIsLoadingBlog(true);
+      try {
+        const res = await axios.get(
+          `/v2/api/${process.env.REACT_APP_API_PATH}/article/${id}`
+        );
+        setArticle(res.data.article);
+        setIsLoadingBlog(false);
+      } catch (error) {
+        setIsLoadingBlog(false);
+      }
+    };
+
     getArticle(id);
   }, [id]);
 

@@ -18,14 +18,15 @@ import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminBlogs from './pages/admin/AdminBlogs';
 import AdminCoupons from './pages/admin/AdminCoupons';
-import ScrollToTop from './utils/ScrollToTop';
 import NotFound from './pages/NotFound';
+import useScrollToTop from './hooks/useScrollToTop';
 
 
 function App() {
+  useScrollToTop();
+
   return (
     <div className='App'>
-      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />}></Route>
         {/* Front Pages Routes */}

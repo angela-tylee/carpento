@@ -3,12 +3,10 @@ import { Link, NavLink, useSearchParams } from 'react-router';
 import axios from 'axios';
 import Pagination from '../../components/Pagination';
 import PRODUCTS_CATEGORIES from '../../constants/categories';
-import ProductCard2 from '../../components/ProductCard2';
+import ProductPriceCard from '../../components/ProductPriceCard';
 import useSort from '../../hooks/useSort';
 import { CartContext } from '../../context/CartContext';
 import { StickyHeaderContext } from '../../context/StickyHeaderContext';
-import Message from '../../components/Message';
-import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
 const Products = () => {
@@ -25,29 +23,7 @@ const Products = () => {
 
   const { unstickyDistance, headerHeight } = useContext(StickyHeaderContext);
 
-  const { messageType, message } = useContext(MessageContext);
-
   const sidebarRef = useRef(null);
-
-  useEffect(() => {
-    getProducts();
-    getProductsAll(category);
-
-    const handleScroll = () => {
-      if (window.scrollY > unstickyDistance) {
-        sidebarRef.current.style.top = '8px';
-        sidebarRef.current.style.transition = 'top 0.5s ease-in-out';
-      } else {
-        sidebarRef.current.style.top = `${headerHeight}px`;
-        sidebarRef.current.style.transition = 'top 0.5s ease-in-out';
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [category, headerHeight, unstickyDistance]);
 
   const getProducts = async (page = 1) => {
     setProducts([]);
@@ -104,9 +80,28 @@ const Products = () => {
     setAllProducts(categorizedProducts);
   };
 
+  useEffect(() => {
+    getProducts();
+    getProductsAll(category);
+
+    const handleScroll = () => {
+      if (window.scrollY > unstickyDistance) {
+        sidebarRef.current.style.top = '8px';
+        sidebarRef.current.style.transition = 'top 0.5s ease-in-out';
+      } else {
+        sidebarRef.current.style.top = `${headerHeight}px`;
+        sidebarRef.current.style.transition = 'top 0.5s ease-in-out';
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [category, headerHeight, unstickyDistance]);
+
   return (
     <>
-      {/* <Message type={messageType} message={message} /> */}
       <main className="container mb-6">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -246,7 +241,7 @@ const Products = () => {
                 <div className="row">
                   {(sortCriteria ? sortedItems : products)?.map((product) => (
                     <div key={product.id} className="col-6 col-sm-3 mt-4">
-                      <ProductCard2
+                      <ProductPriceCard
                         product={product}
                         hasFooter={true}
                         addToCart={addToCart}

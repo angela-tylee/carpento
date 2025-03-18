@@ -1,11 +1,10 @@
 import { Link } from 'react-router';
 
-const ProductCard = ({ product }) => {
+const ProductDescriptionCard = ({ product }) => {
   return (
     <Link
       to={`/product/${product.id}`}
       className="card product-card w-100 border-0 h-100 d-flex flex-column"
-      // style={{ width: '18rem' }}
     >
       <div
         className="card-header px-0 border-0"
@@ -48,4 +47,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default ProductDescriptionCard;

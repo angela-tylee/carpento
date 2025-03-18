@@ -5,7 +5,6 @@ import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
 import FullPageLoader from '../../components/FullPageLoader';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 
 const AdminOrder = () => {
@@ -15,7 +14,7 @@ const AdminOrder = () => {
   const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const { message, messageType, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const orderModal = useRef(null);
   const deleteModal = useRef(null);
@@ -110,7 +109,6 @@ const AdminOrder = () => {
         handleDelete={deleteOrder}
         isLoadingDelete={isLoadingDelete}
       />
-      {/* <Message type={messageType} message={message} /> */}
       {isLoadingOrders ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

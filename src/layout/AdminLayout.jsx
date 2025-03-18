@@ -10,10 +10,6 @@ const AdminLayout = () => {
   const [theme, setTheme] = useState('light');
   const { messageType, message, showMessage } = useContext(MessageContext);
 
-  function logout() {
-    document.cookie = 'carpento=;';
-    navigate('/login');
-  }
 
   const token = document.cookie
     .split('; ')
@@ -22,35 +18,51 @@ const AdminLayout = () => {
 
   axios.defaults.headers.common['Authorization'] = token;
 
-  async function checkAdmin() {
-    try {
-      await axios.post('/api/user/check');
-    } catch (error) {
-      if (!error.response.data.success) {
-        navigate('/login');
-        showMessage('danger', '驗證失敗，請重新登入');
-      }
-    }
+
+
+  // function logout() {
+  //   document.cookie = 'carpento=;';
+  //   navigate('/login');
+  // }
+
+  async function logout() {
+  try {
+    await axios.post(`/logout`);
+    console.log('post /logout')
+    
+    document.cookie = "carpento=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    
+    navigate('/login');
+  } catch (error) {
+    console.error('Logout failed:', error);
+    alert('登出失敗，請稍後再試');
   }
+};
 
   useEffect(() => {
     if (!token) {
-      navigate('/login');
       showMessage('danger', '驗證失敗，請重新登入');
+      setTimeout(()=> {
+        navigate('/login');
+      }, 2000)
       return;
     }
 
+    async function checkAdmin() {
+      try {
+        await axios.post('/api/user/check');
+      } catch (error) {
+        if (!error.response.data.success) {
+          showMessage('danger', '驗證失敗，請重新登入');
+          setTimeout(()=> {
+            navigate('/login');
+          }, 2000)
+        }
+      }
+    }
+
     checkAdmin();
-    // (async () => {
-    //   try {
-    //     await axios.post('/api/user/check');
-    //   } catch (error) {
-    //     if (!error.response.data.success) {
-    //       navigate('/login');
-    //       showMessage('danger', '驗證失敗，請重新登入');
-    //     }
-    //   }
-    // })();
+
   }, [navigate, token]);
 
   useEffect(() => {
@@ -65,7 +77,6 @@ const AdminLayout = () => {
 
   return (
     <>
-      {/* <Message type={messageType} message={message} /> */}
       <Message />
       <div className="dashboard">
         <header className="py-3 px-6 bg-secondary">

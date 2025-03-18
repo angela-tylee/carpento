@@ -4,7 +4,6 @@ import axios from 'axios';
 import PRODUCTS_CATEGORIES from '../constants/categories';
 import { CartContext } from '../context/CartContext';
 import { StickyHeaderContext } from '../context/StickyHeaderContext';
-import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
 import CartBadge from '../components/CartBadge';
 import Countdown from '../components/Countdown';
@@ -13,25 +12,28 @@ const Header = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingDeleteItem, setIsLoadingDeleteItem] = useState(null);
   const { cart, getCart, cartDropdownRef } = useContext(CartContext);
-  const { showMessage, messageType, message } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
   const [theme, setTheme] = useState('light');
 
   const location = useLocation();
   const isActive = location.pathname.startsWith("/products") || location.pathname.startsWith("/product/");
 
-  const getProductsAll = async () => {
-    const res = await axios.get(
-      `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
-    );
-
-    setProducts(res.data.products);
-  };
-
   const { headerRef, unstickyDistance } = useContext(StickyHeaderContext);
 
+
   useEffect(() => {
-    setSearchTerm('');
+
+    const getProductsAll = async () => {
+      const res = await axios.get(
+        `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+      );
+  
+      setProducts(res.data.products);
+    };
+
     getProductsAll();
+
+    setSearchTerm('');
 
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -69,11 +71,13 @@ const Header = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       setIsLoadingDeleteItem(null);
-      showMessage('success', res.data.message);
+      // showMessage('success', res.data.message);
+      showMessage('success', "Item removed from cart");
       getCart();
     } catch (error) {
       setIsLoadingDeleteItem(null);
-      showMessage('danger', error.response.data.message);
+      // showMessage('danger', error.response.data.message);
+      showMessage('danger', "Please try again later");
     }
   };
 
@@ -112,7 +116,6 @@ const Header = () => {
 
   return (
     <>
-      {/* <Message type={messageType} message={message} /> */}
       <header ref={headerRef} className="bg-light sticky">
         <Countdown />
         <div className="container py-1 py-sm-2 py-lg-3">

@@ -5,7 +5,6 @@ import ArticleModal from '../../components/ArticleModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
@@ -18,7 +17,7 @@ const AdminProducts = () => {
   const [isLoadingArticles, setIsLoadingArticles] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const { message, messageType, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const articleModal = useRef(null);
   const deleteModal = useRef(null);
@@ -80,18 +79,18 @@ const AdminProducts = () => {
   };
 
   const deleteArticle = async (id) => {
-    setIsLoadingArticles(true);
+    setIsLoadingDelete(true);
     try {
       const res = await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
       );
-      setIsLoadingArticles(false);
+      setIsLoadingDelete(false);
       // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success: ${res.data.message}`);
       closeDeleteModal();
       getArticles(pagination.current_page);
     } catch (error) {
-      setIsLoadingArticles(false);
+      setIsLoadingDelete(false);
       // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
       closeDeleteModal();
@@ -130,7 +129,6 @@ const AdminProducts = () => {
         handleDelete={deleteArticle}
         isLoadingDelete={isLoadingDelete}
       />
-      {/* <Message type={messageType} message={message} /> */}
       {isLoadingArticles ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

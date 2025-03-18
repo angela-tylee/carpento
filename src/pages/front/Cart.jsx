@@ -27,11 +27,13 @@ const Cart = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       setIsLoadingDeleteItem(null);
-      showMessage('success', res.data.message);
+      // showMessage('success', res.data.message);
+      showMessage('success', "Item removed from cart");
       getCart();
     } catch (error) {
       setIsLoadingDeleteItem(null);
-      showMessage('danger', error.response.data.message);
+      // showMessage('danger', error.response.data.message);
+      showMessage('danger', "Please try again later");
     }
   };
 
@@ -89,7 +91,6 @@ const Cart = () => {
 
   return (
     <>
-      {/* <Message type={messageType} message={message} /> */}
       {cart.carts && cart.carts.length === 0 ? (
         <main className="container mb-7 d-flex justify-content-center align-items-center">
           <div className="text-center">

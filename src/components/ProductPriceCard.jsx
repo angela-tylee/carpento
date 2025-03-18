@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router';
 
-const ProductCard2 = ({
+const ProductPriceCard = ({
   product,
   hasFooter,
   addToCart,
@@ -70,4 +70,4 @@ const ProductCard2 = ({
   );
 };
 
-export default ProductCard2;
+export default ProductPriceCard;

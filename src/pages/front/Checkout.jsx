@@ -68,9 +68,9 @@ const Checkout = () => {
     }
   };
 
-  useEffect(() => {
-    getCart();
-  }, []);
+  // useEffect(() => {
+  //   getCart();
+  // }, []);
 
   if (isLoadingCart) {
     return (
@@ -296,6 +296,7 @@ const Checkout = () => {
               </label>
               <input
                 type="tel"
+                inputMode="numeric"
                 className={`form-control ${errors.phone && 'is-invalid'}`}
                 id="phone"
                 {...register('phone', {
@@ -310,6 +311,10 @@ const Checkout = () => {
                   maxLength: {
                     value: 12,
                     message: 'Phone number cannot be longer than 12 digits',
+                  },
+                  pattern: {
+                    value: /^\+?[0-9 ]+$/,
+                    message: 'Please enter valid phone number',
                   },
                 })}
               />

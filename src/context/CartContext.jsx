@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef, useContext } from 'react';
+import { createContext, useState, useEffect, useRef, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { MessageContext } from './MessageContext';
 
@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   const cartDropdownRef = useRef(null);
   const { showMessage } = useContext(MessageContext);
 
-  const getCart = async (showLoading = false) => {
+  const getCart = useCallback(async (showLoading = false) => {
     if (showLoading) setIsLoadingCart(true);
     try {
       const res = await axios.get(
@@ -22,9 +22,9 @@ export const CartProvider = ({ children }) => {
     } catch (error) {
       setIsLoadingCart(false);
     }
-  };
+  }, []);
 
-  const addToCart = async (productId, quantity) => {
+  const addToCart = useCallback(async (productId, quantity) => {
     setIsLoadingItem(productId);
     try {
       const data = {
@@ -45,10 +45,10 @@ export const CartProvider = ({ children }) => {
       setIsLoadingItem(null);
       showMessage("danger", "Failed. Please try again.");
     }
-  };
+  }, [getCart, showMessage]);
 
 
-  const showCartDropdown = () => {
+  const showCartDropdown = useCallback(() => {
     if (cartDropdownRef.current) {
       cartDropdownRef.current.classList.add('cart-dropdown-visible');
       
@@ -58,12 +58,12 @@ export const CartProvider = ({ children }) => {
         }
       }, 2000);
     }    
-  };
+  }, []);
 
 
   useEffect(() => {
     getCart(true);
-  }, []);
+  }, [getCart]);
 
   return (
     <CartContext.Provider value={{ cart, isLoading: isLoadingItem, addToCart, getCart, isLoadingCart, showCartDropdown, cartDropdownRef }}>

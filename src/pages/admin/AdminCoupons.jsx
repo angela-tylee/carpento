@@ -4,7 +4,6 @@ import CouponModal from '../../components/CouponModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
@@ -16,7 +15,7 @@ const AdminCoupons = () => {
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const { message, messageType, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const couponModal = useRef(null);
   const deleteModal = useRef(null);
@@ -114,7 +113,6 @@ const AdminCoupons = () => {
         handleDelete={deleteCoupon}
         isLoadingDelete={isLoadingDelete}
       />
-      {/* <Message type={messageType} message={message} /> */}
       {isLoadingCoupons ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

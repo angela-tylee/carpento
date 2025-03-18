@@ -174,7 +174,9 @@ const ProductModal = ({
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
               {/* {type === 'create' ? '建立新商品' : `編輯：${tempData?.title}`} */}
-              {type === 'create' ? 'Create New Product' : `Edit: ${tempData?.title}`}
+              {type === 'create'
+                ? 'Create New Product'
+                : `Edit: ${tempData?.title}`}
             </h1>
             <button
               type="button"
@@ -327,6 +329,8 @@ const ProductModal = ({
                         className="form-control"
                         onChange={handleChange}
                         value={tempData.price}
+                        min="1"
+                        pattern="^[1-9]\d*$"
                       />
                     </label>
                   </div>
@@ -342,6 +346,8 @@ const ProductModal = ({
                         className="form-control"
                         onChange={handleChange}
                         value={tempData.origin_price}
+                        min="1"
+                        pattern="^[1-9]\d*$"
                       />
                     </label>
                   </div>

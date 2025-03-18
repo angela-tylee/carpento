@@ -5,8 +5,6 @@ const Message = () => {
   
   const { messageType, message } = useContext(MessageContext)
 
-  console.log("messageType", messageType, "message", message)
-
   return (
     <div className="toast-container position-fixed start-50 translate-middle-x p-3" style={{ top: "5%" }}>
       <div

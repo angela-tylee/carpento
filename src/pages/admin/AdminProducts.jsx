@@ -5,7 +5,6 @@ import ProductModal from '../../components/ProductModal';
 import DeleteModal from '../../components/DeleteModal';
 import { Modal } from 'bootstrap';
 import Pagination from '../../components/Pagination';
-import Message from '../../components/Message';
 import { MessageContext } from '../../context/MessageContext';
 import FullPageLoader from '../../components/FullPageLoader';
 
@@ -18,7 +17,7 @@ const AdminProducts = () => {
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
-  const { message, messageType, showMessage } = useContext(MessageContext);
+  const { showMessage } = useContext(MessageContext);
 
   const productModal = useRef(null);
   const deleteModal = useRef(null);
@@ -131,7 +130,6 @@ const AdminProducts = () => {
         handleDelete={deleteProduct}
         isLoadingDelete={isLoadingDelete}
       />
-      {/* <Message type={messageType} message={message} /> */}
       {isLoadingProducts ? (
         <main style={{ height: `calc(100% - 151px` }}>
           <FullPageLoader />

@@ -14,34 +14,31 @@ import {
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import ProductCard from '../../components/ProductCard';
+import ProductDescriptionCard from '../../components/ProductDescriptionCard';
 import REVIEWS from '../../constants/reviews';
 import FullPageLoader from '../../components/FullPageLoader';
-import Message from '../../components/Message';
-// import { MessageContext } from '../../context/MessageContext';
-// import { useForm } from 'react-hook-form';
 import SignupModal from '../../components/SignupModal';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
-  // const { showMessage, messageType, message } = useContext(MessageContext);
-
-  const getProductsAll = async () => {
-    setIsLoadingProducts(true);
-    try {
-      const res = await axios.get(
-        `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
-      );
-      setProducts(res.data.products);
-      setIsLoadingProducts(false);
-    } catch (error) {
-      setIsLoadingProducts(false);
-    }
-  };
 
   useEffect(() => {
     AOS.init();
+
+    const getProductsAll = async () => {
+      setIsLoadingProducts(true);
+      try {
+        const res = await axios.get(
+          `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
+        );
+        setProducts(res.data.products);
+        setIsLoadingProducts(false);
+      } catch (error) {
+        setIsLoadingProducts(false);
+      }
+    };
+
     getProductsAll();
   }, []);
 
@@ -53,8 +50,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      {/* <Message type={messageType} message={message} /> */}
-      {/* <Message /> */}
       <SignupModal />
       <main>
         <section
@@ -98,7 +93,7 @@ const Home = () => {
                     key={product.id}
                   >
                     <div className="mt-4 mt-sm-0 h-100">
-                      <ProductCard
+                      <ProductDescriptionCard
                         product={product}
                         colNum={4}
                         key={product.id}
@@ -173,7 +168,7 @@ const Home = () => {
                       key={product.id}
                     >
                       <div className="mt-4 mt-sm-0 h-100">
-                        <ProductCard
+                        <ProductDescriptionCard
                           product={product}
                           colNum={3}
                           key={product.id}
@@ -280,7 +275,7 @@ const Home = () => {
                     key={product.id}
                   >
                     <div className="mt-4 mt-sm-0 h-100">
-                      <ProductCard
+                      <ProductDescriptionCard
                         product={product}
                         colNum={4}
                         key={product.id}

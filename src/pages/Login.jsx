@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { MessageContext } from '../context/MessageContext';
+import Message from '../components/Message';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,9 +45,24 @@ const Login = () => {
     }
   };
 
+  // const { messageType, message, showMessage } = useContext(MessageContext);
+
+  // const token = document.cookie
+  //   .split('; ')
+  //   .find((row) => row.startsWith('carpento='))
+  //   ?.split('=')[1];
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     showMessage('danger', '驗證失敗，請重新登入');
+  //   }
+  // }, [token]);
+
   return (
+    <>
+    {/* <Message /> */}
     <div className="vh-100">
-      <div className="row h-100">
+      <div className="row h-100 g-0">
         <div
           className="col-md-7"
           style={{
@@ -112,6 +129,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
