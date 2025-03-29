@@ -81,7 +81,7 @@ const Product = () => {
     setLightboxOpen(true);
   };
 
-  if (!isLoadingProduct) {
+  if (isLoadingProduct) {
     return (
       <main className="product container mb-6">
         <FullPageLoader />
