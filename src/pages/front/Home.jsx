@@ -18,13 +18,13 @@ import ProductDescriptionCard from '../../components/ProductDescriptionCard';
 import REVIEWS from '../../constants/reviews';
 import FullPageLoader from '../../components/FullPageLoader';
 import SignupModal from '../../components/SignupModal';
-import { StickyHeaderContext } from '../../context/StickyHeaderContext';
+// import { StickyHeaderContext } from '../../context/StickyHeaderContext';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
 
-  const { headerHeight } = useContext(StickyHeaderContext);
+  // const { headerHeight } = useContext(StickyHeaderContext);
 
   useEffect(() => {
     AOS.init();
@@ -45,24 +45,24 @@ const Home = () => {
     getProductsAll();
   }, []);
 
-  // dynamic padding top for fix mobile menu
-  const [paddingTop, setPaddingTop] = useState(0);
+  // // dynamic padding top for fix mobile menu
+  // const [paddingTop, setPaddingTop] = useState(0);
 
-  useEffect(() => {
-    function updatePadding() {
-      if (window.matchMedia("(min-width: 768px)").matches) {
-        setPaddingTop("0px");
-      } else {
-        setPaddingTop(`${headerHeight}px`);
-      }
-    }
+  // useEffect(() => {
+  //   function updatePadding() {
+  //     if (window.matchMedia("(min-width: 768px)").matches) {
+  //       setPaddingTop("0px");
+  //     } else {
+  //       setPaddingTop(`${headerHeight}px`);
+  //     }
+  //   }
 
-    updatePadding(); 
+  //   updatePadding(); 
 
-    window.addEventListener("resize", updatePadding);
-    return () => window.removeEventListener("resize", updatePadding);
+  //   window.addEventListener("resize", updatePadding);
+  //   return () => window.removeEventListener("resize", updatePadding);
 
-  }, [headerHeight]);
+  // }, [headerHeight]);
 
   if (isLoadingProducts) {
     return (
@@ -71,7 +71,7 @@ const Home = () => {
   }
 
   return (
-    <div className="home" style={{ paddingTop }}>
+    <div className="home">
       <SignupModal />
       <main>
         <section
