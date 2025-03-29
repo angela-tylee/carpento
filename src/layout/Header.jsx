@@ -16,18 +16,18 @@ const Header = () => {
   const [theme, setTheme] = useState('light');
 
   const location = useLocation();
-  const isActive = location.pathname.startsWith("/products") || location.pathname.startsWith("/product/");
+  const isActive =
+    location.pathname.startsWith('/products') ||
+    location.pathname.startsWith('/product/');
 
   const { headerRef, unstickyDistance } = useContext(StickyHeaderContext);
 
-
   useEffect(() => {
-
     const getProductsAll = async () => {
       const res = await axios.get(
         `/v2/api/${process.env.REACT_APP_API_PATH}/products/all`
       );
-  
+
       setProducts(res.data.products);
     };
 
@@ -67,17 +67,15 @@ const Header = () => {
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
     try {
-      const res = await axios.delete(
+      await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       setIsLoadingDeleteItem(null);
-      // showMessage('success', res.data.message);
-      showMessage('success', "Item removed from cart");
+      showMessage('success', 'Item removed from cart');
       getCart();
     } catch (error) {
       setIsLoadingDeleteItem(null);
-      // showMessage('danger', error.response.data.message);
-      showMessage('danger', "Please try again later");
+      showMessage('danger', 'Please try again later');
     }
   };
 
@@ -112,7 +110,6 @@ const Header = () => {
       localStorage.setItem('theme', 'light');
     }
   };
-
 
   return (
     <>
@@ -155,15 +152,16 @@ const Header = () => {
               </div>
 
               {/* Nav Items */}
-              <div
-                className="collapse navbar-collapse"
-                id="navbarNav"
-              >
-                <ul className="navbar-nav mb-2">
+              <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav mb-2 mb-md-0">
                   <li className="nav-item text-center text-md-start py-2 py-md-0 dropdown">
                     <NavLink
                       to="/products"
-                      className={isActive ? "active nav-link d-inline d-md-block" : "nav-link d-inline d-md-block"}
+                      className={
+                        isActive
+                          ? 'active nav-link d-inline d-md-block'
+                          : 'nav-link d-inline d-md-block'
+                      }
                     >
                       <span
                         className="dropdown-toggle"
@@ -176,10 +174,7 @@ const Header = () => {
                     </NavLink>
                     <ul className="product-dropdown-menu dropdown-menu mt-1 mt-md-0">
                       <li className="text-center text-md-start">
-                        <Link
-                          to="/products"
-                          className="w-100 dropdown-item"
-                        >
+                        <Link to="/products" className="w-100 dropdown-item">
                           All
                         </Link>
                       </li>
@@ -248,7 +243,7 @@ const Header = () => {
               <div className="search-container d-flex align-items-center border border-dark rounded-pill overflow-hidden py-1 px-3">
                 <input
                   className="form-control p-0 border-0 shadow-none flex-grow-1 me-2 bg-transparent"
-                  type="text"
+                  type="search"
                   placeholder="Search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

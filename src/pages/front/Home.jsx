@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router';
 import axios from 'axios';
 import AOS from 'aos';
@@ -18,10 +18,13 @@ import ProductDescriptionCard from '../../components/ProductDescriptionCard';
 import REVIEWS from '../../constants/reviews';
 import FullPageLoader from '../../components/FullPageLoader';
 import SignupModal from '../../components/SignupModal';
+import { StickyHeaderContext } from '../../context/StickyHeaderContext';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+
+  const { headerHeight } = useContext(StickyHeaderContext);
 
   useEffect(() => {
     AOS.init();
@@ -42,6 +45,25 @@ const Home = () => {
     getProductsAll();
   }, []);
 
+  // dynamic padding top for fix mobile menu
+  const [paddingTop, setPaddingTop] = useState(0);
+
+  useEffect(() => {
+    function updatePadding() {
+      if (window.matchMedia("(min-width: 768px)").matches) {
+        setPaddingTop("0px");
+      } else {
+        setPaddingTop(`${headerHeight}px`);
+      }
+    }
+
+    updatePadding(); 
+
+    window.addEventListener("resize", updatePadding);
+    return () => window.removeEventListener("resize", updatePadding);
+
+  }, [headerHeight]);
+
   if (isLoadingProducts) {
     return (
       <FullPageLoader />
@@ -49,7 +71,7 @@ const Home = () => {
   }
 
   return (
-    <div className="home">
+    <div className="home" style={{ paddingTop }}>
       <SignupModal />
       <main>
         <section

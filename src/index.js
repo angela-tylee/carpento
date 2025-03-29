@@ -4,9 +4,6 @@ import './assets/scss/all.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
-import {
-  HashRouter
-} from 'react-router';
 import { CartProvider } from './context/CartContext';
 import { StickyHeaderProvider } from './context/StickyHeaderContext';
 import { MessageProvider } from './context/MessageContext';
@@ -16,7 +13,6 @@ axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <HashRouter>
       <MessageProvider>
         <StickyHeaderProvider>
           <CartProvider>
@@ -24,7 +20,6 @@ root.render(
           </CartProvider>
         </StickyHeaderProvider>
       </MessageProvider>
-    </HashRouter>
   </React.StrictMode>
 );
 

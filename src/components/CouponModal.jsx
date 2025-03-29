@@ -76,12 +76,10 @@ const CouponModal = ({
       });
       setIsLoading(false);
       closeCouponModal();
-      // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success: ${res.data.message}`);
       getCoupons(currentPage);
     } catch (error) {
       setIsLoading(false);
-      // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
     }
   };
@@ -98,7 +96,6 @@ const CouponModal = ({
         <div className="modal-content px-2 py-1">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              {/* {type === 'create' ? '建立新折扣碼' : `編輯：${tempData.code}`} */}
               {type === 'create' ? 'Create New Coupon' : `Edit: ${tempData.code}`}
             </h1>
             <button
@@ -113,13 +110,11 @@ const CouponModal = ({
             <div className="col-sm-12">
               <div className="form-group mb-2">
                 <label className="w-100" htmlFor="code">
-                  {/* 折扣碼 */}
                   Code
                   <input
                     type="text"
                     id="code"
                     name="code"
-                    // placeholder="請輸入折扣碼"
                     placeholder="Enter coupon code"
                     className="form-control"
                     onChange={handleChange}
@@ -129,13 +124,11 @@ const CouponModal = ({
               </div>
               <div className="form-group mb-2">
                 <label className="w-100" htmlFor="title">
-                  {/* 說明 */}
                   Description
                   <input
                     type="text"
                     id="title"
                     name="title"
-                    // placeholder="請輸入敘述"
                     placeholder="Enter description"
                     className="form-control"
                     onChange={handleChange}
@@ -146,13 +139,11 @@ const CouponModal = ({
               <div className="row">
                 <div className="form-group mb-2 col-md-6">
                   <label className="w-100" htmlFor="percent">
-                    {/* 折扣 */}
                     Discount %
                     <input
                       type="number"
                       id="percent"
                       name="percent"
-                      // placeholder="請輸入折扣"
                       placeholder="Enter discount percentage"
                       className="form-control"
                       onChange={handleChange}
@@ -162,7 +153,6 @@ const CouponModal = ({
                 </div>
                 <div className="form-group mb-2 col-md-6">
                   <label className="w-100" htmlFor="due_date">
-                    {/* 到期時間 */}
                     Due Date
                     <input
                       type="datetime-local"
@@ -184,7 +174,6 @@ const CouponModal = ({
                       className="w-100 form-check-label"
                       htmlFor="is_enabled"
                     >
-                      {/* 是否啟用 */}
                       Enable the coupon?
                       <input
                         type="checkbox"
@@ -205,7 +194,6 @@ const CouponModal = ({
                       data-bs-target="#deleteModal"
                       data-bs-toggle="modal"
                     >
-                      {/* <i className="bi bi-trash3"></i> 刪除折扣碼 */}
                       <i className="bi bi-trash3"></i> Delete
                     </button>
                   </div>
@@ -220,7 +208,6 @@ const CouponModal = ({
               data-bs-dismiss="modal"
               onClick={closeCouponModal}
             >
-              {/* 取消 */}
               Cancel
             </button>
             <button
@@ -237,7 +224,6 @@ const CouponModal = ({
               >
                 <span className="visually-hidden">Loading...</span>
               </div>
-              {/* 儲存 */}
               Save
             </button>
           </div>

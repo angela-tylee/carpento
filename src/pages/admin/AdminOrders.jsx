@@ -68,13 +68,11 @@ const AdminOrder = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/order/${id}`
       );
       setIsLoadingDelete(false);
-      // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success: ${res.data.message}`);
       closeDeleteModal();
       getOrders(pagination.current_page);
     } catch (error) {
       setIsLoadingDelete(false);
-      // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
       closeDeleteModal();
     }
@@ -116,34 +114,27 @@ const AdminOrder = () => {
       ) : (
         <main className="row w-100">
           <div className="col-9">
-            {/* <h1 className="fs-5 mt-1">訂單列表</h1> */}
             <h1 className="fs-5 mt-1">Orders</h1>
             <hr className="mb-4" />
             <table className="table my-3">
               <thead>
                 <tr>
                   <th scope="col" width="25%">
-                    {/* 訂單編號 */}
                     Order ID
                   </th>
                   <th scope="col" width="35%">
-                    {/* 品項 */}
                     Items
                   </th>
                   <th scope="col" width="8%">
-                    {/* 姓名 */}
                     Name
                   </th>
                   <th scope="col" width="9%" className="text-end">
-                    {/* 金額 */}
                     Price
                   </th>
                   <th scope="col" width="13%">
-                    {/* 訂單日期 */}
                     Order Date
                   </th>
                   <th scope="col" width="8%" className="text-center">
-                    {/* 付款狀態 */}
                   </th>
                 </tr>
               </thead>
@@ -158,7 +149,6 @@ const AdminOrder = () => {
                           className="btn text-bg-secondary text-dark btn-sm rounded-pill fs-7 ms-1"
                           onClick={() => setSelectedOrder(order)}
                         >
-                          {/* 查看 */}
                           view
                         </button>
                       </div>
@@ -186,7 +176,6 @@ const AdminOrder = () => {
                           day: 'numeric',
                         };
 
-                        // return date.toLocaleString('zh-TW', options);
                         return date.toLocaleString('en-US', options);
                       })()}
                     </td>
@@ -196,7 +185,6 @@ const AdminOrder = () => {
                           order.is_paid ? 'text-success' : 'text-danger'
                         }
                       >
-                        {/* {order.is_paid ? '已付款' : '未付款'} */}
                         {order.is_paid ? 'Paid' : 'Unpaid'}
                       </span>
                     </td>
@@ -206,25 +194,21 @@ const AdminOrder = () => {
             </table>
             <footer className="d-flex justify-content-between align-items-end">
               <p className="ps-1">
-                {/* 目前有 <span>{orders.length}</span> 筆訂單 */}
                 Total <span>{orders.length}</span> orders
               </p>
               <Pagination pagination={pagination} changePage={getOrders} />
             </footer>
           </div>
           <div className="col-3">
-            {/* <h2 className="fs-5 mt-1">訂單細節</h2> */}
             <h2 className="fs-5 mt-1">Order Details</h2>
             <hr className="mb-4" />
             {selectedOrder ? (
               <div className="card mb-3">
                 <div className="card-body">
                   <h5 className="card-title fs-6">
-                    {/* 訂單編號：{selectedOrder.id} */}
                     Order ID: {selectedOrder.id}
                   </h5>
                   <p>
-                    {/* 訂單日期： */}
                     Order Date:{' '}
                     {(() => {
                       const date = new Date(selectedOrder.create_at * 1000);
@@ -238,7 +222,6 @@ const AdminOrder = () => {
                         second: '2-digit',
                       };
 
-                      // return date.toLocaleString('zh-TW', options);
                       return date.toLocaleString('us-EN', options);
                     })()}
                   </p>
@@ -260,22 +243,17 @@ const AdminOrder = () => {
                   </div>
                   <div className="mt-2">
                     <p>
-                      {/* 小計：$ */}
                       Total: $
                       {Object.values(selectedOrder.products)
                         ?.reduce((total, product) => total + product.total, 0)
                         ?.toLocaleString()}
                     </p>
                     <p>
-                      {/* 折扣碼： */}
                       Discount:{' '}
-                      {/* {Object.values(selectedOrder.products)[0]?.coupon?.code ||
-                        '無'} */}
                       {Object.values(selectedOrder.products)[0]?.coupon?.code ||
                         'none'}
                     </p>
                     <p>
-                      {/* 總金額：${selectedOrder?.total?.toLocaleString()}{' '} */}
                       Final Total：${selectedOrder?.total?.toLocaleString()}{' '}
                       <span
                         className={`badge rounded-pill text-light ${
@@ -284,28 +262,19 @@ const AdminOrder = () => {
                             : 'text-bg-danger'
                         }`}
                       >
-                        {/* {selectedOrder.is_paid ? '已付款' : '未付款'} */}
                         {selectedOrder.is_paid ? 'Paid' : 'Unpaid'}
                       </span>
                     </p>
                   </div>
                   <hr />
                   <div>
-                    {/* <p className="card-text">姓名：{selectedOrder.user.name}</p> */}
                     <p className="card-text">Name: {selectedOrder.user.name}</p>
-                    {/* <p className="card-text">
-                      電子郵件：{selectedOrder.user.email}
-                    </p> */}
                     <p className="card-text">
                       Email: {selectedOrder.user.email}
                     </p>
-                    {/* <p className="card-text">電話：{selectedOrder.user.tel}</p> */}
                     <p className="card-text">
                       Phone Number: {selectedOrder.user.tel}
                     </p>
-                    {/* <p className="card-text">
-                      地址：{selectedOrder.user.address}
-                    </p> */}
                     <p className="card-text">
                       Shipping Address:<br />{selectedOrder.user.address}
                     </p>
@@ -315,13 +284,11 @@ const AdminOrder = () => {
                     className="btn btn-outline-primary btn-sm mt-4 w-100"
                     onClick={() => openOrderModal(selectedOrder)}
                   >
-                    {/* 編輯 */}
                     Edit
                   </button>
                 </div>
               </div>
             ) : (
-              // <p className="text-gray">請選擇一個訂單查看</p>
               <p className="text-gray">Select an order to view details.</p>
             )}
           </div>

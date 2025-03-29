@@ -11,7 +11,6 @@ const DeleteModal = ({ id, text, handleDelete, closeDeleteModal, isLoadingDelete
         <div className="modal-content">
           <div className="modal-header bg-danger">
             <h1 className="modal-title text-light fs-5" id="exampleModalLabel">
-              {/* 刪除確認 */}
               Are you sure to delete?
             </h1>
             <button
@@ -21,7 +20,6 @@ const DeleteModal = ({ id, text, handleDelete, closeDeleteModal, isLoadingDelete
               onClick={closeDeleteModal}
             />
           </div>
-          {/* <div className="modal-body">刪除：{text}</div> */}
           <div className="modal-body">Delete：{text}</div>
           <div className="modal-footer">
             <button
@@ -29,7 +27,6 @@ const DeleteModal = ({ id, text, handleDelete, closeDeleteModal, isLoadingDelete
               className="btn btn-secondary"
               onClick={closeDeleteModal}
             >
-              {/* 取消 */}
               Cancel
             </button>
             <button
@@ -46,7 +43,6 @@ const DeleteModal = ({ id, text, handleDelete, closeDeleteModal, isLoadingDelete
               >
                 <span className="visually-hidden">Loading...</span>
               </div>
-              {/* 確認刪除 */}
               Delete
             </button>
           </div>

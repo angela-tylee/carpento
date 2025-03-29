@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { NavLink, Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import ReactInputMask from "react-input-mask";
 import axios from 'axios';
@@ -82,9 +82,11 @@ const Checkout = () => {
         <div className="col-12 col-md-10 col-xl-8 d-none d-sm-block">
           <nav className="stepper mt-6 mb-5 d-flex justify-content-between">
             <div className="d-flex align-items-center bg-light pe-1 pe-md-2">
-              <div className="step-number bg-secondary text-dark text-center pt-1">
-                1
-              </div>
+              <NavLink to='/cart'>
+                <div className="step-number bg-secondary text-dark text-center pt-1 pointer">
+                  1
+                </div>
+              </NavLink>
               <p className="ms-1 text-uppercase">Order Detail</p>
             </div>
             <div className="d-flex align-items-center bg-light px-1 px-md-2">

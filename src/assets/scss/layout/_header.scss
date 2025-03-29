@@ -62,11 +62,14 @@ header {
   }
   
   &.sticky {
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 1030;
     opacity: 1;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    @media (min-width: 768px) {
+      position: sticky;
+    }
   }
   &.unsticky {
     position: relative;

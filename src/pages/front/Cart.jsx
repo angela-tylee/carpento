@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router';
+import { NavLink, Link } from 'react-router';
 import axios from 'axios';
 import { CartContext } from '../../context/CartContext';
 import FullPageLoader from '../../components/FullPageLoader';
@@ -22,16 +22,14 @@ const Cart = () => {
   const deleteCartItem = async (id) => {
     setIsLoadingDeleteItem(id);
     try {
-      const res = await axios.delete(
+      await axios.delete(
         `/v2/api/${process.env.REACT_APP_API_PATH}/cart/${id}`
       );
       setIsLoadingDeleteItem(null);
-      // showMessage('success', res.data.message);
       showMessage('success', "Item removed from cart");
       getCart();
     } catch (error) {
       setIsLoadingDeleteItem(null);
-      // showMessage('danger', error.response.data.message);
       showMessage('danger', "Please try again later");
     }
   };
@@ -113,9 +111,12 @@ const Cart = () => {
                   <p className="ms-1 text-uppercase">Order Detail</p>
                 </div>
                 <div className="d-flex align-items-center bg-light px-1 px-md-2">
-                  <div className="step-number bg-secondary text-dark text-center pt-1">
-                    2
-                  </div>
+                  <NavLink to="/checkout">
+                    <div className="step-number bg-secondary text-dark text-center pt-1 pointer"
+                    >
+                      2
+                    </div>
+                  </NavLink>
                   <p className="ms-1 text-uppercase">Shipping & Payment</p>
                 </div>
                 <div className="d-flex align-items-center bg-light ps-1 pe-0 px-md-2">

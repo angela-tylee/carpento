@@ -3,7 +3,6 @@ import { CartContext } from '../context/CartContext';
 
 const CartBadge = ({ size }) => {
   const { cart } = useContext(CartContext);
-  console.log(cart);
 
   return (
     <div className="card-badge position-relative">

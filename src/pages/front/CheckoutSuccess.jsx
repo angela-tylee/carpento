@@ -178,22 +178,6 @@ const CheckoutSuccess = () => {
               </div>
             </div>
             <div>
-            {/* <div className="d-flex justify-content-center align-items-center pt-4">
-                <button
-                  className="btn p-0 text-decoration-underline"
-                  onClick={copyLink}
-                >
-                  <p>Copy link<i className="bi bi-link-45deg fs-5 ms-1"></i></p>
-                  
-                </button>
-                <span className="mx-1">or</span>
-                <button
-                  className="btn p-0 text-decoration-underline"
-                  onClick={() => window.print()}
-                >
-                  <p>Print this page<i className="bi bi-printer-fill fs-5 ms-1"></i></p>
-                </button>
-              </div> */}
             </div>
           </div>
         </section>

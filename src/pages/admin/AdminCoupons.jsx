@@ -70,17 +70,47 @@ const AdminCoupons = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${id}`
       );
       setIsLoadingDelete(false);
-      // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success: ${res.data.message}`);
       closeDeleteModal();
       getCoupons(pagination.current_page);
     } catch (error) {
       setIsLoadingDelete(false);
-      // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
       closeDeleteModal();
     }
   };
+
+  // check coupon expiry status
+  useEffect(() => {
+    const updateExpiredCoupons = async () => {
+      const now = new Date();
+      const expiredCoupons = coupons.filter(coupon => coupon.is_enabled && new Date(coupon.due_date) < now);
+
+      if (expiredCoupons.length > 0) {
+        try {
+          await Promise.all(
+            expiredCoupons.map(async (coupon) => {
+              await axios.put(`/v2/api/${process.env.REACT_APP_API_PATH}/admin/coupon/${coupon.id}`, { data: {
+                ...coupon,
+                is_enabled: 0 }});
+            })
+          );
+
+          setCoupons(prevCoupons =>
+            prevCoupons.map(coupon =>
+              expiredCoupons.some(expired => expired.id === coupon.id)
+                ? { ...coupon, is_enabled: 0 }
+                : coupon
+            )
+          );
+        } catch (error) {
+        }
+      }
+    };
+
+    updateExpiredCoupons();
+  }, [coupons, setCoupons]);
+
 
   function openCouponModal(type, product) {
     setType(type);
@@ -120,14 +150,12 @@ const AdminCoupons = () => {
       ) : (
         <main>
           <header className="d-flex align-items-center">
-            {/* <h1 className="fs-5">折扣碼列表</h1> */}
             <h1 className="fs-5">Coupons</h1>
             <button
               type="button"
               className="btn btn-outline-primary btn-sm ms-2"
               onClick={() => openCouponModal('create', {})}
             >
-              {/* <i className="bi bi-plus-lg"></i> 新增折扣碼 */}
               <i className="bi bi-plus-lg"></i> Add Coupon
             </button>
           </header>
@@ -137,26 +165,20 @@ const AdminCoupons = () => {
             <thead>
               <tr>
                 <th scope="col" width="15%">
-                  {/* 折扣碼 */}
                   Coupon Code
                 </th>
                 <th scope="col" width="25%">
-                  {/* 說明 */}
                   Description
                 </th>
                 <th scope="col" width="20%" className="text-end">
-                  {/* 折扣 */}
                   Discount
                 </th>
                 <th scope="col" width="20%">
-                  {/* 到期時間 */}
                   Due Date
                 </th>
                 <th scope="col" width="10%" className="text-center">
-                  {/* 啟用狀態 */}
                 </th>
                 <th scope="col" width="20%" className="text-center">
-                  {/* 編輯 */}
                 </th>
               </tr>
             </thead>
@@ -168,9 +190,6 @@ const AdminCoupons = () => {
                       <td>{coupon.code}</td>
                       <td>{coupon.title}</td>
                       <td className="text-end">
-                        {/* {coupon.percent % 10 === 0
-                          ? `${coupon.percent / 10}折`
-                          : `${coupon.percent}折`} */}
                         {coupon.percent}% off
                       </td>
                       <td className="text-start">
@@ -185,12 +204,10 @@ const AdminCoupons = () => {
                             minute: '2-digit',
                           };
 
-                          // return date.toLocaleString('zh-TW', options);
                           return date.toLocaleString('en-US', options);
                         })()}
                       </td>
                       <td className="text-center">
-                        {/* {coupon.is_enabled ? '已啟用' : '未啟用'} */}
                         {coupon.is_enabled ? (
                         <span className="text-success">active</span>
                       ) : (
@@ -203,7 +220,6 @@ const AdminCoupons = () => {
                           className="btn btn-primary btn-sm"
                           onClick={() => openCouponModal('edit', coupon)}
                         >
-                          {/* 編輯 */}
                           Edit
                         </button>
                       </td>
@@ -214,7 +230,6 @@ const AdminCoupons = () => {
           </table>
           <footer className="d-flex justify-content-between align-items-end">
             <p className="ps-1">
-              {/* 目前有 <span>{coupons.length}</span> 個折扣碼 */}
               Total <span>{coupons.length}</span> coupons
             </p>
             <Pagination pagination={pagination} changePage={getCoupons} />

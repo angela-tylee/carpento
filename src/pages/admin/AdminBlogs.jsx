@@ -85,13 +85,11 @@ const AdminProducts = () => {
         `/v2/api/${process.env.REACT_APP_API_PATH}/admin/article/${id}`
       );
       setIsLoadingDelete(false);
-      // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success: ${res.data.message}`);
       closeDeleteModal();
       getArticles(pagination.current_page);
     } catch (error) {
       setIsLoadingDelete(false);
-      // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
       closeDeleteModal();
     }
@@ -136,14 +134,12 @@ const AdminProducts = () => {
       ) : (
         <main>
           <header className="d-flex align-items-center">
-            {/* <h1 className="fs-5">文章列表</h1> */}
             <h1 className="fs-5">Articles</h1>
             <button
               type="button"
               className="btn btn-outline-primary btn-sm ms-2"
               onClick={() => openArticleModal('create', {})}
             >
-              {/* <i className="bi bi-plus-lg"></i> 新增文章 */}
               <i className="bi bi-plus-lg"></i> Add Article
             </button>
           </header>
@@ -153,26 +149,20 @@ const AdminProducts = () => {
             <thead>
               <tr>
                 <th scope="col" width="40%">
-                  {/* 文章標題 */}
                   Title
                 </th>
                 <th scope="col" width="15%">
-                  {/* 建立日期 */}
                   Create Date
                 </th>
                 <th scope="col" width="10%">
-                  {/* 作者 */}
                   Author
                 </th>
                 <th scope="col" width="15%">
-                  {/* 標籤 */}
                   Tags
                 </th>
                 <th scope="col" width="10%" className="text-center">
-                  {/* 發布狀態 */}
                 </th>
                 <th scope="col" width="10%" className="text-center">
-                  {/* 編輯 */}
                 </th>
               </tr>
             </thead>
@@ -193,7 +183,7 @@ const AdminProducts = () => {
                           day: 'numeric',
                         };
 
-                        return date.toLocaleString('zh-TW', options);
+                        return date.toLocaleString('en-US', options);
                       })()}
                     </td>
                     <td>{article.author}</td>
@@ -203,7 +193,6 @@ const AdminProducts = () => {
                       </span>
                     </td>
                     <td className="text-center">
-                      {/* {article.isPublic ? '已發布' : '未發布'} */}
                       {article.isPublic ? (
                         <span>published</span>
                       ) : (
@@ -216,7 +205,6 @@ const AdminProducts = () => {
                         className="btn btn-primary btn-sm"
                         onClick={() => openArticleModal('edit', article.id)}
                       >
-                        {/* 編輯 */}
                         Edit
                       </button>
                     </td>
@@ -227,7 +215,6 @@ const AdminProducts = () => {
           </table>
           <footer className="d-flex justify-content-between align-items-end">
             <p className="ps-1">
-              {/* 目前有 <span>{articles.length}</span> 篇文章 */}
               Total <span>{articles.length}</span> articles
             </p>
             <Pagination pagination={pagination} changePage={getArticles} />

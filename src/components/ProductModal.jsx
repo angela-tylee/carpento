@@ -150,13 +150,11 @@ const ProductModal = ({
         data: tempData,
       });
       setIsLoading(false);
-      // showMessage('success', `成功：${res.data.message}`);
       showMessage('success', `Success：${res.data.message}`);
       closeProductModal();
       getProducts(currentPage);
     } catch (error) {
       setIsLoading(false);
-      // showMessage('danger', `失敗：${error.response.data.message}`);
       showMessage('danger', `Error: ${error.response.data.message}`);
     }
   };
@@ -173,7 +171,6 @@ const ProductModal = ({
         <div className="modal-content px-2 py-1">
           <div className="modal-header">
             <h1 className="modal-title fs-5" id="exampleModalLabel">
-              {/* {type === 'create' ? '建立新商品' : `編輯：${tempData?.title}`} */}
               {type === 'create'
                 ? 'Create New Product'
                 : `Edit: ${tempData?.title}`}
@@ -191,13 +188,11 @@ const ProductModal = ({
               <div className="col-sm-8">
                 <div className="form-group mb-2">
                   <label className="w-100" htmlFor="title">
-                    {/* 標題 */}
                     Title
                     <input
                       type="text"
                       id="title"
                       name="title"
-                      // placeholder="請輸入標題"
                       placeholder="Enter title"
                       className="form-control"
                       onChange={handleChange}
@@ -207,13 +202,11 @@ const ProductModal = ({
                 </div>
                 <div className="form-group mb-2">
                   <label className="w-100" htmlFor="description">
-                    {/* 產品描述 */}
                     Description
                     <textarea
                       type="text"
                       id="description"
                       name="description"
-                      // placeholder="請輸入產品描述"
                       placeholder="Please enter product description"
                       className="form-control"
                       onChange={handleChange}
@@ -223,21 +216,7 @@ const ProductModal = ({
                 </div>
                 {tempData && (
                   <div className="form-group mb-2">
-                    {/* <label className='w-100' htmlFor='content'>
-                    說明內容
-                    <textarea
-                      type='text'
-                      id='content'
-                      name='content'
-                      placeholder='請輸入產品說明內容'
-                      className='form-control'
-                      rows="10"
-                      onChange={handleChange}
-                      value={tempData.content}
-                    />
-                    </label> */}
                     <label htmlFor="info" className="w-100">
-                      {/* 產品介紹 */}
                       Introduction
                       <BlogEditor
                         editorData={tempData?.content?.info}
@@ -247,7 +226,6 @@ const ProductModal = ({
                       />
                     </label>
                     <label htmlFor="size" className="w-100">
-                      {/* 規格 */}
                       Spec
                       <BlogEditor
                         editorData={tempData?.content?.size}
@@ -257,7 +235,6 @@ const ProductModal = ({
                       />
                     </label>
                     <label htmlFor="maintenance" className="w-100">
-                      {/* 保養說明 */}
                       Maintenance
                       <BlogEditor
                         editorData={tempData?.content?.maintenance}
@@ -275,7 +252,6 @@ const ProductModal = ({
                 <div className="row">
                   <div className="form-group mb-2 col-md-6">
                     <label className="w-100" htmlFor="category">
-                      {/* 分類 */}
                       Category
                       <select
                         id="category"
@@ -285,7 +261,6 @@ const ProductModal = ({
                         value={tempData.category}
                       >
                         <option value="" disabled>
-                          {/* 請選擇分類 */}
                           Choose Category
                         </option>
                         {Object.keys(PRODUCTS_CATEGORIES).map((category) => (
@@ -298,7 +273,6 @@ const ProductModal = ({
                   </div>
                   <div className="form-group mb-2 col-md-6">
                     <label className="w-100" htmlFor="tag">
-                      {/* 標籤 */}
                       Tags
                       <select
                         id=""
@@ -307,7 +281,6 @@ const ProductModal = ({
                         onChange={handleChange}
                         value={tempData.tag || ''}
                       >
-                        {/* <option value="">請選擇標籤</option> */}
                         <option value="">Choose tag</option>
                         <option value="new">new</option>
                         <option value="sale">sale</option>
@@ -319,7 +292,6 @@ const ProductModal = ({
                 <div className="row">
                   <div className="form-group mb-2 col-md-6">
                     <label className="w-100" htmlFor="price">
-                      {/* 售價 */}
                       Price
                       <input
                         type="number"
@@ -336,7 +308,6 @@ const ProductModal = ({
                   </div>
                   <div className="form-group mb-2 col-md-6">
                     <label className="w-100" htmlFor="origin_price">
-                      {/* 原價 */}
                       Original Price
                       <input
                         type="number"
@@ -359,7 +330,6 @@ const ProductModal = ({
                         className="w-100 form-check-label"
                         htmlFor="is_enabled"
                       >
-                        {/* 是否啟用 */}
                         Enable the product?
                         <input
                           type="checkbox"
@@ -380,7 +350,6 @@ const ProductModal = ({
                         data-bs-target="#deleteModal"
                         data-bs-toggle="modal"
                       >
-                        {/* <i className="bi bi-trash3"></i> 刪除商品 */}
                         <i className="bi bi-trash3"></i> Delete
                       </button>
                     </div>
@@ -390,14 +359,12 @@ const ProductModal = ({
               <div className="col-sm-4">
                 <div className="col-12 mb-2">
                   <form onSubmit={uploadImages}>
-                    {/* <label htmlFor="imageUrl">輸入圖片網址</label> */}
                     <label htmlFor="imageUrl">Add Images</label>
                     <div className="d-flex">
                       <input
                         type="text"
                         name="imagesUpload"
                         id="imageUrl"
-                        // placeholder="請輸入圖片網址"
                         placeholder="Enter Image URL"
                         className="form-control"
                         value={uploadImageUrl}
@@ -422,7 +389,6 @@ const ProductModal = ({
                       className="d-none"
                       id="imageFile"
                     />
-                    {/* <i className="bi bi-plus"></i>或點擊上傳圖片檔案 */}
                     <i className="bi bi-plus"></i>or click here to upload files
                     <i className="bi bi-image ms-1"></i>
                   </label>
@@ -512,7 +478,6 @@ const ProductModal = ({
               data-bs-dismiss="modal"
               onClick={closeProductModal}
             >
-              {/* 取消 */}
               Cancel
             </button>
             <button
@@ -529,7 +494,6 @@ const ProductModal = ({
               >
                 <span className="visually-hidden">Loading...</span>
               </div>
-              {/* 儲存 */}
               Save
             </button>
           </div>

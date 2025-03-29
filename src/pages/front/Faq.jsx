@@ -28,7 +28,7 @@ const FAQ = () => {
                 find what you’re looking for, feel free to reach out to our support team!
               </p>
               <div className="faq-text mt-4">
-                <div className="accordion mt-4" id="accordionPanelsStayOpenExample">
+                <div className="accordion mt-4" id="accordionExample">
 
                   <div className="accordion-item">
                     <h2 className="accordion-header">
@@ -36,16 +36,17 @@ const FAQ = () => {
                         className="accordion-button fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseOne"
+                        data-bs-target="#collapseOne"
                         aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapseOne"
+                        aria-controls="collapseOne"
                       >
                         1. What makes Carpento furniture unique?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseOne"
+                      id="collapseOne"
                       className="accordion-collapse collapse show"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         At Carpento, each piece of furniture is handcrafted by our skilled artisans
@@ -63,16 +64,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseTwo"
+                        data-bs-target="#collapseTwo"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseTwo"
+                        aria-controls="collapseTwo"
                       >
                         2. Where is your furniture made?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseTwo"
+                      id="collapseTwo"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         All Carpento furniture is crafted locally in our workshop. Our small team
@@ -89,16 +91,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseThree"
+                        data-bs-target="#collapseThree"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseThree"
+                        aria-controls="collapseThree"
                       >
                         3. What materials do you use?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseThree"
+                      id="collapseThree"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         We prioritize using sustainable, high-quality materials such as solid wood,
@@ -115,16 +118,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseFour"
+                        data-bs-target="#collapseFour"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseFour"
+                        aria-controls="collapseFour"
                       >
                         4. How can I take care of my Carpento furniture?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseFour"
+                      id="collapseFour"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         <p>Each piece of furniture comes with specific care instructions, but as a general rule:</p>
@@ -145,16 +149,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseFive"
+                        data-bs-target="#collapseFive"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseFive"
+                        aria-controls="collapseFive"
                       >
                         5. Do you offer custom furniture options?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseFive"
+                      id="collapseFive"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         Yes, we offer custom furniture designs! Our team can collaborate with you to create a unique piece that fits your space and style. Contact our design team at <a href="mailto:support@carpento.com" className="text-info">support@carpento.com</a> to get started on your custom project.
@@ -168,16 +173,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseSix"
+                        data-bs-target="#collapseSix"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseSix"
+                        aria-controls="collapseSix"
                       >
                         6. How long does delivery take?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseSix"
+                      id="collapseSix"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         <p>Delivery times vary depending on your location and whether the item is in stock or made-to-order:</p>
@@ -195,16 +201,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseSeven"
+                        data-bs-target="#collapseSeven"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseSeven"
+                        aria-controls="collapseSeven"
                       >
                         7. Do you offer international shipping?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseSeven"
+                      id="collapseSeven"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         Currently, we offer shipping within Taiwan. We are working on expanding our shipping options. Please stay tuned for future updates.
@@ -218,16 +225,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseEight"
+                        data-bs-target="#collapseEight"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseEight"
+                        aria-controls="collapseEight"
                       >
                         8. What is your return policy?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseEight"
+                      id="collapseEight"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         We want you to love your Carpento furniture! If for any reason you’re not satisfied, we offer a <strong>30-day return policy</strong> on all non-custom items. Items must be in their original condition. Custom furniture is non-refundable due to its personalized nature.
@@ -241,16 +249,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseNine"
+                        data-bs-target="#collapseNine"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseNine"
+                        aria-controls="collapseNine"
                       >
                         9. Do you have a showroom I can visit?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseNine"
+                      id="collapseNine"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         Yes, you can visit our showroom at <strong>No. 123, Xinyi Road, Da’an District, Taipei, Taiwan</strong>. We are open Monday to Saturday from 10 AM to 6 PM. Please stop by to see our furniture in person and speak with our team about any questions or custom requests.
@@ -265,16 +274,17 @@ const FAQ = () => {
                         className="accordion-button collapsed fs-5 fw-semibold"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseTen"
+                        data-bs-target="#collapseTen"
                         aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseTen"
+                        aria-controls="collapseTen"
                       >
                         10. How do I contact customer service?
                       </button>
                     </h2>
                     <div
-                      id="panelsStayOpen-collapseTen"
+                      id="collapseTen"
                       className="accordion-collapse collapse"
+                      data-bs-parent="#accordionExample"
                     >
                       <div className="accordion-body">
                         For any additional questions, you can reach our customer service team by email at <a href="mailto:support@carpento.com" className="text-info">support@carpento.com</a>. We’re available <strong>Monday to Friday, 9 AM to 5 PM</strong>, and will respond within 24 hours.

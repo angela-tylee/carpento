@@ -3,8 +3,12 @@ import { NavLink, Outlet, useNavigate } from 'react-router';
 import axios from 'axios';
 import Message from '../components/Message';
 import { MessageContext } from '../context/MessageContext';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 const AdminLayout = () => {
+  
+  useScrollToTop();
+
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState('light');
@@ -85,7 +89,6 @@ const AdminLayout = () => {
               <p>| Dashboard</p>
             </div>
             <button className="btn p-1 nav-link" onClick={logout}>
-              {/* 登出 */}
               Sign out
             </button>
           </nav>
@@ -105,31 +108,26 @@ const AdminLayout = () => {
                         className="nav-link d-inline"
                         aria-current="page"
                       >
-                        {/* 產品列表 */}
                         Products
                       </NavLink>
                     </li>
                     <li className="nav-item pe-2 fw-bold">
                       <NavLink to="/admin/orders" className="nav-link d-inline">
-                        {/* 訂單列表 */}
                         Orders
                       </NavLink>
                     </li>
                     <li className="nav-item pe-2 fw-bold">
                       <NavLink to="/admin/blogs" className="nav-link d-inline">
-                        {/* 文章列表 */}
                         Blog
                       </NavLink>
                     </li>
                     <li className="nav-item pe-2 fw-bold">
                       <NavLink to="/admin/coupons" className="nav-link d-inline">
-                        {/* 折扣碼列表 */}
                         Coupons
                       </NavLink>
                     </li>
                     <li className="nav-item pe-2 fw-bold">
                       <NavLink to="/" className="nav-link">
-                        {/* 回到前台 */}
                         Home
                         <i className="bi bi-arrow-return-left ms-1 fs-7"></i>
                       </NavLink>
